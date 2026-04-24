@@ -1,7 +1,6 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 
 export async function signIn(formData: FormData) {
   const email = formData.get('email') as string
@@ -20,8 +19,7 @@ export async function signIn(formData: FormData) {
     .eq('id', user.id)
     .single()
 
-  if (profile?.role === 'parent') redirect('/portal')
-  else redirect('/dashboard')
+  return { redirectTo: profile?.role === 'parent' ? '/portal' : '/dashboard' }
 }
 
 export async function signUp(formData: FormData) {
@@ -44,7 +42,7 @@ export async function signUp(formData: FormData) {
   if (error) return { error: error.message }
   if (!data.user) return { error: 'Sign up failed. Please try again.' }
 
-  // Ensure profile exists with the correct role (trigger may have already run)
+  // Upsert profile with correct role (trigger may have already run)
   await supabase.from('profiles').upsert({
     id: data.user.id,
     email,
@@ -52,6 +50,10 @@ export async function signUp(formData: FormData) {
     role,
   })
 
-  if (role === 'parent') redirect('/portal')
-  else redirect('/dashboard')
+  // If Supabase requires email confirmation, session won't exist yet
+  if (!data.session) {
+    return { emailConfirmation: true }
+  }
+
+  return { redirectTo: role === 'parent' ? '/portal' : '/dashboard' }
 }

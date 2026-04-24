@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { Suspense } from 'react'
 import { signIn, signUp } from './actions'
 import { Input } from '@/components/ui/input'
@@ -28,21 +28,29 @@ function LoginForm() {
   const searchParams = useSearchParams()
   const role = searchParams.get('role') ?? 'parent'
   const info = roleLabels[role] ?? roleLabels.parent
+  const router = useRouter()
 
   const [mode, setMode] = useState<Mode>('signin')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [emailSent, setEmailSent] = useState(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError(null)
     setLoading(true)
-    const fd = new FormData(e.currentTarget)
-    fd.set('role', role)
-
-    const result = mode === 'signin' ? await signIn(fd) : await signUp(fd)
-    if (result?.error) setError(result.error)
-    setLoading(false)
+    try {
+      const fd = new FormData(e.currentTarget)
+      fd.set('role', role)
+      const result = mode === 'signin' ? await signIn(fd) : await signUp(fd)
+      if (result?.error) { setError(result.error); return }
+      if (result?.emailConfirmation) { setEmailSent(true); return }
+      if (result?.redirectTo) { router.push(result.redirectTo); return }
+    } catch {
+      setError('Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -61,6 +69,27 @@ function LoginForm() {
         {/* Card */}
         <div className="bg-white rounded-2xl border border-[#2D5016]/15 shadow-sm overflow-hidden">
 
+          {emailSent && (
+            <div className="p-8 text-center space-y-3">
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#2D5016]/10 mx-auto">
+                <Leaf className="w-6 h-6 text-[#2D5016]" />
+              </div>
+              <h2 className="text-base font-semibold text-[#2D5016]">Check your email</h2>
+              <p className="text-sm text-[#2D5016]/60">
+                We sent a confirmation link to your inbox. Click it to activate your account, then come back to sign in.
+              </p>
+              <button
+                type="button"
+                onClick={() => { setEmailSent(false); setMode('signin') }}
+                className="text-sm text-[#2D5016] font-medium hover:underline mt-2"
+              >
+                Back to sign in
+              </button>
+            </div>
+          )}
+
+          {!emailSent && (
+          <>
           {/* Tabs */}
           <div className="flex border-b border-[#2D5016]/10">
             {(['signin', 'signup'] as Mode[]).map((m) => (
@@ -148,6 +177,8 @@ function LoginForm() {
               }
             </p>
           </form>
+          </>
+          )}
         </div>
 
         {/* Switch role */}
