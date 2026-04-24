@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Suspense } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Leaf } from 'lucide-react'
@@ -11,14 +10,12 @@ import Link from 'next/link'
 
 type Mode = 'signin' | 'signup'
 
-const roleLabels: Record<string, { title: string; desc: string; portal: string }> = {
+const roleLabels: Record<string, { desc: string; portal: string }> = {
   coach: {
-    title: 'Coach portal',
     desc: 'Sign in to manage clients, sessions, and resources.',
     portal: 'Coach',
   },
   parent: {
-    title: 'Parent portal',
     desc: 'Sign in to view your coaching plan and session notes.',
     portal: 'Parent',
   },
@@ -39,52 +36,41 @@ function LoginForm() {
     e.preventDefault()
     setError(null)
     setLoading(true)
+
+    const fd = new FormData(e.currentTarget)
+    const email = (fd.get('email') as string).trim()
+    const password = fd.get('password') as string
+    const full_name = (fd.get('full_name') as string | null)?.trim() ?? ''
+
     try {
-      const fd = new FormData(e.currentTarget)
-      const email = fd.get('email') as string
-      const password = fd.get('password') as string
-      const full_name = fd.get('full_name') as string
+      const endpoint = mode === 'signin' ? '/api/auth/signin' : '/api/auth/signup'
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, full_name, role }),
+      })
 
-      const supabase = createClient()
+      const data = await res.json()
 
-      if (mode === 'signin') {
-        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
-        if (signInError) { setError(signInError.message); return }
-
-        const { data: { user } } = await supabase.auth.getUser()
-        if (!user) { setError('Authentication failed. Please try again.'); return }
-
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', user.id)
-          .single()
-
-        router.push(profile?.role === 'parent' ? '/portal' : '/dashboard')
-        router.refresh()
-      } else {
-        if (!full_name) { setError('All fields are required.'); return }
-        if (password.length < 6) { setError('Password must be at least 6 characters.'); return }
-
-        const { data, error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { data: { full_name, role } },
-        })
-        if (signUpError) { setError(signUpError.message); return }
-        if (!data.user) { setError('Sign up failed. Please try again.'); return }
-
-        if (!data.session) {
-          setEmailSent(true)
-          return
-        }
-
-        await supabase.from('profiles').upsert({ id: data.user.id, email, full_name, role })
-        router.push(role === 'parent' ? '/portal' : '/dashboard')
-        router.refresh()
+      if (data.error) {
+        setError(data.error)
+        return
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+
+      if (data.emailConfirmation) {
+        setEmailSent(true)
+        return
+      }
+
+      if (data.redirectTo) {
+        router.push(data.redirectTo)
+        router.refresh()
+        return
+      }
+
+      setError('Unexpected response. Please try again.')
+    } catch {
+      setError('Could not reach the server. Please check your connection and try again.')
     } finally {
       setLoading(false)
     }
@@ -106,7 +92,7 @@ function LoginForm() {
         {/* Card */}
         <div className="bg-white rounded-2xl border border-[#2D5016]/15 shadow-sm overflow-hidden">
 
-          {emailSent && (
+          {emailSent ? (
             <div className="p-8 text-center space-y-3">
               <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#2D5016]/10 mx-auto">
                 <Leaf className="w-6 h-6 text-[#2D5016]" />
@@ -123,15 +109,14 @@ function LoginForm() {
                 Back to sign in
               </button>
             </div>
-          )}
-
-          {!emailSent && (
+          ) : (
             <>
               {/* Tabs */}
               <div className="flex border-b border-[#2D5016]/10">
                 {(['signin', 'signup'] as Mode[]).map((m) => (
                   <button
                     key={m}
+                    type="button"
                     onClick={() => { setMode(m); setError(null) }}
                     className={`flex-1 py-3.5 text-sm font-semibold transition-colors ${
                       mode === m
@@ -145,9 +130,7 @@ function LoginForm() {
               </div>
 
               <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                <div className="mb-1">
-                  <p className="text-xs text-[#2D5016]/55">{info.desc}</p>
-                </div>
+                <p className="text-xs text-[#2D5016]/55">{info.desc}</p>
 
                 {error && (
                   <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive">
@@ -203,15 +186,24 @@ function LoginForm() {
                   className="w-full rounded-lg bg-[#2D5016] text-[#F5F0E8] font-semibold py-2.5 text-sm hover:bg-[#3a6b1e] transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2"
                 >
                   {loading
-                    ? mode === 'signin' ? 'Signing in…' : 'Creating account…'
-                    : mode === 'signin' ? 'Sign In' : 'Create Account'}
+                    ? (mode === 'signin' ? 'Signing in…' : 'Creating account…')
+                    : (mode === 'signin' ? 'Sign In' : 'Create Account')}
                 </button>
 
                 <p className="text-xs text-center text-[#2D5016]/45 pt-1">
-                  {mode === 'signin'
-                    ? <><span>No account?</span>{' '}<button type="button" onClick={() => setMode('signup')} className="text-[#2D5016] font-medium hover:underline">Create one</button></>
-                    : <><span>Already have an account?</span>{' '}<button type="button" onClick={() => setMode('signin')} className="text-[#2D5016] font-medium hover:underline">Sign in</button></>
-                  }
+                  {mode === 'signin' ? (
+                    <>No account?{' '}
+                      <button type="button" onClick={() => setMode('signup')} className="text-[#2D5016] font-medium hover:underline">
+                        Create one
+                      </button>
+                    </>
+                  ) : (
+                    <>Already have an account?{' '}
+                      <button type="button" onClick={() => setMode('signin')} className="text-[#2D5016] font-medium hover:underline">
+                        Sign in
+                      </button>
+                    </>
+                  )}
                 </p>
               </form>
             </>
