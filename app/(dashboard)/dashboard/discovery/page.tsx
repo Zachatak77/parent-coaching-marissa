@@ -1,28 +1,36 @@
-import { Card, CardContent, CardTitle } from '@/components/ui/card'
+import { createClient } from '@/lib/supabase/server'
 import { PhoneCall } from 'lucide-react'
+import { DiscoveryTable } from '@/components/dashboard/discovery-table'
 
-export default function DiscoveryCallsPage() {
+export default async function DiscoveryCallsPage() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const { data: calls } = await supabase
+    .from('discovery_calls')
+    .select('id, name, email, phone, child_ages, main_concern, how_they_heard, submitted_at, status, notes')
+    .order('submitted_at', { ascending: false })
+
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-[#2D5016] mb-1">
-        Discovery Calls
-      </h1>
-      <p className="text-sm text-muted-foreground mb-8">
-        Prospective clients who have submitted a discovery call request.
-      </p>
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold text-[#2D5016]">Discovery Calls</h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          Leads who have submitted the booking form
+        </p>
+      </div>
 
-      <Card className="border-[#2D5016]/15 border-dashed">
-        <CardContent className="flex flex-col items-center justify-center py-16 text-center">
+      {!calls?.length ? (
+        <div className="flex flex-col items-center justify-center py-24 text-center border border-dashed border-[#2D5016]/20 rounded-lg bg-white">
           <PhoneCall className="w-10 h-10 text-[#2D5016]/30 mb-4" />
-          <CardTitle className="text-base text-[#2D5016]/50 font-medium mb-2">
-            No discovery calls yet
-          </CardTitle>
+          <p className="text-base font-medium text-[#2D5016]/60 mb-1">No discovery calls yet</p>
           <p className="text-sm text-muted-foreground max-w-xs">
-            Discovery call submissions will appear here once the public booking
-            form is live in Phase 2.
+            Submissions from the booking form will appear here.
           </p>
-        </CardContent>
-      </Card>
+        </div>
+      ) : (
+        <DiscoveryTable calls={calls} coachId={user!.id} />
+      )}
     </div>
   )
 }
