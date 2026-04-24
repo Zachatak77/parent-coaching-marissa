@@ -19,6 +19,12 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
+  // Server actions POST to the page URL with this header — skip redirect logic
+  // so the action receives JSON, not an HTML redirect page
+  if (request.headers.has('next-action')) {
+    return supabaseResponse
+  }
+
   // ── Portal routes: require any authenticated session ──────────────────────
   if (pathname.startsWith('/portal')) {
     if (!user) {
