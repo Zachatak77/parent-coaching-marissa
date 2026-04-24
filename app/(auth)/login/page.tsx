@@ -1,123 +1,172 @@
 'use client'
 
 import { useState } from 'react'
-import { useFormStatus } from 'react-dom'
-import { signIn } from './actions'
-import { Button } from '@/components/ui/button'
+import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
+import { signIn, signUp } from './actions'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import { Leaf } from 'lucide-react'
+import Link from 'next/link'
 
-function SubmitButton() {
-  const { pending } = useFormStatus()
+type Mode = 'signin' | 'signup'
+
+const roleLabels: Record<string, { title: string; desc: string; portal: string }> = {
+  coach: {
+    title: 'Coach portal',
+    desc: 'Sign in to manage clients, sessions, and resources.',
+    portal: 'Coach',
+  },
+  parent: {
+    title: 'Parent portal',
+    desc: 'Sign in to view your coaching plan and session notes.',
+    portal: 'Parent',
+  },
+}
+
+function LoginForm() {
+  const searchParams = useSearchParams()
+  const role = searchParams.get('role') ?? 'parent'
+  const info = roleLabels[role] ?? roleLabels.parent
+
+  const [mode, setMode] = useState<Mode>('signin')
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setError(null)
+    setLoading(true)
+    const fd = new FormData(e.currentTarget)
+    fd.set('role', role)
+
+    const result = mode === 'signin' ? await signIn(fd) : await signUp(fd)
+    if (result?.error) setError(result.error)
+    setLoading(false)
+  }
+
   return (
-    <Button
-      type="submit"
-      className="w-full bg-[#2D5016] hover:bg-[#3a6b1e] text-[#F5F0E8]"
-      disabled={pending}
-    >
-      {pending ? 'Signing in…' : 'Sign In'}
-    </Button>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[#F5F0E8]">
+      <div className="w-full max-w-md">
+
+        {/* Logo */}
+        <div className="flex flex-col items-center mb-8">
+          <Link href="/" className="flex items-center justify-center w-14 h-14 rounded-full bg-[#2D5016] mb-4">
+            <Leaf className="w-7 h-7 text-[#F5F0E8]" />
+          </Link>
+          <h1 className="text-xl font-semibold text-[#2D5016]">Parent Coaching with Marissa</h1>
+          <p className="text-sm text-[#2D5016]/60 mt-1">{info.portal} Portal</p>
+        </div>
+
+        {/* Card */}
+        <div className="bg-white rounded-2xl border border-[#2D5016]/15 shadow-sm overflow-hidden">
+
+          {/* Tabs */}
+          <div className="flex border-b border-[#2D5016]/10">
+            {(['signin', 'signup'] as Mode[]).map((m) => (
+              <button
+                key={m}
+                onClick={() => { setMode(m); setError(null) }}
+                className={`flex-1 py-3.5 text-sm font-semibold transition-colors ${
+                  mode === m
+                    ? 'text-[#2D5016] border-b-2 border-[#2D5016]'
+                    : 'text-[#2D5016]/45 hover:text-[#2D5016]/70'
+                }`}
+              >
+                {m === 'signin' ? 'Sign In' : 'Create Account'}
+              </button>
+            ))}
+          </div>
+
+          <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <div className="mb-1">
+              <p className="text-xs text-[#2D5016]/55">{info.desc}</p>
+            </div>
+
+            {error && (
+              <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive">
+                {error}
+              </div>
+            )}
+
+            {mode === 'signup' && (
+              <div className="space-y-1.5">
+                <Label htmlFor="full_name">Full Name</Label>
+                <Input
+                  id="full_name"
+                  name="full_name"
+                  placeholder="Jane Smith"
+                  required
+                  className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+                />
+              </div>
+            )}
+
+            <div className="space-y-1.5">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                required
+                autoComplete="email"
+                className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="••••••••"
+                required
+                autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
+                className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+              />
+              {mode === 'signup' && (
+                <p className="text-xs text-[#2D5016]/45">Minimum 6 characters</p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-lg bg-[#2D5016] text-[#F5F0E8] font-semibold py-2.5 text-sm hover:bg-[#3a6b1e] transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+            >
+              {loading
+                ? mode === 'signin' ? 'Signing in…' : 'Creating account…'
+                : mode === 'signin' ? 'Sign In' : 'Create Account'}
+            </button>
+
+            <p className="text-xs text-center text-[#2D5016]/45 pt-1">
+              {mode === 'signin'
+                ? <>No account?{' '}<button type="button" onClick={() => setMode('signup')} className="text-[#2D5016] font-medium hover:underline">Create one</button></>
+                : <>Already have an account?{' '}<button type="button" onClick={() => setMode('signin')} className="text-[#2D5016] font-medium hover:underline">Sign in</button></>
+              }
+            </p>
+          </form>
+        </div>
+
+        {/* Switch role */}
+        <p className="text-center text-xs text-[#2D5016]/40 mt-5">
+          {role === 'coach'
+            ? <><Link href="/login?role=parent" className="hover:text-[#2D5016] hover:underline">Switch to Parent portal →</Link></>
+            : <><Link href="/login?role=coach" className="hover:text-[#2D5016] hover:underline">Switch to Coach portal →</Link></>
+          }
+        </p>
+
+      </div>
+    </div>
   )
 }
 
 export default function LoginPage() {
-  const [error, setError] = useState<string | null>(null)
-
-  async function handleSubmit(formData: FormData) {
-    setError(null)
-    const result = await signIn(formData)
-    if (result?.error) {
-      setError(result.error)
-    }
-  }
-
   return (
-    <div
-      className="min-h-screen flex items-center justify-center p-4"
-      style={{ backgroundColor: '#F5F0E8' }}
-    >
-      <div className="w-full max-w-md">
-        {/* Logo / Brand */}
-        <div className="flex flex-col items-center mb-8">
-          <div className="flex items-center justify-center w-14 h-14 rounded-full bg-[#2D5016] mb-4">
-            <Leaf className="w-7 h-7 text-[#F5F0E8]" />
-          </div>
-          <h1 className="text-2xl font-semibold text-[#2D5016] text-center">
-            Parent Coaching
-          </h1>
-          <p className="text-sm text-[#2D5016]/70 mt-1">with Marissa</p>
-        </div>
-
-        <Card className="border-[#2D5016]/20 shadow-lg">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-xl text-[#2D5016]">
-              Welcome back
-            </CardTitle>
-            <CardDescription>
-              Sign in to access your coaching portal
-            </CardDescription>
-          </CardHeader>
-
-          <form action={handleSubmit}>
-            <CardContent className="space-y-4">
-              {error && (
-                <div className="rounded-md bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive">
-                  {error}
-                </div>
-              )}
-
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-[#2D5016]">
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  required
-                  autoComplete="email"
-                  className="border-[#2D5016]/30 focus-visible:ring-[#2D5016]"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-[#2D5016]">
-                  Password
-                </Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="••••••••"
-                  required
-                  autoComplete="current-password"
-                  className="border-[#2D5016]/30 focus-visible:ring-[#2D5016]"
-                />
-              </div>
-            </CardContent>
-
-            <CardFooter className="flex-col gap-3">
-              <SubmitButton />
-              <p className="text-xs text-center text-muted-foreground">
-                Don&apos;t have an account?{' '}
-                <span className="text-[#2D5016] font-medium">
-                  Contact your coach to get started.
-                </span>
-              </p>
-            </CardFooter>
-          </form>
-        </Card>
-      </div>
-    </div>
+    <Suspense fallback={<div className="min-h-screen bg-[#F5F0E8]" />}>
+      <LoginForm />
+    </Suspense>
   )
 }
