@@ -2,7 +2,20 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
 export async function middleware(request: NextRequest) {
-  const { supabaseResponse, supabase, user } = await updateSession(request)
+  // If Supabase env vars are missing, let the request through — pages will handle auth
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return NextResponse.next()
+  }
+
+  let supabaseResponse: NextResponse
+  let supabase: Awaited<ReturnType<typeof updateSession>>['supabase']
+  let user: Awaited<ReturnType<typeof updateSession>>['user']
+
+  try {
+    ;({ supabaseResponse, supabase, user } = await updateSession(request))
+  } catch {
+    return NextResponse.next()
+  }
 
   const { pathname } = request.nextUrl
 
