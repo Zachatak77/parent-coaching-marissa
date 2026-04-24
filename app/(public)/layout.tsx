@@ -1,55 +1,25 @@
-import Link from 'next/link'
-import { Leaf } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { PublicNav } from '@/components/public/public-nav'
 
-export default function PublicLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#F5F0E8' }}>
-      {/* Nav */}
-      <nav className="border-b border-[#2D5016]/15 bg-[#F5F0E8]/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[#2D5016]">
-              <Leaf className="w-4 h-4 text-[#F5F0E8]" />
-            </div>
-            <span className="font-semibold text-[#2D5016] text-sm sm:text-base">
-              Parent Coaching with Marissa
-            </span>
-          </Link>
-
-          <Button
-            asChild
-            className="bg-[#2D5016] hover:bg-[#3a6b1e] text-[#F5F0E8] text-sm"
-          >
-            <Link href="/discovery">Book a Discovery Call</Link>
-          </Button>
-        </div>
-      </nav>
-
-      {/* Page content */}
+      <PublicNav />
       <main className="flex-1">{children}</main>
-
-      {/* Footer */}
-      <footer className="border-t border-[#2D5016]/15 py-8">
+      <footer className="border-t border-[#2D5016]/15 py-10 bg-[#F5F0E8]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center w-6 h-6 rounded-full bg-[#2D5016]">
-              <Leaf className="w-3 h-3 text-[#F5F0E8]" />
-            </div>
-            <span className="text-sm font-medium text-[#2D5016]">
-              Parent Coaching with Marissa
-            </span>
+          <div>
+            <p className="font-semibold text-[#2D5016] text-sm">Parent Coaching with Marissa</p>
+            <p className="text-xs text-[#2D5016]/60 mt-0.5">Supporting families across New Jersey</p>
           </div>
-          <a
-            href="mailto:parentcoachwithmarissa@gmail.com"
-            className="text-sm text-[#2D5016]/70 hover:text-[#2D5016] transition-colors"
-          >
-            parentcoachwithmarissa@gmail.com
-          </a>
+          <div className="flex flex-col sm:items-end gap-1 text-center sm:text-right">
+            <a
+              href="mailto:parentcoachwithmarissa@gmail.com"
+              className="text-sm text-[#2D5016]/70 hover:text-[#2D5016] transition-colors"
+            >
+              parentcoachwithmarissa@gmail.com
+            </a>
+            <p className="text-xs text-[#2D5016]/50">© {new Date().getFullYear()} Parent Coaching with Marissa</p>
+          </div>
         </div>
       </footer>
     </div>
