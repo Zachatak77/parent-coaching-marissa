@@ -12,10 +12,10 @@ export async function POST(request: Request) {
     const supabase = await createClient()
 
     const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) return NextResponse.json({ error: error.message }, { status: 401 })
+    if (error) return NextResponse.json({ error: error.message })
 
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return NextResponse.json({ error: 'Authentication failed.' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: 'Authentication failed.' })
 
     const { data: profile } = await supabase
       .from('profiles')

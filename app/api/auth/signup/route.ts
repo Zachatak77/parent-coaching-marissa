@@ -20,8 +20,8 @@ export async function POST(request: Request) {
       options: { data: { full_name, role } },
     })
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 400 })
-    if (!data.user) return NextResponse.json({ error: 'Sign up failed. Please try again.' }, { status: 400 })
+    if (error) return NextResponse.json({ error: error.message })
+    if (!data.user) return NextResponse.json({ error: 'Sign up failed. Please try again.' })
 
     // Best-effort profile upsert — trigger on auth.users may have already created the row
     await supabase.from('profiles').upsert({ id: data.user.id, email, full_name, role })
