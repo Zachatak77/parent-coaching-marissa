@@ -49,6 +49,10 @@ const config: Config = {
           foreground: 'hsl(var(--popover-foreground))',
         },
       },
+      fontFamily: {
+        nunito: ['var(--font-nunito)', 'sans-serif'],
+        inter: ['var(--font-inter)', 'sans-serif'],
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
