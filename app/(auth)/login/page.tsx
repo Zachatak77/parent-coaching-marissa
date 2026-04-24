@@ -42,7 +42,9 @@ function LoginForm() {
     try {
       const fd = new FormData(e.currentTarget)
       fd.set('role', role)
-      const result = mode === 'signin' ? await signIn(fd) : await signUp(fd)
+      const result = (mode === 'signin' ? await signIn(fd) : await signUp(fd)) as {
+        error?: string; redirectTo?: string; emailConfirmation?: boolean
+      }
       if (result?.error) { setError(result.error); return }
       if (result?.emailConfirmation) { setEmailSent(true); return }
       if (result?.redirectTo) { router.push(result.redirectTo); return }
