@@ -17,6 +17,7 @@ const packageLabels: Record<string, string> = {
 const CreateClientSchema = z.object({
   full_name: z.string().min(1, 'Full name is required'),
   email: z.string().email('Valid email required'),
+  password: z.string().min(8).optional(),
   package: z.enum(['confident_parent', 'partnership', 'ongoing']),
   start_date: z.string().optional(),
   notes: z.string().optional(),
@@ -30,6 +31,7 @@ export async function createClientAction(formData: FormData) {
   const raw = {
     full_name: formData.get('full_name') as string,
     email: formData.get('email') as string,
+    password: formData.get('password') as string || undefined,
     package: formData.get('package') as string,
     start_date: formData.get('start_date') as string || undefined,
     notes: formData.get('notes') as string || undefined,
@@ -47,7 +49,8 @@ export async function createClientAction(formData: FormData) {
 
   const { data: newUser, error: authError } = await admin.auth.admin.createUser({
     email: parsed.data.email,
-    email_confirm: false,
+    password: parsed.data.password,
+    email_confirm: true,
     user_metadata: { full_name: parsed.data.full_name, role: 'parent' },
   })
   if (authError) return { error: authError.message }

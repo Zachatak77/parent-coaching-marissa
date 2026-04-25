@@ -31,6 +31,7 @@ import { createClientAction } from '@/app/actions/clients'
 const schema = z.object({
   full_name: z.string().min(1, 'Full name is required'),
   email: z.string().email('Valid email required'),
+  password: z.string().min(8, 'Min 8 characters').optional().or(z.literal('')),
   package: z.enum(['confident_parent', 'partnership', 'ongoing']),
   start_date: z.string().optional(),
   notes: z.string().optional(),
@@ -71,6 +72,7 @@ export function NewClientButton({ coachId, prefill, onSuccess, triggerLabel }: N
     const fd = new FormData()
     fd.append('full_name', values.full_name)
     fd.append('email', values.email)
+    if (values.password) fd.append('password', values.password)
     fd.append('package', values.package)
     if (values.start_date) fd.append('start_date', values.start_date)
     if (values.notes) fd.append('notes', values.notes)
@@ -83,7 +85,7 @@ export function NewClientButton({ coachId, prefill, onSuccess, triggerLabel }: N
       return
     }
 
-    toast.success(`Client created. An email has been sent to ${values.email} to set up their account.`)
+    toast.success(values.password ? 'Client created — they can log in with the password you set.' : `Client created. A setup email has been sent to ${values.email}.`)
     setOpen(false)
     reset()
     if (onSuccess && result.clientId) {
@@ -108,7 +110,7 @@ export function NewClientButton({ coachId, prefill, onSuccess, triggerLabel }: N
           <DialogHeader>
             <DialogTitle>Add New Client</DialogTitle>
             <DialogDescription>
-              Create a client account and send them a setup email.
+              Create a client account. Set a password to log in immediately, or leave blank to send a setup email.
             </DialogDescription>
           </DialogHeader>
 
@@ -123,6 +125,12 @@ export function NewClientButton({ coachId, prefill, onSuccess, triggerLabel }: N
               <Label htmlFor="email">Email *</Label>
               <Input id="email" type="email" {...register('email')} placeholder="jane@example.com" />
               {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" {...register('password')} placeholder="Min 8 characters" />
+              {errors.password && <p className="text-xs text-destructive">{errors.password.message}</p>}
             </div>
 
             <div className="space-y-1.5">
