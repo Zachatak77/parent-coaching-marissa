@@ -27,8 +27,11 @@ function LoginForm() {
   const info = roleLabels[role] ?? roleLabels.parent
   const router = useRouter()
 
-  const [mode, setMode] = useState<Mode>('signin')
-  const [error, setError] = useState<string | null>(null)
+  const linkExpired = searchParams.get('error') === 'link-expired'
+  const [mode, setMode] = useState<Mode>(linkExpired ? 'forgot' : 'signin')
+  const [error, setError] = useState<string | null>(
+    linkExpired ? 'That link has expired. Enter your email to request a new one.' : null
+  )
   const [loading, setLoading] = useState(false)
   const [emailSent, setEmailSent] = useState(false)
   const [resetSent, setResetSent] = useState(false)
