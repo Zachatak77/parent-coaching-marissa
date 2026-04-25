@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label'
 import { Leaf } from 'lucide-react'
 import Link from 'next/link'
 
-type Mode = 'signin' | 'signup'
+type Mode = 'signin' | 'signup' | 'forgot'
 
 const roleLabels: Record<string, { desc: string; portal: string }> = {
   coach: {
@@ -31,6 +31,7 @@ function LoginForm() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [emailSent, setEmailSent] = useState(false)
+  const [resetSent, setResetSent] = useState(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -39,10 +40,22 @@ function LoginForm() {
 
     const fd = new FormData(e.currentTarget)
     const email = (fd.get('email') as string).trim()
-    const password = fd.get('password') as string
-    const full_name = (fd.get('full_name') as string | null)?.trim() ?? ''
 
     try {
+      if (mode === 'forgot') {
+        const res = await fetch('/api/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        })
+        const data = await res.json()
+        if (data.error) { setError(data.error); return }
+        setResetSent(true)
+        return
+      }
+
+      const password = fd.get('password') as string
+      const full_name = (fd.get('full_name') as string | null)?.trim() ?? ''
       const endpoint = mode === 'signin' ? '/api/auth/signin' : '/api/auth/signup'
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -52,16 +65,8 @@ function LoginForm() {
 
       const data = await res.json()
 
-      if (data.error) {
-        setError(data.error)
-        return
-      }
-
-      if (data.emailConfirmation) {
-        setEmailSent(true)
-        return
-      }
-
+      if (data.error) { setError(data.error); return }
+      if (data.emailConfirmation) { setEmailSent(true); return }
       if (data.redirectTo) {
         router.push(data.redirectTo)
         router.refresh()
@@ -92,7 +97,24 @@ function LoginForm() {
         {/* Card */}
         <div className="bg-white rounded-2xl border border-[#2D5016]/15 shadow-sm overflow-hidden">
 
-          {emailSent ? (
+          {resetSent ? (
+            <div className="p-8 text-center space-y-3">
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#2D5016]/10 mx-auto">
+                <Leaf className="w-6 h-6 text-[#2D5016]" />
+              </div>
+              <h2 className="text-base font-semibold text-[#2D5016]">Check your email</h2>
+              <p className="text-sm text-[#2D5016]/60">
+                If that email has an account, we sent a password reset link. Check your inbox.
+              </p>
+              <button
+                type="button"
+                onClick={() => { setResetSent(false); setMode('signin') }}
+                className="text-sm text-[#2D5016] font-medium hover:underline mt-2"
+              >
+                Back to sign in
+              </button>
+            </div>
+          ) : emailSent ? (
             <div className="p-8 text-center space-y-3">
               <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#2D5016]/10 mx-auto">
                 <Leaf className="w-6 h-6 text-[#2D5016]" />
@@ -109,6 +131,46 @@ function LoginForm() {
                 Back to sign in
               </button>
             </div>
+          ) : mode === 'forgot' ? (
+            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+              <div>
+                <h2 className="text-base font-semibold text-[#2D5016]">Reset your password</h2>
+                <p className="text-xs text-[#2D5016]/55 mt-1">Enter your email and we'll send a reset link.</p>
+              </div>
+
+              {error && (
+                <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive">
+                  {error}
+                </div>
+              )}
+
+              <div className="space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  required
+                  autoComplete="email"
+                  className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full rounded-lg bg-[#2D5016] text-[#F5F0E8] font-semibold py-2.5 text-sm hover:bg-[#3a6b1e] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Sending…' : 'Send reset link'}
+              </button>
+
+              <p className="text-xs text-center text-[#2D5016]/45">
+                <button type="button" onClick={() => { setMode('signin'); setError(null) }} className="text-[#2D5016] font-medium hover:underline">
+                  Back to sign in
+                </button>
+              </p>
+            </form>
           ) : (
             <>
               {/* Tabs */}
@@ -165,7 +227,18 @@ function LoginForm() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label htmlFor="password">Password</Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="password">Password</Label>
+                    {mode === 'signin' && (
+                      <button
+                        type="button"
+                        onClick={() => { setMode('forgot'); setError(null) }}
+                        className="text-xs text-[#2D5016]/55 hover:text-[#2D5016] hover:underline"
+                      >
+                        Forgot password?
+                      </button>
+                    )}
+                  </div>
                   <Input
                     id="password"
                     name="password"
