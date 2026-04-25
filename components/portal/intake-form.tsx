@@ -15,9 +15,14 @@ import Link from 'next/link'
 
 const IntakeSchema = z.object({
   parent_name: z.string().min(1, 'Name is required'),
+  phone: z.string().optional(),
   children: z.array(z.object({
     name: z.string().min(1, 'Child name required'),
     age: z.string().min(1, 'Age required'),
+    gender: z.string().optional(),
+    school: z.string().optional(),
+    grade: z.string().optional(),
+    notes: z.string().optional(),
   })).min(1, 'Add at least one child'),
   family_structure: z.string().min(1, 'Please select'),
   main_challenge: z.string().min(5, 'Please describe your challenge'),
@@ -75,7 +80,8 @@ export function IntakeForm({ clientId, firstName, defaultName }: IntakeFormProps
       resolver: zodResolver(IntakeSchema),
       defaultValues: {
         parent_name: defaultName,
-        children: [{ name: '', age: '' }],
+        phone: '',
+        children: [{ name: '', age: '', gender: '', school: '', grade: '', notes: '' }],
         family_structure: '',
         how_long: '',
         contact_method: '',
@@ -119,38 +125,78 @@ export function IntakeForm({ clientId, firstName, defaultName }: IntakeFormProps
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Section 1 */}
       <Section title="Section 1: About Your Family">
-        <Field label="Parent name(s)" required error={errors.parent_name?.message}>
-          <Input {...register('parent_name')} className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
-        </Field>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <Field label="Parent name(s)" required error={errors.parent_name?.message}>
+            <Input {...register('parent_name')} className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
+          </Field>
+          <Field label="Phone number" error={errors.phone?.message}>
+            <Input {...register('phone')} type="tel" className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
+          </Field>
+        </div>
 
         <div>
           <Label className="text-sm text-[#2D5016] mb-2 block">
-            Children&rsquo;s names and ages<span className="text-red-500 ml-0.5">*</span>
+            Children<span className="text-red-500 ml-0.5">*</span>
           </Label>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {fields.map((field, i) => (
-              <div key={field.id} className="flex gap-2">
+              <div key={field.id} className="rounded-lg border border-[#2D5016]/15 p-3 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-[#2D5016]/50">Child {i + 1}</span>
+                  {fields.length > 1 && (
+                    <button type="button" onClick={() => remove(i)} className="text-red-400 hover:text-red-600">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Input
+                    {...register(`children.${i}.name`)}
+                    placeholder="Name *"
+                    className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+                  />
+                  <Input
+                    {...register(`children.${i}.age`)}
+                    placeholder="Age *"
+                    className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Input
+                    {...register(`children.${i}.gender`)}
+                    placeholder="Gender"
+                    className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+                  />
+                  <Input
+                    {...register(`children.${i}.grade`)}
+                    placeholder="Grade"
+                    className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+                  />
+                </div>
                 <Input
-                  {...register(`children.${i}.name`)}
-                  placeholder="Name"
+                  {...register(`children.${i}.school`)}
+                  placeholder="School"
                   className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
                 />
-                <Input
-                  {...register(`children.${i}.age`)}
-                  placeholder="Age"
-                  className="border-[#2D5016]/25 focus-visible:ring-[#2D5016] w-20 flex-shrink-0"
+                <Textarea
+                  {...register(`children.${i}.notes`)}
+                  placeholder="Notes about this child (optional)"
+                  rows={2}
+                  className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
                 />
-                {fields.length > 1 && (
-                  <button type="button" onClick={() => remove(i)}
-                    className="p-2 text-red-400 hover:text-red-600 flex-shrink-0">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                {(errors.children?.[i]?.name || errors.children?.[i]?.age) && (
+                  <p className="text-xs text-red-500">
+                    {errors.children[i]?.name?.message ?? errors.children[i]?.age?.message}
+                  </p>
                 )}
               </div>
             ))}
           </div>
-          <button type="button" onClick={() => append({ name: '', age: '' })}
-            className="mt-2 flex items-center gap-1.5 text-xs text-[#2D5016] font-medium hover:underline">
+          <button
+            type="button"
+            onClick={() => append({ name: '', age: '', gender: '', school: '', grade: '', notes: '' })}
+            className="mt-2 flex items-center gap-1.5 text-xs text-[#2D5016] font-medium hover:underline"
+          >
             <Plus className="w-3.5 h-3.5" /> Add another child
           </button>
           {errors.children && <p className="text-xs text-red-500 mt-1">{errors.children.message ?? errors.children.root?.message}</p>}

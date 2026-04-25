@@ -29,7 +29,7 @@ type Client = {
   package: string
   start_date: string | null
   notes: string | null
-  profiles: { full_name: string | null; email: string | null } | null
+  profiles: { full_name: string | null; email: string | null; phone: string | null } | null
   sessions: { session_date: string }[]
 }
 
@@ -127,9 +127,12 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
                     <p className="text-sm font-semibold text-[#2D5016] truncate">
                       {client.profiles?.full_name ?? '—'}
                     </p>
-                    <p className="text-xs text-muted-foreground truncate mb-2">
+                    <p className="text-xs text-muted-foreground truncate">
                       {client.profiles?.email ?? ''}
                     </p>
+                    {client.profiles?.phone && (
+                      <p className="text-xs text-muted-foreground truncate mb-2">{client.profiles.phone}</p>
+                    )}
                     <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                       <Badge variant={statusVariants[client.status] ?? 'gray'} className="text-[10px]">
                         {client.status}
@@ -174,6 +177,9 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
                           <p className="text-xs text-muted-foreground">
                             {client.profiles?.email ?? ''}
                           </p>
+                          {client.profiles?.phone && (
+                            <p className="text-xs text-muted-foreground">{client.profiles.phone}</p>
+                          )}
                         </div>
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">

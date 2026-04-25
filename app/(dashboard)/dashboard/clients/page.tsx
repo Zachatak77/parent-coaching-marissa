@@ -15,7 +15,7 @@ export default async function ClientsPage() {
       package,
       start_date,
       notes,
-      profiles:profile_id (full_name, email),
+      profiles:profile_id (full_name, email, phone),
       sessions (session_date)
     `)
     .eq('coach_id', user!.id)

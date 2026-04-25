@@ -28,10 +28,11 @@ export default async function IntakePage() {
 
   if (intake) {
     const responses = intake.responses as Record<string, unknown>
-    const children = responses.children as Array<{ name: string; age: string }> | undefined
+    const children = responses.children as Array<{ name: string; age: string; gender?: string; school?: string; grade?: string; notes?: string }> | undefined
 
     const qaFields = [
       { q: 'Parent name(s)', k: 'parent_name' },
+      { q: 'Phone', k: 'phone' },
       { q: 'Family structure', k: 'family_structure' },
       { q: 'Main challenge', k: 'main_challenge' },
       { q: 'How long has this been a concern?', k: 'how_long' },
@@ -60,13 +61,17 @@ export default async function IntakePage() {
 
         <div className="bg-white rounded-2xl border border-[#2D5016]/10 p-6 shadow-sm space-y-5">
           {children && children.length > 0 && (
-            <div className="space-y-1">
+            <div className="space-y-2">
               <p className="text-xs font-semibold text-[#2D5016]/50 uppercase tracking-wide">Children</p>
-              <ul className="text-sm text-[#2D5016]/80 space-y-0.5">
-                {children.map((c, i) => (
-                  <li key={i}>{c.name}, age {c.age}</li>
-                ))}
-              </ul>
+              {children.map((c, i) => (
+                <div key={i} className="text-sm text-[#2D5016]/80">
+                  <p className="font-medium">{c.name}, age {c.age}{c.gender ? ` · ${c.gender}` : ''}</p>
+                  {(c.school || c.grade) && (
+                    <p className="text-xs text-[#2D5016]/60">{[c.school, c.grade].filter(Boolean).join(' · ')}</p>
+                  )}
+                  {c.notes && <p className="text-xs text-[#2D5016]/60 mt-0.5">{c.notes}</p>}
+                </div>
+              ))}
             </div>
           )}
           {qaFields.map(({ q, k }) => {

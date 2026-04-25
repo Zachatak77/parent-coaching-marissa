@@ -37,7 +37,7 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
       start_date,
       notes,
       coach_id,
-      profiles:profile_id (full_name, email, id)
+      profiles:profile_id (full_name, email, phone, id)
     `)
     .eq('id', params.id)
     .single()
@@ -47,6 +47,7 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
   const profileData = Array.isArray(client.profiles) ? client.profiles[0] : client.profiles
   const clientName = profileData?.full_name ?? 'Client'
   const clientEmail = profileData?.email ?? ''
+  const clientPhone = profileData?.phone ?? ''
   const profileId = profileData?.id
 
   const [
@@ -100,6 +101,7 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
         <div>
           <h1 className="text-2xl font-semibold text-[#2D5016]">{clientName}</h1>
           <p className="text-sm text-muted-foreground mt-0.5">{clientEmail}</p>
+          {clientPhone && <p className="text-sm text-muted-foreground">{clientPhone}</p>}
           <div className="flex items-center gap-2 mt-2">
             <Badge variant={statusVariants[client.status] ?? 'gray'}>{client.status}</Badge>
             <Badge variant="secondary">{packageLabels[client.package] ?? client.package}</Badge>
@@ -194,9 +196,10 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
 
           {intakeForm && intakeForm.responses && (() => {
             const responses = intakeForm.responses as Record<string, unknown>
-            const children = responses.children as Array<{ name: string; age: string }> | undefined
+            const children = responses.children as Array<{ name: string; age: string; gender?: string; school?: string; grade?: string; notes?: string }> | undefined
             const qaFields = [
               { q: 'Parent name(s)', k: 'parent_name' },
+              { q: 'Phone', k: 'phone' },
               { q: 'Family structure', k: 'family_structure' },
               { q: 'Main challenge', k: 'main_challenge' },
               { q: 'How long has this been a concern?', k: 'how_long' },
@@ -217,13 +220,17 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
               <div className="bg-white rounded-2xl border border-[#2D5016]/10 p-6 shadow-sm space-y-5">
                 <h2 className="text-sm font-semibold text-[#2D5016] uppercase tracking-wide">Intake Form</h2>
                 {children && children.length > 0 && (
-                  <div className="space-y-1">
+                  <div className="space-y-2">
                     <p className="text-xs font-semibold text-[#2D5016]/50 uppercase tracking-wide">Children</p>
-                    <ul className="text-sm text-[#2D5016]/80 space-y-0.5">
-                      {children.map((c, i) => (
-                        <li key={i}>{c.name}, age {c.age}</li>
-                      ))}
-                    </ul>
+                    {children.map((c, i) => (
+                      <div key={i} className="text-sm text-[#2D5016]/80">
+                        <p className="font-medium">{c.name}, age {c.age}{c.gender ? ` · ${c.gender}` : ''}</p>
+                        {(c.school || c.grade) && (
+                          <p className="text-xs text-[#2D5016]/60">{[c.school, c.grade].filter(Boolean).join(' · ')}</p>
+                        )}
+                        {c.notes && <p className="text-xs text-[#2D5016]/60 mt-0.5">{c.notes}</p>}
+                      </div>
+                    ))}
                   </div>
                 )}
                 {qaFields.map(({ q, k }) => {

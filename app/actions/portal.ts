@@ -41,6 +41,10 @@ export async function submitIntakeAction(clientId: string, responses: Record<str
 
   if (error) return { error: error.message }
 
+  if (responses.phone) {
+    await supabase.from('profiles').update({ phone: String(responses.phone) }).eq('id', user.id)
+  }
+
   // Notify coach
   try {
     const { data: profile } = await supabase
