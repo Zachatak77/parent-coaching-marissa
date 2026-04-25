@@ -58,7 +58,9 @@ export async function createClientAction(formData: FormData) {
     email: parsed.data.email,
   })
 
-  await supabase
+  // Use admin client for profile upsert — the coach's session lacks RLS permission
+  // to write another user's profile row
+  await admin
     .from('profiles')
     .upsert({
       id: newUser.user.id,

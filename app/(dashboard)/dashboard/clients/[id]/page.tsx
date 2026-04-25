@@ -8,6 +8,7 @@ import { ClientNotesEditor } from '@/components/dashboard/client-notes-editor'
 import { CoachingPlanEditor } from '@/components/dashboard/coaching-plan-editor'
 import { SessionsList } from '@/components/dashboard/log-session-form'
 import { ClientResourcesTab } from '@/components/dashboard/client-resources-tab'
+import { CopyIntakeLinkButton } from '@/components/dashboard/copy-intake-link'
 import { ArrowLeft, Calendar, BarChart2, BookOpen } from 'lucide-react'
 
 const statusVariants: Record<string, 'green' | 'yellow' | 'blue' | 'gray'> = {
@@ -164,15 +165,7 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
                 ) : (
                   <div>
                     <p className="text-sm text-muted-foreground">Not yet submitted</p>
-                    <button
-                      onClick={() => {
-                        const url = `${window.location.origin}/portal/intake`
-                        navigator.clipboard.writeText(url)
-                      }}
-                      className="text-xs text-[#2D5016] hover:underline mt-1"
-                    >
-                      Copy intake link
-                    </button>
+                    <CopyIntakeLinkButton />
                   </div>
                 )}
               </CardContent>
