@@ -38,7 +38,12 @@ export async function createClientAction(formData: FormData) {
   const parsed = CreateClientSchema.safeParse(raw)
   if (!parsed.success) return { error: parsed.error.errors[0].message }
 
-  const admin = createAdminClient()
+  let admin
+  try {
+    admin = createAdminClient()
+  } catch (e) {
+    return { error: String(e) }
+  }
 
   const { data: newUser, error: authError } = await admin.auth.admin.createUser({
     email: parsed.data.email,
