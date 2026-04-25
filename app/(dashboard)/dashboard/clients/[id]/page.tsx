@@ -9,6 +9,7 @@ import { CoachingPlanEditor } from '@/components/dashboard/coaching-plan-editor'
 import { SessionsList } from '@/components/dashboard/log-session-form'
 import { ClientResourcesTab } from '@/components/dashboard/client-resources-tab'
 import { CopyIntakeLinkButton } from '@/components/dashboard/copy-intake-link'
+import { ClientLoginLinkButton } from '@/components/dashboard/client-login-link-button'
 import { ArrowLeft, Calendar, BarChart2, BookOpen } from 'lucide-react'
 
 const statusVariants: Record<string, 'green' | 'yellow' | 'blue' | 'gray'> = {
@@ -102,9 +103,10 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
           <h1 className="text-2xl font-semibold text-[#2D5016]">{clientName}</h1>
           <p className="text-sm text-muted-foreground mt-0.5">{clientEmail}</p>
           {clientPhone && <p className="text-sm text-muted-foreground">{clientPhone}</p>}
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex flex-wrap items-center gap-2 mt-2">
             <Badge variant={statusVariants[client.status] ?? 'gray'}>{client.status}</Badge>
             <Badge variant="secondary">{packageLabels[client.package] ?? client.package}</Badge>
+            <ClientLoginLinkButton clientId={params.id} />
           </div>
         </div>
 

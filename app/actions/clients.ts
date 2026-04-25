@@ -17,7 +17,6 @@ const packageLabels: Record<string, string> = {
 const CreateClientSchema = z.object({
   full_name: z.string().min(1, 'Full name is required'),
   email: z.string().email('Valid email required'),
-  password: z.string().min(8).optional(),
   package: z.enum(['confident_parent', 'partnership', 'ongoing']),
   start_date: z.string().optional(),
   notes: z.string().optional(),
@@ -31,7 +30,6 @@ export async function createClientAction(formData: FormData) {
   const raw = {
     full_name: formData.get('full_name') as string,
     email: formData.get('email') as string,
-    password: formData.get('password') as string || undefined,
     package: formData.get('package') as string,
     start_date: formData.get('start_date') as string || undefined,
     notes: formData.get('notes') as string || undefined,
@@ -49,7 +47,6 @@ export async function createClientAction(formData: FormData) {
 
   const { data: newUser, error: authError } = await admin.auth.admin.createUser({
     email: parsed.data.email,
-    password: parsed.data.password,
     email_confirm: true,
     user_metadata: { full_name: parsed.data.full_name, role: 'parent' },
   })
@@ -106,8 +103,10 @@ export async function createClientAction(formData: FormData) {
     // Email failure is non-fatal
   }
 
+  const setPasswordUrl = linkData?.properties?.action_link ?? null
+
   revalidatePath('/dashboard/clients')
-  return { success: true, clientId: client.id, email: parsed.data.email }
+  return { success: true, clientId: client.id, email: parsed.data.email, setPasswordUrl }
 }
 
 export async function updateClientNotesAction(clientId: string, notes: string) {
@@ -119,6 +118,41 @@ export async function updateClientNotesAction(clientId: string, notes: string) {
   if (error) return { error: error.message }
   revalidatePath(`/dashboard/clients/${clientId}`)
   return { success: true }
+}
+
+export async function generateClientLoginLinkAction(clientId: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Unauthorized' }
+
+  const { data: client } = await supabase
+    .from('clients')
+    .select('profiles:profile_id (email)')
+    .eq('id', clientId)
+    .eq('coach_id', user.id)
+    .single()
+
+  if (!client) return { error: 'Client not found' }
+
+  const profileData = Array.isArray(client.profiles) ? client.profiles[0] : client.profiles
+  const email = profileData?.email
+  if (!email) return { error: 'No email on file for this client' }
+
+  let admin
+  try {
+    admin = createAdminClient()
+  } catch (e) {
+    return { error: String(e) }
+  }
+
+  const { data: linkData, error } = await admin.auth.admin.generateLink({
+    type: 'recovery',
+    email,
+  })
+
+  if (error) return { error: error.message }
+
+  return { url: linkData?.properties?.action_link ?? null }
 }
 
 export async function updateClientStatusAction(clientId: string, status: string) {
