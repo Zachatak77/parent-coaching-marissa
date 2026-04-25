@@ -1,9 +1,16 @@
 'use client'
 
+import { toast } from 'sonner'
+
 export function CopyIntakeLinkButton() {
-  const handleCopy = () => {
+  const handleCopy = async () => {
     const url = `${window.location.origin}/portal/intake`
-    navigator.clipboard.writeText(url).catch(() => {})
+    try {
+      await navigator.clipboard.writeText(url)
+      toast.success('Intake link copied')
+    } catch {
+      toast.error('Could not copy — please copy the URL manually: ' + url)
+    }
   }
 
   return (

@@ -43,18 +43,18 @@ export async function createResourceAction(formData: FormData) {
     file_url = urlData.publicUrl
   }
 
-  const { error } = await supabase.from('resources').insert({
+  const { data: resource, error } = await supabase.from('resources').insert({
     title: parsed.data.title,
     description: parsed.data.description || null,
     tags,
     is_public: parsed.data.is_public ?? false,
     file_url,
     created_by: user.id,
-  })
+  }).select('id').single()
 
   if (error) return { error: error.message }
   revalidatePath('/dashboard/resources')
-  return { success: true }
+  return { success: true, resourceId: resource.id }
 }
 
 export async function updateResourceAction(
@@ -70,10 +70,27 @@ export async function updateResourceAction(
 
 export async function deleteResourceAction(resourceId: string) {
   const supabase = await createClient()
-  // Remove assignments first
+
+  // Fetch file path before deleting the row
+  const { data: resource } = await supabase
+    .from('resources')
+    .select('file_url')
+    .eq('id', resourceId)
+    .single()
+
   await supabase.from('client_resources').delete().eq('resource_id', resourceId)
+
   const { error } = await supabase.from('resources').delete().eq('id', resourceId)
   if (error) return { error: error.message }
+
+  // Clean up storage file after DB row is gone
+  if (resource?.file_url) {
+    const match = resource.file_url.match(/\/storage\/v1\/object\/(?:public\/)?resources\/(.+)/)
+    if (match) {
+      await supabase.storage.from('resources').remove([match[1]])
+    }
+  }
+
   revalidatePath('/dashboard/resources')
   return { success: true }
 }

@@ -195,11 +195,7 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
 
         {/* Tab 2: Coaching Plan */}
         <TabsContent value="plan">
-          {plan === null && !plan ? (
-            <CoachingPlanEditor clientId={params.id} plan={null} />
-          ) : (
-            <CoachingPlanEditor clientId={params.id} plan={plan} />
-          )}
+          <CoachingPlanEditor clientId={params.id} plan={plan ?? null} />
         </TabsContent>
 
         {/* Tab 3: Sessions */}

@@ -90,14 +90,23 @@ export function ClientResourcesTab({
     const fd = new FormData(e.currentTarget)
     fd.set('is_public', 'false')
     const result = await createResourceAction(fd)
-    setUploading(false)
     if (result.error) {
+      setUploading(false)
       toast.error(result.error)
-    } else {
-      toast.success('Resource uploaded')
-      setUploadOpen(false)
-      router.refresh()
+      return
     }
+    if (result.resourceId) {
+      const assignResult = await assignResourceAction(result.resourceId, clientId)
+      if (assignResult.error) {
+        setUploading(false)
+        toast.error('Uploaded but failed to assign: ' + assignResult.error)
+        return
+      }
+    }
+    setUploading(false)
+    toast.success('Resource uploaded and assigned')
+    setUploadOpen(false)
+    router.refresh()
   }
 
   return (

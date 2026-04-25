@@ -8,7 +8,7 @@ import { PlanPublished } from '@/lib/email/templates/plan-published'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://parentcoaching.vercel.app'
 
-async function sendPlanPublishedEmail(supabase: ReturnType<typeof createClient> extends Promise<infer T> ? T : never, clientId: string, planTitle: string) {
+async function sendPlanPublishedEmail(supabase: Awaited<ReturnType<typeof createClient>>, clientId: string, planTitle: string) {
   try {
     const { data: client } = await supabase
       .from('clients')
@@ -85,7 +85,6 @@ export async function savePlanAction(
     if (error) return { error: error.message }
   }
 
-  // Email parent only when newly publishing (not on every save)
   if (data.publish && !wasAlreadyPublished) {
     await sendPlanPublishedEmail(supabase, clientId, data.title)
   }

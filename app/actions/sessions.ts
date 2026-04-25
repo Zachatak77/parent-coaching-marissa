@@ -64,19 +64,20 @@ export async function updateSessionAction(
 ) {
   const supabase = await createClient()
 
-  // Check if we're newly sharing this session
-  let sendEmail = false
+  // Determine whether this is a new share before updating
+  let newlyShared = false
+  let sessionDate = ''
+  let actionItemCount = 0
+
   if (data.shared_with_parent === true) {
     const { data: existing } = await supabase
       .from('sessions')
       .select('shared_with_parent, session_date, action_items')
       .eq('id', sessionId)
       .single()
-    sendEmail = !(existing?.shared_with_parent ?? false)
-    if (sendEmail) {
-      const actionItems = (data.action_items ?? existing?.action_items ?? []) as string[]
-      await sendSessionSharedEmail(supabase, clientId, existing?.session_date ?? '', actionItems.length)
-    }
+    newlyShared = !(existing?.shared_with_parent ?? false)
+    sessionDate = existing?.session_date ?? ''
+    actionItemCount = ((data.action_items ?? existing?.action_items ?? []) as string[]).length
   }
 
   const { error } = await supabase
@@ -84,6 +85,11 @@ export async function updateSessionAction(
     .update(data)
     .eq('id', sessionId)
   if (error) return { error: error.message }
+
+  // Email only after confirmed DB update
+  if (newlyShared) {
+    await sendSessionSharedEmail(supabase, clientId, sessionDate, actionItemCount)
+  }
 
   revalidatePath(`/dashboard/clients/${clientId}`)
   return { success: true }
@@ -98,7 +104,7 @@ export async function deleteSessionAction(sessionId: string, clientId: string) {
 }
 
 async function sendSessionSharedEmail(
-  supabase: ReturnType<typeof createClient> extends Promise<infer T> ? T : never,
+  supabase: Awaited<ReturnType<typeof createClient>>,
   clientId: string,
   sessionDate: string,
   actionItemCount: number

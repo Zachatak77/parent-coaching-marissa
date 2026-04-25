@@ -54,7 +54,7 @@ export default async function IntakePage() {
         <div>
           <h1 className="text-2xl font-semibold text-[#2D5016]">Your Intake Form</h1>
           <p className="text-sm text-[#2D5016]/55 mt-1">
-            Submitted on {format(new Date(intake.submitted_at), 'MMMM d, yyyy')}
+            Submitted on {intake.submitted_at ? format(new Date(intake.submitted_at), 'MMMM d, yyyy') : 'recently'}
           </p>
         </div>
 
