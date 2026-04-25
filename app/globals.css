@@ -47,3 +47,19 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  /* Hide portal nav when printing /portal/plan */
+  aside,
+  header,
+  nav,
+  .print\:hidden {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+  }
+  .bg-\[\#F5F0E8\] {
+    background: white !important;
+  }
+}

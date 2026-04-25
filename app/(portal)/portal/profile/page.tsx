@@ -1,57 +1,87 @@
 import { createClient } from '@/lib/supabase/server'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { User } from 'lucide-react'
+import { getClientForUser } from '@/lib/supabase/queries'
+import { redirect } from 'next/navigation'
+import { format } from 'date-fns'
+import { NameForm, PasswordForm } from '@/components/portal/profile-forms'
+
+export const metadata = { title: 'Profile — Parent Portal' }
+
+const packageNames: Record<string, string> = {
+  confident_parent: 'Confident Parent Program',
+  partnership: 'Parent Coaching Partnership',
+  ongoing: 'Ongoing Support Plan',
+}
 
 export default async function ProfilePage() {
   const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
+
+  const client = await getClientForUser(supabase, user.id)
+  if (!client) redirect('/portal')
 
   const { data: profile } = await supabase
-    .from('profiles')
-    .select('full_name, email, created_at')
-    .eq('id', user!.id)
-    .single()
+    .from('profiles').select('full_name, email').eq('id', user.id).single()
+
+  const packageLabel = packageNames[client.package] ?? client.package
 
   return (
-    <div>
-      <h1 className="text-2xl font-semibold text-[#2D5016] mb-1">Profile</h1>
-      <p className="text-sm text-muted-foreground mb-8">
-        Your account information.
-      </p>
+    <div className="space-y-8 max-w-xl">
+      <h1 className="text-2xl font-semibold text-[#2D5016]">Profile</h1>
 
-      <Card className="border-[#2D5016]/15 max-w-lg">
-        <CardHeader>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#2D5016]/10">
-              <User className="w-5 h-5 text-[#2D5016]" />
+      {/* Profile settings */}
+      <section className="bg-white rounded-2xl border border-[#2D5016]/10 p-6 shadow-sm space-y-6">
+        <h2 className="text-sm font-semibold text-[#2D5016]">Profile Settings</h2>
+
+        <NameForm defaultName={profile?.full_name ?? ''} />
+
+        <div className="space-y-1.5 pt-2 border-t border-[#2D5016]/8">
+          <p className="text-xs font-semibold text-[#2D5016]/50 uppercase tracking-wide mt-4">Email</p>
+          <p className="text-sm text-[#2D5016]/80">{profile?.email ?? user.email}</p>
+          <p className="text-xs text-[#2D5016]/40">Contact your coach to update your email address.</p>
+        </div>
+      </section>
+
+      {/* Password */}
+      <section className="bg-white rounded-2xl border border-[#2D5016]/10 p-6 shadow-sm space-y-4">
+        <h2 className="text-sm font-semibold text-[#2D5016]">Change Password</h2>
+        <PasswordForm />
+      </section>
+
+      {/* My Program */}
+      <section className="bg-white rounded-2xl border border-[#2D5016]/10 p-6 shadow-sm space-y-3">
+        <h2 className="text-sm font-semibold text-[#2D5016]">My Program</h2>
+        <div className="space-y-3 text-sm">
+          <div className="flex justify-between items-center">
+            <span className="text-[#2D5016]/55">Package</span>
+            <span className="font-medium text-[#2D5016]">{packageLabel}</span>
+          </div>
+          {client.start_date && (
+            <div className="flex justify-between items-center">
+              <span className="text-[#2D5016]/55">Start Date</span>
+              <span className="font-medium text-[#2D5016]">
+                {format(new Date(client.start_date), 'MMMM d, yyyy')}
+              </span>
             </div>
-            <CardTitle className="text-base text-[#2D5016]">
-              {profile?.full_name ?? 'Parent'}
-            </CardTitle>
+          )}
+          <div className="flex justify-between items-center">
+            <span className="text-[#2D5016]/55">Coach</span>
+            <span className="font-medium text-[#2D5016]">Marissa Schattner</span>
           </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <p className="text-xs text-muted-foreground mb-1">Email</p>
-            <p className="text-sm font-medium text-[#2D5016]">
-              {profile?.email ?? user?.email}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs text-muted-foreground mb-1">Member since</p>
-            <p className="text-sm font-medium text-[#2D5016]">
-              {profile?.created_at
-                ? new Date(profile.created_at).toLocaleDateString('en-US', {
-                    month: 'long',
-                    year: 'numeric',
-                  })
-                : '—'}
-            </p>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
+
+      {/* Support */}
+      <section className="bg-white rounded-2xl border border-[#2D5016]/10 p-6 shadow-sm space-y-2">
+        <h2 className="text-sm font-semibold text-[#2D5016]">Support</h2>
+        <p className="text-sm text-[#2D5016]/60">Have a question about your program?</p>
+        <a
+          href="mailto:parentcoachwithmarissa@gmail.com"
+          className="text-sm font-medium text-[#2D5016] hover:underline"
+        >
+          parentcoachwithmarissa@gmail.com
+        </a>
+      </section>
     </div>
   )
 }

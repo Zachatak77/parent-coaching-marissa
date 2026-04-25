@@ -1,87 +1,84 @@
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { Leaf, LayoutDashboard, BookOpen, CalendarDays, Library, ClipboardList, User, LogOut } from 'lucide-react'
+import { getClientForUser } from '@/lib/supabase/queries'
+import { PortalSidebar, PortalMobileTabs } from '@/components/portal/portal-sidebar'
+import { Leaf } from 'lucide-react'
 
-const navItems = [
-  { href: '/portal', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/portal/plan', label: 'My Plan', icon: BookOpen },
-  { href: '/portal/sessions', label: 'Sessions', icon: CalendarDays },
-  { href: '/portal/resources', label: 'Resources', icon: Library },
-  { href: '/portal/intake', label: 'Intake Form', icon: ClipboardList },
-  { href: '/portal/profile', label: 'Profile', icon: User },
-]
-
-export default async function PortalLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default async function PortalLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
+  const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('full_name, role')
-    .eq('id', user.id)
-    .single()
+  const [{ data: profile }, client] = await Promise.all([
+    supabase.from('profiles').select('full_name, email, role').eq('id', user.id).single(),
+    getClientForUser(supabase, user.id),
+  ])
+
+  if (profile?.role === 'coach' || profile?.role === 'admin') redirect('/dashboard')
+
+  const fullName = profile?.full_name ?? user.email ?? 'there'
+  const firstName = fullName.split(' ')[0]
+  const initials = fullName
+    .split(' ')
+    .map((w: string) => w[0] ?? '')
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
+
+  if (!client) {
+    return (
+      <div className="min-h-screen bg-[#F5F0E8] flex items-center justify-center p-6">
+        <div className="max-w-md text-center space-y-4">
+          <div className="flex items-center justify-center w-16 h-16 rounded-full bg-[#2D5016]/10 mx-auto">
+            <Leaf className="w-8 h-8 text-[#2D5016]" />
+          </div>
+          <h1 className="text-xl font-semibold text-[#2D5016]">Your account is being set up.</h1>
+          <p className="text-sm text-[#2D5016]/65 leading-relaxed">
+            You&rsquo;ll hear from Marissa shortly with next steps. In the meantime, feel free to reach out.
+          </p>
+          <a
+            href="mailto:parentcoachwithmarissa@gmail.com"
+            className="inline-flex items-center gap-2 text-sm font-medium text-[#2D5016] hover:underline"
+          >
+            parentcoachwithmarissa@gmail.com
+          </a>
+          <div className="pt-4">
+            <form action="/auth/signout" method="post">
+              <button type="submit" className="text-xs text-[#2D5016]/45 hover:text-[#2D5016] hover:underline">
+                Sign out
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className="min-h-screen flex" style={{ backgroundColor: '#F5F0E8' }}>
-      {/* Sidebar */}
-      <aside className="w-64 flex-shrink-0 bg-[#2D5016] text-[#F5F0E8] flex flex-col">
-        {/* Brand */}
-        <div className="px-6 py-6 border-b border-[#F5F0E8]/15">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[#F5F0E8]/15">
-              <Leaf className="w-4 h-4 text-[#F5F0E8]" />
-            </div>
-            <span className="text-xs font-medium text-[#F5F0E8]/70">
-              Parent Coaching
-            </span>
-          </div>
-          <p className="text-sm font-semibold text-[#F5F0E8]">
-            {profile?.full_name ?? user.email}
-          </p>
-          <p className="text-xs text-[#F5F0E8]/60 mt-0.5">Parent</p>
-        </div>
-
-        {/* Nav links */}
-        <nav className="flex-1 px-3 py-4 space-y-1">
-          {navItems.map(({ href, label, icon: Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm text-[#F5F0E8]/80 hover:text-[#F5F0E8] hover:bg-[#F5F0E8]/10 transition-colors"
-            >
-              <Icon className="w-4 h-4 flex-shrink-0" />
-              {label}
-            </Link>
-          ))}
-        </nav>
-
-        {/* Sign out */}
-        <div className="px-3 py-4 border-t border-[#F5F0E8]/15">
-          <form action="/auth/signout" method="post">
-            <button
-              type="submit"
-              className="flex w-full items-center gap-3 px-3 py-2.5 rounded-md text-sm text-[#F5F0E8]/70 hover:text-[#F5F0E8] hover:bg-[#F5F0E8]/10 transition-colors"
-            >
-              <LogOut className="w-4 h-4 flex-shrink-0" />
-              Sign out
-            </button>
-          </form>
-        </div>
-      </aside>
+    <div className="min-h-screen bg-[#F5F0E8] lg:flex">
+      <PortalSidebar firstName={firstName} initials={initials} />
 
       {/* Main content */}
-      <main className="flex-1 overflow-auto">
-        <div className="max-w-4xl mx-auto px-8 py-8">{children}</div>
-      </main>
+      <div className="flex-1 min-w-0 flex flex-col">
+        {/* Desktop top bar */}
+        <header className="hidden lg:flex items-center justify-between px-8 py-4 bg-white border-b border-[#2D5016]/10">
+          <span />
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-[#2D5016] flex items-center justify-center text-xs font-bold text-white">
+              {initials}
+            </div>
+          </div>
+        </header>
+
+        {/* Page content */}
+        <main className="flex-1 px-4 py-6 pt-28 lg:pt-6 lg:px-8 pb-28 lg:pb-10 overflow-auto">
+          <div className="max-w-4xl mx-auto">
+            {children}
+          </div>
+        </main>
+      </div>
+
+      <PortalMobileTabs />
     </div>
   )
 }
