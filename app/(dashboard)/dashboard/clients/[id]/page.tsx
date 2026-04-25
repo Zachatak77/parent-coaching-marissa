@@ -78,7 +78,7 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
       .order('created_at', { ascending: false }),
     supabase
       .from('intake_forms')
-      .select('submitted_at')
+      .select('submitted_at, responses')
       .eq('client_id', params.id)
       .maybeSingle(),
   ])
@@ -191,6 +191,54 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
           </div>
 
           <ClientNotesEditor clientId={params.id} initialNotes={client.notes} />
+
+          {intakeForm && intakeForm.responses && (() => {
+            const responses = intakeForm.responses as Record<string, unknown>
+            const children = responses.children as Array<{ name: string; age: string }> | undefined
+            const qaFields = [
+              { q: 'Parent name(s)', k: 'parent_name' },
+              { q: 'Family structure', k: 'family_structure' },
+              { q: 'Main challenge', k: 'main_challenge' },
+              { q: 'How long has this been a concern?', k: 'how_long' },
+              { q: 'Strategies tried', k: 'strategies_tried' },
+              { q: 'What success looks like', k: 'success_looks_like' },
+              { q: 'Child temperament', k: 'child_temperament' },
+              { q: 'Diagnoses or evaluations', k: 'diagnoses' },
+              { q: 'What the child responds well to', k: 'responds_well' },
+              { q: 'What escalates situations', k: 'escalates' },
+              { q: 'Current parenting approach', k: 'parenting_approach' },
+              { q: 'Biggest strengths as a parent', k: 'strengths' },
+              { q: 'Where support is needed most', k: 'needs_support' },
+              { q: 'Preferred contact method', k: 'contact_method' },
+              { q: 'Best time to reach you', k: 'best_time' },
+              { q: 'Anything else', k: 'anything_else' },
+            ]
+            return (
+              <div className="bg-white rounded-2xl border border-[#2D5016]/10 p-6 shadow-sm space-y-5">
+                <h2 className="text-sm font-semibold text-[#2D5016] uppercase tracking-wide">Intake Form</h2>
+                {children && children.length > 0 && (
+                  <div className="space-y-1">
+                    <p className="text-xs font-semibold text-[#2D5016]/50 uppercase tracking-wide">Children</p>
+                    <ul className="text-sm text-[#2D5016]/80 space-y-0.5">
+                      {children.map((c, i) => (
+                        <li key={i}>{c.name}, age {c.age}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {qaFields.map(({ q, k }) => {
+                  const val = responses[k]
+                  if (!val || (typeof val === 'string' && !val.trim())) return null
+                  return (
+                    <div key={k} className="space-y-1">
+                      <p className="text-xs font-semibold text-[#2D5016]/50 uppercase tracking-wide">{q}</p>
+                      <p className="text-sm text-[#2D5016]/80 leading-relaxed whitespace-pre-wrap">{String(val)}</p>
+                    </div>
+                  )
+                })}
+              </div>
+            )
+          })()}
         </TabsContent>
 
         {/* Tab 2: Coaching Plan */}
