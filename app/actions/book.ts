@@ -2,6 +2,10 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
+import { getResend, FROM, COACH_EMAIL } from '@/lib/email/resend'
+import { render } from '@react-email/render'
+import { DiscoveryCallConfirmation } from '@/lib/email/templates/discovery-call-confirmation'
+import { DiscoveryCallAlert } from '@/lib/email/templates/discovery-call-alert'
 
 const BookSchema = z.object({
   name: z.string().min(1, 'Full name is required'),
@@ -25,8 +29,6 @@ export async function submitDiscoveryCall(formData: FormData) {
   const parsed = BookSchema.safeParse(raw)
   if (!parsed.success) return { error: parsed.error.errors[0].message }
 
-  // Use server client — anon key, no session required
-  // RLS allows public insert on discovery_calls
   const supabase = await createClient()
   const { error } = await supabase.from('discovery_calls').insert({
     name: parsed.data.name,
@@ -39,5 +41,37 @@ export async function submitDiscoveryCall(formData: FormData) {
   })
 
   if (error) return { error: error.message }
+
+  // Send emails (fire-and-forget — don't fail the user if email fails)
+  try {
+    const [confirmHtml, alertHtml] = await Promise.all([
+      render(DiscoveryCallConfirmation({ name: parsed.data.name, mainConcern: parsed.data.main_concern })),
+      render(DiscoveryCallAlert({
+        name: parsed.data.name,
+        email: parsed.data.email,
+        phone: parsed.data.phone,
+        childAges: parsed.data.child_ages,
+        mainConcern: parsed.data.main_concern,
+        howTheyHeard: parsed.data.how_they_heard,
+      })),
+    ])
+    await Promise.all([
+      getResend().emails.send({
+        from: FROM,
+        to: parsed.data.email,
+        subject: 'Your discovery call request — Parent Coaching with Marissa',
+        html: confirmHtml,
+      }),
+      getResend().emails.send({
+        from: FROM,
+        to: COACH_EMAIL,
+        subject: `New discovery call: ${parsed.data.name}`,
+        html: alertHtml,
+      }),
+    ])
+  } catch {
+    // Email failure is non-fatal
+  }
+
   return { success: true, name: parsed.data.name }
 }

@@ -3,6 +3,12 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
+import { getResend, FROM } from '@/lib/email/resend'
+import { render } from '@react-email/render'
+import { SessionShared } from '@/lib/email/templates/session-shared'
+import { format } from 'date-fns'
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://parentcoaching.vercel.app'
 
 const LogSessionSchema = z.object({
   client_id: z.string().uuid(),
@@ -43,6 +49,10 @@ export async function logSessionAction(formData: FormData) {
 
   if (error) return { error: error.message }
 
+  if (parsed.data.shared_with_parent) {
+    await sendSessionSharedEmail(supabase, parsed.data.client_id, parsed.data.session_date, parsed.data.action_items?.length ?? 0)
+  }
+
   revalidatePath(`/dashboard/clients/${parsed.data.client_id}`)
   return { success: true }
 }
@@ -53,11 +63,28 @@ export async function updateSessionAction(
   data: { session_notes?: string; action_items?: string[]; shared_with_parent?: boolean }
 ) {
   const supabase = await createClient()
+
+  // Check if we're newly sharing this session
+  let sendEmail = false
+  if (data.shared_with_parent === true) {
+    const { data: existing } = await supabase
+      .from('sessions')
+      .select('shared_with_parent, session_date, action_items')
+      .eq('id', sessionId)
+      .single()
+    sendEmail = !(existing?.shared_with_parent ?? false)
+    if (sendEmail) {
+      const actionItems = (data.action_items ?? existing?.action_items ?? []) as string[]
+      await sendSessionSharedEmail(supabase, clientId, existing?.session_date ?? '', actionItems.length)
+    }
+  }
+
   const { error } = await supabase
     .from('sessions')
     .update(data)
     .eq('id', sessionId)
   if (error) return { error: error.message }
+
   revalidatePath(`/dashboard/clients/${clientId}`)
   return { success: true }
 }
@@ -68,4 +95,41 @@ export async function deleteSessionAction(sessionId: string, clientId: string) {
   if (error) return { error: error.message }
   revalidatePath(`/dashboard/clients/${clientId}`)
   return { success: true }
+}
+
+async function sendSessionSharedEmail(
+  supabase: ReturnType<typeof createClient> extends Promise<infer T> ? T : never,
+  clientId: string,
+  sessionDate: string,
+  actionItemCount: number
+) {
+  try {
+    const { data: client } = await supabase
+      .from('clients')
+      .select('profiles(full_name, email)')
+      .eq('id', clientId)
+      .single()
+
+    const profile = client?.profiles as unknown as { full_name: string | null; email: string | null } | null
+    if (!profile?.email) return
+
+    const formattedDate = sessionDate
+      ? format(new Date(sessionDate), 'MMMM d, yyyy')
+      : 'your last session'
+
+    const html = await render(SessionShared({
+      clientName: profile.full_name ?? 'there',
+      sessionDate: formattedDate,
+      actionItemCount,
+      portalUrl: `${SITE_URL}/portal/sessions`,
+    }))
+    await getResend().emails.send({
+      from: FROM,
+      to: profile.email,
+      subject: `Your session recap is ready — ${formattedDate}`,
+      html,
+    })
+  } catch {
+    // Non-fatal
+  }
 }

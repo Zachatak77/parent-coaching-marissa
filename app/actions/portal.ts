@@ -2,6 +2,9 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { getResend, FROM, COACH_EMAIL } from '@/lib/email/resend'
+import { render } from '@react-email/render'
+import { IntakeSubmittedAlert } from '@/lib/email/templates/intake-submitted-alert'
 
 export async function updateProfileAction(fullName: string) {
   const supabase = await createClient()
@@ -37,6 +40,31 @@ export async function submitIntakeAction(clientId: string, responses: Record<str
   })
 
   if (error) return { error: error.message }
+
+  // Notify coach
+  try {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('full_name, email')
+      .eq('id', user.id)
+      .single()
+
+    const clientName = profile?.full_name ?? 'Your client'
+    const clientEmail = profile?.email ?? ''
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://parentcoaching.vercel.app'
+    const dashboardUrl = `${siteUrl}/dashboard/clients/${clientId}`
+
+    const html = await render(IntakeSubmittedAlert({ clientName, clientEmail, dashboardUrl }))
+    await getResend().emails.send({
+      from: FROM,
+      to: COACH_EMAIL,
+      subject: `Intake form submitted — ${clientName}`,
+      html,
+    })
+  } catch {
+    // Email failure is non-fatal
+  }
+
   revalidatePath('/portal/intake')
   return { success: true }
 }

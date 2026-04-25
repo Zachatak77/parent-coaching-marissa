@@ -159,6 +159,78 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
   )
 }
 
+function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: string }) {
+  const [expanded, setExpanded] = React.useState(false)
+  const [status, setStatus] = React.useState(call.status as Status)
+  const router = useRouter()
+
+  const handleStatusChange = async (newStatus: Status) => {
+    setStatus(newStatus)
+    const result = await updateDiscoveryStatusAction(call.id, newStatus)
+    if (result.error) {
+      toast.error(result.error)
+      setStatus(call.status as Status)
+    } else {
+      toast.success('Status updated')
+      router.refresh()
+    }
+  }
+
+  return (
+    <div className="bg-white rounded-xl border border-[#2D5016]/15 p-4 space-y-3">
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-[#2D5016]">{call.name}</p>
+          <p className="text-xs text-muted-foreground truncate">{call.email}</p>
+        </div>
+        <Badge variant={statusVariants[status] ?? 'gray'} className="text-[10px] flex-shrink-0">
+          {status}
+        </Badge>
+      </div>
+      {call.main_concern && (
+        <p className="text-xs text-muted-foreground line-clamp-2">{call.main_concern}</p>
+      )}
+      <div className="flex items-center justify-between gap-2 pt-1">
+        <div className="flex gap-2">
+          <Select value={status} onValueChange={(v) => handleStatusChange(v as Status)}>
+            <SelectTrigger className="h-7 text-xs w-32">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {STATUSES.map((s) => (
+                <SelectItem key={s} value={s}>
+                  <Badge variant={statusVariants[s]} className="text-[10px]">{s}</Badge>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {status === 'booked' && (
+            <NewClientButton
+              coachId={coachId}
+              prefill={{ name: call.name, email: call.email }}
+              triggerLabel="Convert"
+              onSuccess={() => handleStatusChange('converted')}
+            />
+          )}
+        </div>
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="text-xs text-muted-foreground hover:text-[#2D5016]"
+        >
+          {expanded ? 'Less' : 'More'}
+        </button>
+      </div>
+      {expanded && (
+        <div className="pt-2 border-t space-y-2 text-xs text-muted-foreground">
+          {call.phone && <p><span className="font-medium">Phone:</span> {call.phone}</p>}
+          {call.child_ages && <p><span className="font-medium">Child ages:</span> {call.child_ages}</p>}
+          {call.how_they_heard && <p><span className="font-medium">How they heard:</span> {call.how_they_heard}</p>}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function DiscoveryTable({
   calls,
   coachId,
@@ -208,24 +280,34 @@ export function DiscoveryTable({
           No discovery calls found.
         </div>
       ) : (
-        <div className="rounded-md border border-[#2D5016]/15 bg-white overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-muted/30">
-              <tr>
-                {['Name', 'Email', 'Phone', 'Child Ages', 'Main Concern', 'Submitted', 'Status', 'Actions'].map((h) => (
-                  <th key={h} className="text-left px-4 py-3 text-xs font-medium text-muted-foreground whitespace-nowrap">
-                    {h}
-                  </th>
+        <>
+          {/* Mobile card view */}
+          <div className="lg:hidden space-y-3">
+            {filtered.map((call) => (
+              <MobileDiscoveryCard key={call.id} call={call} coachId={coachId} />
+            ))}
+          </div>
+
+          {/* Desktop table view */}
+          <div className="hidden lg:block rounded-md border border-[#2D5016]/15 bg-white overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-muted/30">
+                <tr>
+                  {['Name', 'Email', 'Phone', 'Child Ages', 'Main Concern', 'Submitted', 'Status', 'Actions'].map((h) => (
+                    <th key={h} className="text-left px-4 py-3 text-xs font-medium text-muted-foreground whitespace-nowrap">
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((call) => (
+                  <DiscoveryRow key={call.id} call={call} coachId={coachId} />
                 ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((call) => (
-                <DiscoveryRow key={call.id} call={call} coachId={coachId} />
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </div>
   )

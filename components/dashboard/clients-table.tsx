@@ -116,60 +116,94 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
           No clients found.
         </div>
       ) : (
-        <div className="rounded-md border border-[#2D5016]/15 bg-white overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/30">
-                <TableHead>Client Name</TableHead>
-                <TableHead>Package</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Start Date</TableHead>
-                <TableHead>Last Session</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filtered.map((client) => {
-                const lastSession = client.sessions?.[0]?.session_date
-                return (
-                  <TableRow key={client.id}>
-                    <TableCell className="font-medium">
-                      <div>
-                        <p className="text-sm font-medium text-[#2D5016]">
-                          {client.profiles?.full_name ?? '—'}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {client.profiles?.email ?? ''}
-                        </p>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {packageLabels[client.package] ?? client.package}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={statusVariants[client.status] ?? 'gray'}>
+        <>
+          {/* Mobile card view */}
+          <div className="lg:hidden space-y-3">
+            {filtered.map((client) => {
+              const lastSession = client.sessions?.[0]?.session_date
+              return (
+                <div key={client.id} className="bg-white rounded-xl border border-[#2D5016]/15 p-4 flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-[#2D5016] truncate">
+                      {client.profiles?.full_name ?? '—'}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate mb-2">
+                      {client.profiles?.email ?? ''}
+                    </p>
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                      <Badge variant={statusVariants[client.status] ?? 'gray'} className="text-[10px]">
                         {client.status}
                       </Badge>
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {client.start_date
-                        ? new Date(client.start_date).toLocaleDateString()
-                        : '—'}
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {lastSession ? new Date(lastSession).toLocaleDateString() : '—'}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button asChild size="sm" variant="outline">
-                        <Link href={`/dashboard/clients/${client.id}`}>View</Link>
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </div>
+                      <span>{packageLabels[client.package] ?? client.package}</span>
+                      {lastSession && (
+                        <span>Last: {new Date(lastSession).toLocaleDateString()}</span>
+                      )}
+                    </div>
+                  </div>
+                  <Button asChild size="sm" variant="outline" className="flex-shrink-0">
+                    <Link href={`/dashboard/clients/${client.id}`}>View</Link>
+                  </Button>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Desktop table view */}
+          <div className="hidden lg:block rounded-md border border-[#2D5016]/15 bg-white overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/30">
+                  <TableHead>Client Name</TableHead>
+                  <TableHead>Package</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Start Date</TableHead>
+                  <TableHead>Last Session</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filtered.map((client) => {
+                  const lastSession = client.sessions?.[0]?.session_date
+                  return (
+                    <TableRow key={client.id}>
+                      <TableCell className="font-medium">
+                        <div>
+                          <p className="text-sm font-medium text-[#2D5016]">
+                            {client.profiles?.full_name ?? '—'}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {client.profiles?.email ?? ''}
+                          </p>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
+                        {packageLabels[client.package] ?? client.package}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={statusVariants[client.status] ?? 'gray'}>
+                          {client.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
+                        {client.start_date
+                          ? new Date(client.start_date).toLocaleDateString()
+                          : '—'}
+                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
+                        {lastSession ? new Date(lastSession).toLocaleDateString() : '—'}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button asChild size="sm" variant="outline">
+                          <Link href={`/dashboard/clients/${client.id}`}>View</Link>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </div>
+        </>
       )}
     </div>
   )

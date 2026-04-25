@@ -4,6 +4,15 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { z } from 'zod'
+import { getResend, FROM } from '@/lib/email/resend'
+import { render } from '@react-email/render'
+import { ClientWelcome } from '@/lib/email/templates/client-welcome'
+
+const packageLabels: Record<string, string> = {
+  confident_parent: 'Confident Parent Program',
+  partnership: 'Parent Coaching Partnership',
+  ongoing: 'Ongoing Support Plan',
+}
 
 const CreateClientSchema = z.object({
   full_name: z.string().min(1, 'Full name is required'),
@@ -31,7 +40,6 @@ export async function createClientAction(formData: FormData) {
 
   const admin = createAdminClient()
 
-  // Create auth user and send magic link
   const { data: newUser, error: authError } = await admin.auth.admin.createUser({
     email: parsed.data.email,
     email_confirm: false,
@@ -39,13 +47,12 @@ export async function createClientAction(formData: FormData) {
   })
   if (authError) return { error: authError.message }
 
-  // Generate a magic link / password reset so they can set their password
-  await admin.auth.admin.generateLink({
+  // Generate password reset link for welcome email
+  const { data: linkData } = await admin.auth.admin.generateLink({
     type: 'recovery',
     email: parsed.data.email,
   })
 
-  // Insert/update profile with coach_id
   await supabase
     .from('profiles')
     .upsert({
@@ -56,7 +63,6 @@ export async function createClientAction(formData: FormData) {
       coach_id: user.id,
     })
 
-  // Insert client record
   const { data: client, error: clientError } = await supabase
     .from('clients')
     .insert({
@@ -71,6 +77,24 @@ export async function createClientAction(formData: FormData) {
     .single()
 
   if (clientError) return { error: clientError.message }
+
+  // Send welcome email with set-password link
+  try {
+    const setPasswordUrl = linkData?.properties?.action_link ?? `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://parentcoaching.vercel.app'}/login`
+    const html = await render(ClientWelcome({
+      clientName: parsed.data.full_name,
+      setPasswordUrl,
+      packageLabel: packageLabels[parsed.data.package] ?? parsed.data.package,
+    }))
+    await getResend().emails.send({
+      from: FROM,
+      to: parsed.data.email,
+      subject: 'Welcome to Parent Coaching with Marissa — set up your account',
+      html,
+    })
+  } catch {
+    // Email failure is non-fatal
+  }
 
   revalidatePath('/dashboard/clients')
   return { success: true, clientId: client.id, email: parsed.data.email }
