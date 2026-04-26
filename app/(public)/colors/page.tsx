@@ -7,17 +7,6 @@ export const metadata: Metadata = {
 
 const groups = [
   {
-    label: 'Primary Palette',
-    swatches: [
-      { name: 'Forest',    hex: '#2D5016', note: 'Brand anchor — deep growth green',        var: '--forest' },
-      { name: 'Canopy',    hex: '#3D6B1E', note: 'Slightly lifted, header/nav',              var: '--canopy' },
-      { name: 'Fern',      hex: '#5A8A34', note: 'Mid-tone, hover states, links',            var: '--fern' },
-      { name: 'Sage',      hex: '#8FB87A', note: 'Soft accent, dividers, muted text',        var: '--sage' },
-      { name: 'Mist',      hex: '#D4E8C6', note: 'Light tint, subtle backgrounds',           var: '--mist' },
-      { name: 'Meadow',    hex: '#EEF7E8', note: 'Near-white green, page bg option',         var: '--meadow' },
-    ],
-  },
-  {
     label: 'Secondary / Warmth',
     swatches: [
       { name: 'Amber',     hex: '#D97B2E', note: 'Energy, CTAs, playful moments',            var: '--amber' },
@@ -50,7 +39,7 @@ const groups = [
 ]
 
 function Swatch({ name, hex, note, cssVar }: { name: string; hex: string; note: string; cssVar: string }) {
-  const isDark = ['#2D5016','#3D6B1E','#5A8A34','#1B4A6B','#2E6FA3','#2A2217','#5C4A32','#D97B2E'].includes(hex)
+  const isDark = ['#1B4A6B','#2E6FA3','#2A2217','#5C4A32','#D97B2E'].includes(hex)
   return (
     <div className="rounded-xl overflow-hidden shadow-sm border border-black/8 flex-shrink-0 w-40">
       <div className="h-20 relative" style={{ backgroundColor: hex }}>
