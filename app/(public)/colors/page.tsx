@@ -5,34 +5,62 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 }
 
-const existing = [
-  { name: 'Forest Green', hex: '#2D5016', note: 'Primary — headings, buttons, icons' },
-  { name: 'Warm Cream', hex: '#F5F0E8', note: 'Background — sections, nav' },
-  { name: 'Green Hover', hex: '#3a6b1e', note: 'Hover state for green elements' },
+const groups = [
+  {
+    label: 'Primary Palette',
+    swatches: [
+      { name: 'Forest',    hex: '#2D5016', note: 'Brand anchor — deep growth green',        var: '--forest' },
+      { name: 'Canopy',    hex: '#3D6B1E', note: 'Slightly lifted, header/nav',              var: '--canopy' },
+      { name: 'Fern',      hex: '#5A8A34', note: 'Mid-tone, hover states, links',            var: '--fern' },
+      { name: 'Sage',      hex: '#8FB87A', note: 'Soft accent, dividers, muted text',        var: '--sage' },
+      { name: 'Mist',      hex: '#D4E8C6', note: 'Light tint, subtle backgrounds',           var: '--mist' },
+      { name: 'Meadow',    hex: '#EEF7E8', note: 'Near-white green, page bg option',         var: '--meadow' },
+    ],
+  },
+  {
+    label: 'Secondary / Warmth',
+    swatches: [
+      { name: 'Amber',     hex: '#D97B2E', note: 'Energy, CTAs, playful moments',            var: '--amber' },
+      { name: 'Marigold',  hex: '#F0A84A', note: 'Warm highlight, badges, tags',             var: '--marigold' },
+      { name: 'Straw',     hex: '#FAE6C0', note: 'Warm cream, card backgrounds',             var: '--straw' },
+      { name: 'Parchment', hex: '#FDF8F0', note: 'Warm off-white page background',           var: '--parchment' },
+    ],
+  },
+  {
+    label: 'Blue Accent',
+    swatches: [
+      { name: 'Slate',     hex: '#1B4A6B', note: 'Deep trust blue — links, info states',     var: '--slate' },
+      { name: 'River',     hex: '#2E6FA3', note: 'Mid blue — interactive, badges',           var: '--river' },
+      { name: 'Sky',       hex: '#6AAFD6', note: 'Soft blue — hover, icons',                 var: '--sky' },
+      { name: 'Haze',      hex: '#D0E8F4', note: 'Light tint — info backgrounds',            var: '--haze' },
+      { name: 'Frost',     hex: '#EEF6FB', note: 'Near-white blue — subtle fills',           var: '--frost' },
+    ],
+  },
+  {
+    label: 'Neutrals',
+    swatches: [
+      { name: 'Bark',      hex: '#2A2217', note: 'Near-black body text',                     var: '--bark' },
+      { name: 'Soil',      hex: '#5C4A32', note: 'Warm dark brown, subheadings',             var: '--soil' },
+      { name: 'Clay',      hex: '#A08060', note: 'Tertiary text, metadata',                  var: '--clay' },
+      { name: 'Sand',      hex: '#E8DED0', note: 'Border strokes, dividers',                 var: '--sand' },
+      { name: 'Linen',     hex: '#F6F2EC', note: 'Section fills, neutral cards',             var: '--linen' },
+      { name: 'White',     hex: '#FFFFFF', note: 'Pure white',                               var: '--white' },
+    ],
+  },
 ]
 
-const optionA = [
-  { name: 'Dusty Slate Blue', hex: '#4A6FA5', note: 'Main accent — CTAs, links, highlights' },
-  { name: 'Slate Hover', hex: '#3A5A8C', note: 'Hover / pressed state' },
-  { name: 'Slate Tint', hex: '#EBF0F8', note: 'Light section backgrounds, badges' },
-]
-
-const optionB = [
-  { name: 'Deep Navy', hex: '#1E3A5F', note: 'High-contrast — feature sections, dark bars' },
-  { name: 'Navy Mid', hex: '#2C4F80', note: 'Hover state' },
-  { name: 'Navy Tint', hex: '#E8EEF6', note: 'Light backgrounds' },
-]
-
-const optionC = [
-  { name: 'Soft Periwinkle', hex: '#6B8EC4', note: 'Lighter accent — icons, tags, dividers' },
-  { name: 'Periwinkle Dark', hex: '#5578B0', note: 'Hover / text on light bg' },
-  { name: 'Periwinkle Tint', hex: '#EDF1FA', note: 'Soft section fill' },
-]
-
-function Swatch({ name, hex, note }: { name: string; hex: string; note: string }) {
+function Swatch({ name, hex, note, cssVar }: { name: string; hex: string; note: string; cssVar: string }) {
+  const isDark = ['#2D5016','#3D6B1E','#5A8A34','#1B4A6B','#2E6FA3','#2A2217','#5C4A32','#D97B2E'].includes(hex)
   return (
-    <div className="rounded-xl overflow-hidden shadow-sm border border-black/8 w-44">
-      <div className="h-24" style={{ backgroundColor: hex }} />
+    <div className="rounded-xl overflow-hidden shadow-sm border border-black/8 flex-shrink-0 w-40">
+      <div className="h-20 relative" style={{ backgroundColor: hex }}>
+        <span
+          className="absolute bottom-2 left-2 text-[10px] font-mono font-bold px-1.5 py-0.5 rounded"
+          style={{ background: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)', color: isDark ? '#fff' : '#333' }}
+        >
+          {cssVar}
+        </span>
+      </div>
       <div className="bg-white p-3">
         <p className="font-semibold text-[13px] text-[#1a1a1a]">{name}</p>
         <p className="font-mono text-[11px] text-[#666] mt-0.5">{hex}</p>
@@ -42,78 +70,26 @@ function Swatch({ name, hex, note }: { name: string; hex: string; note: string }
   )
 }
 
-function Section({ label, swatches }: { label: string; swatches: typeof existing }) {
-  return (
-    <div className="mb-10">
-      <p className="text-[11px] font-bold uppercase tracking-widest text-[#2D5016]/50 mb-4">{label}</p>
-      <div className="flex flex-wrap gap-4">
-        {swatches.map((s) => <Swatch key={s.hex} {...s} />)}
-      </div>
-    </div>
-  )
-}
-
 export default function ColorsPage() {
   return (
     <div className="bg-[#F5F0E8] min-h-screen py-16 sm:py-24">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <p className="text-[11px] font-bold uppercase tracking-widest text-[#2D5016]/50 mb-3">Internal Reference</p>
-        <h1 className="font-nunito text-3xl sm:text-4xl font-extrabold text-[#2D5016] mb-2">
-          Color Palette
-        </h1>
-        <p className="text-[#2D5016]/60 text-sm mb-12">
-          Exploring blue as a contrasting accent to forest green and warm cream.
-        </p>
+        <h1 className="font-nunito text-3xl sm:text-4xl font-extrabold text-[#2D5016] mb-2">Color Palette</h1>
+        <p className="text-[#2D5016]/60 text-sm mb-12">Design tokens — use via CSS variable names shown on each swatch.</p>
 
-        <div className="bg-white rounded-2xl border border-[#2D5016]/10 p-8 mb-8">
-          <Section label="Existing Palette" swatches={existing} />
-
-          <hr className="border-[#2D5016]/10 mb-10" />
-
-          <Section label="Option A — Dusty Slate Blue (Recommended)" swatches={optionA} />
-          <Section label="Option B — Deep Navy" swatches={optionB} />
-          <Section label="Option C — Soft Periwinkle" swatches={optionC} />
+        <div className="space-y-12">
+          {groups.map(({ label, swatches }) => (
+            <div key={label}>
+              <p className="text-[11px] font-bold uppercase tracking-widest text-[#2D5016]/50 mb-5">{label}</p>
+              <div className="flex flex-wrap gap-4">
+                {swatches.map((s) => (
+                  <Swatch key={s.hex} name={s.name} hex={s.hex} note={s.note} cssVar={s.var} />
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
-
-        {/* Combination previews */}
-        <h2 className="font-nunito text-xl font-bold text-[#2D5016] mb-6">Usage Combinations</h2>
-
-        {/* Option A */}
-        <div className="rounded-2xl overflow-hidden border border-[#2D5016]/15 shadow-sm mb-6">
-          <div className="px-6 py-4 bg-[#2D5016]">
-            <p className="text-[#F5F0E8] font-bold text-sm">Option A · Dusty Slate — Primary green + Blue accent</p>
-          </div>
-          <div className="px-6 py-6 bg-[#F5F0E8] flex items-center gap-3 flex-wrap">
-            <span className="text-[#2D5016]/70 text-sm mr-2">Main content in forest green. Accent actions in dusty slate.</span>
-            <button className="px-4 py-2 rounded-lg text-sm font-bold text-white" style={{ backgroundColor: '#4A6FA5' }}>Book a Free Call</button>
-            <button className="px-4 py-2 rounded-lg text-sm font-bold text-[#F5F0E8] bg-[#2D5016]">Learn More</button>
-          </div>
-        </div>
-
-        {/* Option B */}
-        <div className="rounded-2xl overflow-hidden border border-[#c8d5e8] shadow-sm mb-6">
-          <div className="px-6 py-4" style={{ backgroundColor: '#1E3A5F' }}>
-            <p className="text-white font-bold text-sm">Option B · Deep Navy — Alternate dark section color</p>
-          </div>
-          <div className="px-6 py-6 bg-[#F5F0E8] flex items-center gap-3 flex-wrap">
-            <span className="text-[#2D5016]/70 text-sm mr-2">Swap the green feature bar for deep navy. Strong contrast.</span>
-            <button className="px-4 py-2 rounded-lg text-sm font-bold text-white" style={{ backgroundColor: '#1E3A5F' }}>Book a Free Call</button>
-            <button className="px-4 py-2 rounded-lg text-sm font-bold text-[#F5F0E8] bg-[#2D5016]">Services</button>
-          </div>
-        </div>
-
-        {/* Option C */}
-        <div className="rounded-2xl overflow-hidden border border-[#cdd8ee] shadow-sm mb-6">
-          <div className="px-6 py-4" style={{ backgroundColor: '#EDF1FA' }}>
-            <p className="text-[#2D5016] font-bold text-sm">Option C · Periwinkle — Light and airy accent</p>
-          </div>
-          <div className="px-6 py-6 bg-white flex items-center gap-3 flex-wrap">
-            <span className="text-[#2D5016]/70 text-sm mr-2">Soft, friendly. Best for icons and tags — not primary CTAs.</span>
-            <button className="px-4 py-2 rounded-lg text-sm font-bold text-white" style={{ backgroundColor: '#6B8EC4' }}>Secondary Action</button>
-            <button className="px-4 py-2 rounded-lg text-sm font-bold text-[#F5F0E8] bg-[#2D5016]">Primary CTA</button>
-          </div>
-        </div>
-
       </div>
     </div>
   )
