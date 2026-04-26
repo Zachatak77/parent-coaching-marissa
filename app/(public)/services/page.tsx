@@ -134,7 +134,7 @@ export default function ServicesPage() {
 
                   <Link
                     href="/book"
-                    className={`inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-bold transition-colors ${featured ? 'bg-[#2D5016] text-[#F5F0E8] hover:bg-[#3a6b1e]' : 'bg-[#2D5016]/10 text-[#2D5016] hover:bg-[#2D5016]/20'}`}
+                    className="inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-bold transition-colors bg-[#D97B2E] text-white hover:bg-[#C06B20]"
                   >
                     Book a Free Call <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -193,7 +193,7 @@ export default function ServicesPage() {
           <p className="text-[#F5F0E8]/70 mb-8">Let&apos;s talk. The discovery call is free and there&apos;s no pressure.</p>
           <Link
             href="/book"
-            className="inline-flex items-center gap-2 rounded-lg bg-[#F5F0E8] text-[#2D5016] font-bold px-8 py-4 hover:bg-white transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg bg-[#D97B2E] text-white font-bold px-8 py-4 hover:bg-[#C06B20] transition-colors"
           >
             Book a Free Discovery Call <ArrowRight className="w-4 h-4" />
           </Link>

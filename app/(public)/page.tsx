@@ -8,12 +8,12 @@ export const metadata: Metadata = {
     'Work one-on-one with a certified parent coach to build calmer routines, reduce daily struggles, and raise confident kids. Serving families across New Jersey.',
 }
 
-/* ── Reusable green CTA button ── */
+/* ── Reusable CTA button ── */
 function GreenButton({ href, children, large }: { href: string; children: React.ReactNode; large?: boolean }) {
   return (
     <Link
       href={href}
-      className={`inline-flex items-center justify-center rounded-lg bg-[#2D5016] text-[#F5F0E8] font-semibold hover:bg-[#3a6b1e] transition-colors ${large ? 'px-8 py-4 text-base' : 'px-6 py-3 text-sm'}`}
+      className={`inline-flex items-center justify-center rounded-lg bg-[#D97B2E] text-white font-semibold hover:bg-[#C06B20] transition-colors ${large ? 'px-8 py-4 text-base' : 'px-6 py-3 text-sm'}`}
     >
       {children}
     </Link>
@@ -267,7 +267,7 @@ export default function HomePage() {
           </p>
           <Link
             href="/book"
-            className="inline-flex items-center justify-center rounded-lg bg-[#F5F0E8] text-[#2D5016] font-bold px-8 py-4 text-base hover:bg-white transition-colors"
+            className="inline-flex items-center justify-center rounded-lg bg-[#D97B2E] text-white font-bold px-8 py-4 text-base hover:bg-[#C06B20] transition-colors"
           >
             Book Your Free Call
           </Link>

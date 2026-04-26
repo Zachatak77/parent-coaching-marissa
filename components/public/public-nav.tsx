@@ -62,7 +62,7 @@ export function PublicNav() {
           ))}
           <Link
             href="/book"
-            className="inline-flex items-center justify-center rounded-md bg-[#2D5016] px-4 py-2 text-sm font-semibold text-[#F5F0E8] hover:bg-[#3a6b1e] transition-colors"
+            className="inline-flex items-center justify-center rounded-md bg-[#D97B2E] px-4 py-2 text-sm font-semibold text-white hover:bg-[#C06B20] transition-colors"
           >
             Book a Call
           </Link>
@@ -97,7 +97,7 @@ export function PublicNav() {
           ))}
           <Link
             href="/book"
-            className="inline-flex items-center justify-center rounded-md bg-[#2D5016] px-4 py-2.5 text-sm font-semibold text-[#F5F0E8] hover:bg-[#3a6b1e] transition-colors mt-1"
+            className="inline-flex items-center justify-center rounded-md bg-[#D97B2E] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#C06B20] transition-colors mt-1"
           >
             Book a Free Call
           </Link>

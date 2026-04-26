@@ -16,7 +16,7 @@ const proposed = [
   {
     label: 'Secondary / Warmth',
     swatches: [
-      { name: 'Amber',     hex: '#D97B2E', note: 'Energy, CTAs, playful moments',        var: '--amber' },
+      { name: 'Amber',     hex: '#D97B2E', note: 'CTA buttons — all Book/Discovery calls', var: '--amber' },
       { name: 'Marigold',  hex: '#F0A84A', note: 'Warm highlight, badges, tags',         var: '--marigold' },
       { name: 'Straw',     hex: '#FAE6C0', note: 'Warm cream, card backgrounds',         var: '--straw' },
       { name: 'Parchment', hex: '#FDF8F0', note: 'Warm off-white page background',       var: '--parchment' },

@@ -140,7 +140,7 @@ export default function AboutPage() {
           <p className="text-[#F5F0E8]/70 mb-8">Book a free discovery call and let&apos;s talk about your family.</p>
           <Link
             href="/book"
-            className="inline-flex items-center gap-2 rounded-lg bg-[#F5F0E8] text-[#2D5016] font-bold px-8 py-4 hover:bg-white transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg bg-[#D97B2E] text-white font-bold px-8 py-4 hover:bg-[#C06B20] transition-colors"
           >
             Book a Free Discovery Call <ArrowRight className="w-4 h-4" />
           </Link>
