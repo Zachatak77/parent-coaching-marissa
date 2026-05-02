@@ -50,9 +50,12 @@ const config: Config = {
         },
       },
       fontFamily: {
-        playfair: ['var(--font-playfair)', 'serif'],
-        nunito: ['var(--font-nunito)', 'sans-serif'],
-        inter: ['var(--font-inter)', 'sans-serif'],
+        cormorant:  ['var(--font-cormorant)', 'Playfair Display', 'Georgia', 'serif'],
+        'body-serif': ['var(--font-serif-4)', 'Georgia', 'serif'],
+        inter:      ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        // legacy aliases — kept so dashboard/portal pages don't break
+        nunito:     ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        playfair:   ['var(--font-cormorant)', 'Georgia', 'serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',

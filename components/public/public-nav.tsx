@@ -11,6 +11,11 @@ const links = [
   { href: '/services', label: 'Services' },
 ]
 
+const NAVY = '#4A5F7F'
+const CREAM = '#F5EFE2'
+const TEXT2 = '#3A372F'
+const HAIRLINE = '#D9CFB9'
+
 export function PublicNav() {
   const [open, setOpen] = React.useState(false)
   const [scrolled, setScrolled] = React.useState(false)
@@ -26,18 +31,16 @@ export function PublicNav() {
 
   return (
     <header
-      className={cn(
-        'sticky top-0 z-50 w-full transition-shadow duration-200',
-        scrolled ? 'shadow-sm bg-[#F5F0E8]' : 'bg-[#F5F0E8]/95 backdrop-blur-sm',
-        'border-b border-[#2D5016]/10'
-      )}
+      style={{ borderBottom: `1px solid ${HAIRLINE}`, backgroundColor: CREAM }}
+      className={cn('sticky top-0 z-50 w-full transition-shadow duration-200', scrolled && 'shadow-sm')}
     >
-      <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
+      <nav className="max-w-6xl mx-auto flex h-16 items-center justify-between px-6 sm:px-10 lg:px-16">
+
         {/* Logo */}
         <Link href="/" className="flex items-center flex-shrink-0">
           <div>
-            <span className="block text-[10px] font-extrabold uppercase tracking-[.22em] text-[#4A7A9B] leading-none mb-0.5">Reimagine</span>
-            <span className="block font-playfair font-bold text-[#1A1614] text-lg leading-tight pl-3">Parenting</span>
+            <span style={{ display: 'block', fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: '0.62rem', letterSpacing: '.20em', textTransform: 'uppercase', color: NAVY, lineHeight: 1, marginBottom: 2 }}>Reimagine</span>
+            <span style={{ display: 'block', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.2rem', color: '#1F1D1A', lineHeight: 1, paddingLeft: 12 }}>Parenting</span>
           </div>
         </Link>
 
@@ -47,19 +50,37 @@ export function PublicNav() {
             <Link
               key={href}
               href={href}
-              className={cn(
-                'text-sm font-medium transition-colors',
-                pathname === href
-                  ? 'text-[#2D5016]'
-                  : 'text-[#2D5016]/70 hover:text-[#2D5016]'
-              )}
+              style={{
+                fontFamily: 'var(--font-ui)',
+                fontWeight: 500,
+                fontSize: '0.92rem',
+                letterSpacing: '0.02em',
+                color: pathname === href ? '#1F1D1A' : TEXT2,
+                textDecoration: 'none',
+              }}
             >
               {label}
             </Link>
           ))}
           <Link
             href="/book"
-            className="inline-flex items-center justify-center rounded-md bg-[#D97B2E] px-4 py-2 text-sm font-semibold text-white hover:bg-[#C06B20] transition-colors"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: '10px 22px',
+              background: NAVY,
+              color: '#FAF5EA',
+              borderRadius: '999px',
+              fontFamily: 'var(--font-ui)',
+              fontWeight: 600,
+              fontSize: '0.72rem',
+              letterSpacing: '.14em',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
+              transition: 'opacity 0.18s ease',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = '0.88')}
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
           >
             Book a Call
           </Link>
@@ -67,7 +88,8 @@ export function PublicNav() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden p-2 rounded-md text-[#2D5016] hover:bg-[#2D5016]/10 transition-colors"
+          className="md:hidden p-2 rounded-md transition-colors"
+          style={{ color: '#1F1D1A' }}
           onClick={() => setOpen(!open)}
           aria-label={open ? 'Close menu' : 'Open menu'}
         >
@@ -77,26 +99,43 @@ export function PublicNav() {
 
       {/* Mobile slide-down menu */}
       <div
+        style={{ backgroundColor: CREAM, borderTop: `1px solid ${HAIRLINE}` }}
         className={cn(
-          'md:hidden overflow-hidden transition-all duration-200 ease-in-out bg-[#F5F0E8] border-t border-[#2D5016]/10',
+          'md:hidden overflow-hidden transition-all duration-200 ease-in-out',
           open ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
         )}
       >
-        <div className="px-4 py-4 flex flex-col gap-3">
+        <div className="px-6 py-4 flex flex-col gap-3">
           {links.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
-              className="text-sm font-medium text-[#2D5016]/80 hover:text-[#2D5016] py-1"
+              style={{ fontFamily: 'var(--font-ui)', fontWeight: 500, fontSize: '0.92rem', color: TEXT2, textDecoration: 'none' }}
+              className="py-1"
             >
               {label}
             </Link>
           ))}
           <Link
             href="/book"
-            className="inline-flex items-center justify-center rounded-md bg-[#D97B2E] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#C06B20] transition-colors mt-1"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '11px 22px',
+              background: NAVY,
+              color: '#FAF5EA',
+              borderRadius: '999px',
+              fontFamily: 'var(--font-ui)',
+              fontWeight: 600,
+              fontSize: '0.72rem',
+              letterSpacing: '.14em',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
+              marginTop: 4,
+            }}
           >
-            Book a Free Call
+            Book a Call
           </Link>
         </div>
       </div>
