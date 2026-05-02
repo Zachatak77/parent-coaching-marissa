@@ -37,7 +37,7 @@ export function PublicNav() {
         <Link href="/" className="flex items-center flex-shrink-0">
           <div>
             <span className="block text-[10px] font-extrabold uppercase tracking-[.22em] text-[#4A7A9B] leading-none mb-0.5">Reimagine</span>
-            <span className="block font-playfair font-bold text-[#1A1614] text-lg leading-tight">Parenting</span>
+            <span className="block font-playfair font-bold text-[#1A1614] text-lg leading-tight pl-3">Parenting</span>
           </div>
         </Link>
 
