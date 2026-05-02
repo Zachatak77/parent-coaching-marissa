@@ -75,7 +75,7 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
     <>
       <tr className="border-b border-border hover:bg-muted/20 transition-colors">
         <td className="px-4 py-3">
-          <p className="text-sm font-medium text-[#2D5016]">{call.name}</p>
+          <p className="text-sm font-medium text-[#1F1D1A]">{call.name}</p>
         </td>
         <td className="px-4 py-3 text-sm text-muted-foreground">{call.email}</td>
         <td className="px-4 py-3 text-sm text-muted-foreground">{call.phone ?? '—'}</td>
@@ -116,7 +116,7 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
             )}
             <button
               onClick={() => setExpanded(!expanded)}
-              className="text-muted-foreground hover:text-[#2D5016] transition-colors"
+              className="text-muted-foreground hover:text-[#1F1D1A] transition-colors"
               aria-label="Toggle details"
             >
               {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -177,10 +177,10 @@ function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: 
   }
 
   return (
-    <div className="bg-white rounded-xl border border-[#2D5016]/15 p-4 space-y-3">
+    <div className="bg-white rounded-xl border border-[#D9CFB9] p-4 space-y-3">
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-[#2D5016]">{call.name}</p>
+          <p className="text-sm font-semibold text-[#1F1D1A]">{call.name}</p>
           <p className="text-xs text-muted-foreground truncate">{call.email}</p>
         </div>
         <Badge variant={statusVariants[status] ?? 'gray'} className="text-[10px] flex-shrink-0">
@@ -215,7 +215,7 @@ function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: 
         </div>
         <button
           onClick={() => setExpanded(!expanded)}
-          className="text-xs text-muted-foreground hover:text-[#2D5016]"
+          className="text-xs text-muted-foreground hover:text-[#1F1D1A]"
         >
           {expanded ? 'Less' : 'More'}
         </button>
@@ -289,7 +289,7 @@ export function DiscoveryTable({
           </div>
 
           {/* Desktop table view */}
-          <div className="hidden lg:block rounded-md border border-[#2D5016]/15 bg-white overflow-x-auto">
+          <div className="hidden lg:block rounded-md border border-[#D9CFB9] bg-white overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-muted/30">
                 <tr>

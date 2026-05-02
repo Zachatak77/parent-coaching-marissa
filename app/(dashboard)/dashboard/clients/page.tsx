@@ -33,7 +33,7 @@ export default async function ClientsPage() {
     <div>
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-semibold text-[#2D5016]">Clients</h1>
+          <h1 className="text-2xl font-semibold text-[#1F1D1A]">Clients</h1>
           <p className="text-sm text-muted-foreground mt-1">
             {typedClients.length} client{typedClients.length !== 1 ? 's' : ''} total
           </p>
@@ -42,9 +42,9 @@ export default async function ClientsPage() {
       </div>
 
       {typedClients.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center border border-dashed border-[#2D5016]/20 rounded-lg bg-white">
-          <Users className="w-10 h-10 text-[#2D5016]/30 mb-4" />
-          <p className="text-base font-medium text-[#2D5016]/60 mb-1">No clients yet</p>
+        <div className="flex flex-col items-center justify-center py-24 text-center border border-dashed border-[#D9CFB9] rounded-lg bg-white">
+          <Users className="w-10 h-10 text-[#1F1D1A]/30 mb-4" />
+          <p className="text-base font-medium text-[#6E6A60] mb-1">No clients yet</p>
           <p className="text-sm text-muted-foreground mb-6 max-w-xs">
             Add your first client to get started.
           </p>

@@ -43,7 +43,7 @@ export function ProfileForm({ initialName }: { initialName: string }) {
       <Button
         type="submit"
         disabled={saving || name === initialName}
-        className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white"
+        className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
       >
         {saving ? 'Saving…' : 'Save Changes'}
       </Button>
@@ -100,7 +100,7 @@ export function PasswordForm() {
       <Button
         type="submit"
         disabled={saving || !password || !confirm}
-        className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white"
+        className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
       >
         {saving ? 'Updating…' : 'Update Password'}
       </Button>

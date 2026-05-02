@@ -90,7 +90,7 @@ export default async function DashboardOverviewPage() {
     <div>
       <div className="flex items-start justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-semibold text-[#2D5016]">
+          <h1 className="text-2xl font-semibold text-[#1F1D1A]">
             {greeting}, {firstName}
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
@@ -120,17 +120,17 @@ export default async function DashboardOverviewPage() {
           { label: 'Sessions This Month', value: sessionsThisMonth ?? 0, icon: CalendarDays, href: null },
           { label: 'Upcoming Sessions', value: upcomingSessions ?? 0, icon: CalendarDays, href: null },
         ].map(({ label, value, icon: Icon, href }) => (
-          <Card key={label} className="border-[#2D5016]/15">
+          <Card key={label} className="border-[#D9CFB9]">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <p className="text-xs text-muted-foreground">{label}</p>
-                <Icon className="w-4 h-4 text-[#2D5016]/50" />
+                <Icon className="w-4 h-4 text-[#6E6A60]" />
               </div>
             </CardHeader>
             <CardContent className="flex items-end justify-between">
-              <p className="text-2xl font-semibold text-[#2D5016]">{value}</p>
+              <p className="text-2xl font-semibold text-[#1F1D1A]">{value}</p>
               {href && (
-                <Link href={href} className="text-xs text-[#2D5016]/60 hover:text-[#2D5016] flex items-center gap-0.5">
+                <Link href={href} className="text-xs text-[#6E6A60] hover:text-[#1F1D1A] flex items-center gap-0.5">
                   View <ArrowRight className="w-3 h-3" />
                 </Link>
               )}
@@ -141,13 +141,13 @@ export default async function DashboardOverviewPage() {
 
       {/* Activity feed */}
       <div className="grid sm:grid-cols-2 gap-6">
-        <Card className="border-[#2D5016]/15">
+        <Card className="border-[#D9CFB9]">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-[#2D5016]">
+              <CardTitle className="text-sm font-medium text-[#1F1D1A]">
                 Recent Discovery Calls
               </CardTitle>
-              <Link href="/dashboard/discovery" className="text-xs text-[#2D5016]/60 hover:text-[#2D5016]">
+              <Link href="/dashboard/discovery" className="text-xs text-[#6E6A60] hover:text-[#1F1D1A]">
                 View all
               </Link>
             </div>
@@ -160,7 +160,7 @@ export default async function DashboardOverviewPage() {
                 {recentDiscovery.map((call) => (
                   <li key={call.id} className="flex items-center justify-between gap-2">
                     <div className="min-w-0">
-                      <p className="text-sm font-medium text-[#2D5016] truncate">{call.name}</p>
+                      <p className="text-sm font-medium text-[#1F1D1A] truncate">{call.name}</p>
                       <p className="text-xs text-muted-foreground">{formatRelative(call.submitted_at)}</p>
                     </div>
                     <Badge variant={statusColors[call.status] ?? 'gray'} className="flex-shrink-0 text-[10px]">
@@ -173,13 +173,13 @@ export default async function DashboardOverviewPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-[#2D5016]/15">
+        <Card className="border-[#D9CFB9]">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-[#2D5016]">
+              <CardTitle className="text-sm font-medium text-[#1F1D1A]">
                 Recent Sessions
               </CardTitle>
-              <Link href="/dashboard/clients" className="text-xs text-[#2D5016]/60 hover:text-[#2D5016]">
+              <Link href="/dashboard/clients" className="text-xs text-[#6E6A60] hover:text-[#1F1D1A]">
                 View clients
               </Link>
             </div>
@@ -194,7 +194,7 @@ export default async function DashboardOverviewPage() {
                   return (
                     <li key={session.id} className="flex items-center justify-between gap-2">
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-[#2D5016] truncate">{clientName}</p>
+                        <p className="text-sm font-medium text-[#1F1D1A] truncate">{clientName}</p>
                         <p className="text-xs text-muted-foreground">
                           {new Date(session.session_date).toLocaleDateString()}
                         </p>

@@ -2,8 +2,8 @@ export default function Loading() {
   return (
     <div className="space-y-6 animate-pulse">
       <div className="flex items-center justify-between">
-        <div className="h-7 w-32 bg-[#2D5016]/10 rounded" />
-        <div className="h-9 w-32 bg-[#2D5016]/10 rounded-lg" />
+        <div className="h-7 w-32 bg-[#C8D1DF]/40 rounded" />
+        <div className="h-9 w-32 bg-[#C8D1DF]/40 rounded-lg" />
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {[1, 2, 3, 4, 5, 6].map((i) => (

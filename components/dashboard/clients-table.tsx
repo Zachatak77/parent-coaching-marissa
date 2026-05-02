@@ -122,9 +122,9 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
             {filtered.map((client) => {
               const lastSession = client.sessions?.[0]?.session_date
               return (
-                <div key={client.id} className="bg-white rounded-xl border border-[#2D5016]/15 p-4 flex items-start justify-between gap-3">
+                <div key={client.id} className="bg-white rounded-xl border border-[#D9CFB9] p-4 flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-[#2D5016] truncate">
+                    <p className="text-sm font-semibold text-[#1F1D1A] truncate">
                       {client.profiles?.full_name ?? '—'}
                     </p>
                     <p className="text-xs text-muted-foreground truncate">
@@ -152,7 +152,7 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
           </div>
 
           {/* Desktop table view */}
-          <div className="hidden lg:block rounded-md border border-[#2D5016]/15 bg-white overflow-hidden">
+          <div className="hidden lg:block rounded-md border border-[#D9CFB9] bg-white overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/30">
@@ -171,7 +171,7 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
                     <TableRow key={client.id}>
                       <TableCell className="font-medium">
                         <div>
-                          <p className="text-sm font-medium text-[#2D5016]">
+                          <p className="text-sm font-medium text-[#1F1D1A]">
                             {client.profiles?.full_name ?? '—'}
                           </p>
                           <p className="text-xs text-muted-foreground">

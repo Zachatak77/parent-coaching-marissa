@@ -1,7 +1,7 @@
 export default function Loading() {
   return (
     <div className="space-y-6 animate-pulse">
-      <div className="h-7 w-40 bg-[#2D5016]/10 rounded" />
+      <div className="h-7 w-40 bg-[#C8D1DF]/40 rounded" />
       <div className="flex gap-3">
         <div className="h-9 flex-1 max-w-sm bg-muted rounded-lg" />
         <div className="h-9 w-40 bg-muted rounded-lg" />

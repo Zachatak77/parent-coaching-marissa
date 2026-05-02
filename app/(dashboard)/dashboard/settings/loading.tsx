@@ -1,7 +1,7 @@
 export default function Loading() {
   return (
     <div className="space-y-8 max-w-xl animate-pulse">
-      <div className="h-7 w-24 bg-[#2D5016]/10 rounded" />
+      <div className="h-7 w-24 bg-[#C8D1DF]/40 rounded" />
       {[1, 2].map((i) => (
         <div key={i} className="bg-white rounded-xl border p-6 shadow-sm space-y-4">
           <div className="h-4 w-32 bg-muted rounded" />

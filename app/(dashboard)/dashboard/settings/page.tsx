@@ -16,7 +16,7 @@ export default async function SettingsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-[#2D5016]">Settings</h1>
+        <h1 className="text-2xl font-semibold text-[#1F1D1A]">Settings</h1>
         <p className="text-sm text-muted-foreground mt-1">
           Manage your account and preferences.
         </p>
@@ -24,11 +24,11 @@ export default async function SettingsPage() {
 
       <div className="max-w-xl space-y-6">
         {/* Profile Settings */}
-        <Card className="border-[#2D5016]/15">
+        <Card className="border-[#D9CFB9]">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <User className="w-4 h-4 text-[#2D5016]" />
-              <CardTitle className="text-base font-semibold text-[#2D5016]">Profile</CardTitle>
+              <User className="w-4 h-4 text-[#1F1D1A]" />
+              <CardTitle className="text-base font-semibold text-[#1F1D1A]">Profile</CardTitle>
             </div>
             <CardDescription>Update your display name and view account info.</CardDescription>
           </CardHeader>
@@ -49,11 +49,11 @@ export default async function SettingsPage() {
         </Card>
 
         {/* Password */}
-        <Card className="border-[#2D5016]/15">
+        <Card className="border-[#D9CFB9]">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Lock className="w-4 h-4 text-[#2D5016]" />
-              <CardTitle className="text-base font-semibold text-[#2D5016]">Change Password</CardTitle>
+              <Lock className="w-4 h-4 text-[#1F1D1A]" />
+              <CardTitle className="text-base font-semibold text-[#1F1D1A]">Change Password</CardTitle>
             </div>
             <CardDescription>Update your account password.</CardDescription>
           </CardHeader>
@@ -63,11 +63,11 @@ export default async function SettingsPage() {
         </Card>
 
         {/* Notifications */}
-        <Card className="border-[#2D5016]/15">
+        <Card className="border-[#D9CFB9]">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Bell className="w-4 h-4 text-[#2D5016]" />
-              <CardTitle className="text-base font-semibold text-[#2D5016]">Notifications</CardTitle>
+              <Bell className="w-4 h-4 text-[#1F1D1A]" />
+              <CardTitle className="text-base font-semibold text-[#1F1D1A]">Notifications</CardTitle>
             </div>
             <CardDescription>Configure email notification preferences.</CardDescription>
           </CardHeader>

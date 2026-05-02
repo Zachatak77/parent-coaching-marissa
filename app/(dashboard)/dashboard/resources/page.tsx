@@ -25,7 +25,7 @@ export default async function DashboardResourcesPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-[#2D5016]">Resources</h1>
+        <h1 className="text-2xl font-semibold text-[#1F1D1A]">Resources</h1>
         <p className="text-sm text-muted-foreground mt-1">
           Manage and assign resources to your clients.
         </p>

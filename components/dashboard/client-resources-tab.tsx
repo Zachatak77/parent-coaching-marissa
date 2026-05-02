@@ -117,7 +117,7 @@ export function ClientResourcesTab({
         </Button>
         <Button
           size="sm"
-          className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white"
+          className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
           onClick={() => setAssignOpen(true)}
         >
           <Plus className="w-4 h-4 mr-1.5" /> Assign Resource
@@ -125,15 +125,15 @@ export function ClientResourcesTab({
       </div>
 
       {assignments.length === 0 ? (
-        <div className="text-center py-12 text-muted-foreground text-sm border border-dashed border-[#2D5016]/20 rounded-lg">
+        <div className="text-center py-12 text-muted-foreground text-sm border border-dashed border-[#D9CFB9] rounded-lg">
           No resources assigned yet.
         </div>
       ) : (
         <div className="space-y-3">
           {assignments.map((a) => (
-            <div key={a.id} className="flex items-start justify-between gap-4 p-4 border border-[#2D5016]/15 rounded-lg bg-white">
+            <div key={a.id} className="flex items-start justify-between gap-4 p-4 border border-[#D9CFB9] rounded-lg bg-white">
               <div className="min-w-0">
-                <p className="text-sm font-medium text-[#2D5016]">{a.resources.title}</p>
+                <p className="text-sm font-medium text-[#1F1D1A]">{a.resources.title}</p>
                 {a.resources.description && (
                   <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{a.resources.description}</p>
                 )}
@@ -192,7 +192,7 @@ export function ClientResourcesTab({
                   </div>
                   <Button
                     size="sm"
-                    className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white flex-shrink-0"
+                    className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white flex-shrink-0"
                     disabled={assigning === r.id}
                     onClick={() => handleAssign(r.id)}
                   >
@@ -230,7 +230,7 @@ export function ClientResourcesTab({
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setUploadOpen(false)}>Cancel</Button>
-              <Button type="submit" disabled={uploading} className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white">
+              <Button type="submit" disabled={uploading} className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white">
                 {uploading ? 'Uploading…' : 'Upload & Save'}
               </Button>
             </DialogFooter>

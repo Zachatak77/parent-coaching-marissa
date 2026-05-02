@@ -36,18 +36,18 @@ export default async function PlanPage() {
   if (!plan || !plan.is_published) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-semibold text-[#2D5016]">My Plan</h1>
-        <div className="bg-white rounded-2xl border border-[#2D5016]/10 p-10 shadow-sm text-center space-y-4">
-          <div className="flex items-center justify-center w-16 h-16 rounded-full bg-[#2D5016]/10 mx-auto">
-            <BookOpen className="w-8 h-8 text-[#2D5016]/50" />
+        <h1 className="text-2xl font-semibold text-[#1F1D1A]">My Plan</h1>
+        <div className="bg-white rounded-2xl border border-[#D9CFB9] p-10 shadow-sm text-center space-y-4">
+          <div className="flex items-center justify-center w-16 h-16 rounded-full bg-[#C8D1DF]/40 mx-auto">
+            <BookOpen className="w-8 h-8 text-[#6E6A60]" />
           </div>
-          <h2 className="text-lg font-semibold text-[#2D5016]">Your plan is on its way.</h2>
-          <p className="text-sm text-[#2D5016]/60 max-w-sm mx-auto leading-relaxed">
+          <h2 className="text-lg font-semibold text-[#1F1D1A]">Your plan is on its way.</h2>
+          <p className="text-sm text-[#6E6A60] max-w-sm mx-auto leading-relaxed">
             Your coach is putting together a personalized plan based on your family&rsquo;s goals. It will appear here after your first session.
           </p>
           <a
             href="mailto:parentcoachwithmarissa@gmail.com"
-            className="inline-flex items-center gap-1 text-sm font-medium text-[#2D5016] hover:underline"
+            className="inline-flex items-center gap-1 text-sm font-medium text-[#1F1D1A] hover:underline"
           >
             Have questions? Reach out →
           </a>
@@ -66,8 +66,8 @@ export default async function PlanPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-[#2D5016]">{plan.title}</h1>
-          <p className="text-sm text-[#2D5016]/55 mt-1">
+          <h1 className="text-2xl font-semibold text-[#1F1D1A]">{plan.title}</h1>
+          <p className="text-sm text-[#6E6A60] mt-1">
             Created by Marissa · Published {format(new Date(publishedDate), 'MMMM d, yyyy')}
           </p>
         </div>
@@ -76,21 +76,21 @@ export default async function PlanPage() {
 
       {/* Plan body */}
       {body && (
-        <div className="bg-white rounded-2xl border border-[#2D5016]/10 p-6 shadow-sm print:border print:shadow-none">
-          <p className="text-sm text-[#2D5016]/80 leading-7 whitespace-pre-wrap">{body}</p>
+        <div className="bg-white rounded-2xl border border-[#D9CFB9] p-6 shadow-sm print:border print:shadow-none">
+          <p className="text-sm text-[#3A372F] leading-7 whitespace-pre-wrap">{body}</p>
         </div>
       )}
 
       {/* Objectives table */}
       {objectives.length > 0 && (
-        <div className="bg-white rounded-2xl border border-[#2D5016]/10 overflow-hidden shadow-sm">
-          <div className="px-6 py-4 border-b border-[#2D5016]/10">
-            <h2 className="text-sm font-semibold text-[#2D5016]">Key Objectives</h2>
+        <div className="bg-white rounded-2xl border border-[#D9CFB9] overflow-hidden shadow-sm">
+          <div className="px-6 py-4 border-b border-[#D9CFB9]">
+            <h2 className="text-sm font-semibold text-[#1F1D1A]">Key Objectives</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-[#2D5016] text-white">
+                <tr className="bg-[#4A5F7F] text-white">
                   {['Objective', 'Action Steps', 'Timeline', 'Success Indicators'].map((h) => (
                     <th key={h} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wide">{h}</th>
                   ))}
@@ -98,11 +98,11 @@ export default async function PlanPage() {
               </thead>
               <tbody>
                 {objectives.map((obj, i) => (
-                  <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-[#F5F0E8]/50'}>
-                    <td className="px-4 py-3 text-[#2D5016] font-medium align-top">{obj.objective}</td>
-                    <td className="px-4 py-3 text-[#2D5016]/75 align-top">{obj.actionSteps}</td>
-                    <td className="px-4 py-3 text-[#2D5016]/75 align-top whitespace-nowrap">{obj.timeline}</td>
-                    <td className="px-4 py-3 text-[#2D5016]/75 align-top">{obj.successIndicators}</td>
+                  <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-[#F5EFE2]/50'}>
+                    <td className="px-4 py-3 text-[#1F1D1A] font-medium align-top">{obj.objective}</td>
+                    <td className="px-4 py-3 text-[#3A372F] align-top">{obj.actionSteps}</td>
+                    <td className="px-4 py-3 text-[#3A372F] align-top whitespace-nowrap">{obj.timeline}</td>
+                    <td className="px-4 py-3 text-[#3A372F] align-top">{obj.successIndicators}</td>
                   </tr>
                 ))}
               </tbody>

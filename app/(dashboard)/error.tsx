@@ -20,13 +20,13 @@ export default function DashboardError({
         <div className="flex items-center justify-center w-14 h-14 rounded-full bg-red-50 mx-auto">
           <AlertCircle className="w-7 h-7 text-red-500" />
         </div>
-        <h2 className="text-lg font-semibold text-[#2D5016]">Something went wrong.</h2>
+        <h2 className="text-lg font-semibold text-[#1F1D1A]">Something went wrong.</h2>
         <p className="text-sm text-muted-foreground">
           An error occurred while loading this page. Your data is safe.
         </p>
         <button
           onClick={reset}
-          className="px-4 py-2 rounded-lg bg-[#2D5016] text-white text-sm font-semibold hover:bg-[#3a6b1e] transition-colors"
+          className="px-4 py-2 rounded-lg bg-[#4A5F7F] text-white text-sm font-semibold hover:bg-[#3E5070] transition-colors"
         >
           Try again
         </button>

@@ -53,23 +53,23 @@ export default async function IntakePage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-semibold text-[#2D5016]">Your Intake Form</h1>
-          <p className="text-sm text-[#2D5016]/55 mt-1">
+          <h1 className="text-2xl font-semibold text-[#1F1D1A]">Your Intake Form</h1>
+          <p className="text-sm text-[#6E6A60] mt-1">
             Submitted on {intake.submitted_at ? format(new Date(intake.submitted_at), 'MMMM d, yyyy') : 'recently'}
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-[#2D5016]/10 p-6 shadow-sm space-y-5">
+        <div className="bg-white rounded-2xl border border-[#D9CFB9] p-6 shadow-sm space-y-5">
           {children && children.length > 0 && (
             <div className="space-y-2">
-              <p className="text-xs font-semibold text-[#2D5016]/50 uppercase tracking-wide">Children</p>
+              <p className="text-xs font-semibold text-[#6E6A60] uppercase tracking-wide">Children</p>
               {children.map((c, i) => (
-                <div key={i} className="text-sm text-[#2D5016]/80">
+                <div key={i} className="text-sm text-[#3A372F]">
                   <p className="font-medium">{c.name}, age {c.age}{c.gender ? ` · ${c.gender}` : ''}</p>
                   {(c.school || c.grade) && (
-                    <p className="text-xs text-[#2D5016]/60">{[c.school, c.grade].filter(Boolean).join(' · ')}</p>
+                    <p className="text-xs text-[#6E6A60]">{[c.school, c.grade].filter(Boolean).join(' · ')}</p>
                   )}
-                  {c.notes && <p className="text-xs text-[#2D5016]/60 mt-0.5">{c.notes}</p>}
+                  {c.notes && <p className="text-xs text-[#6E6A60] mt-0.5">{c.notes}</p>}
                 </div>
               ))}
             </div>
@@ -79,16 +79,16 @@ export default async function IntakePage() {
             if (!val || (typeof val === 'string' && !val.trim())) return null
             return (
               <div key={k} className="space-y-1">
-                <p className="text-xs font-semibold text-[#2D5016]/50 uppercase tracking-wide">{q}</p>
-                <p className="text-sm text-[#2D5016]/80 leading-relaxed whitespace-pre-wrap">{String(val)}</p>
+                <p className="text-xs font-semibold text-[#6E6A60] uppercase tracking-wide">{q}</p>
+                <p className="text-sm text-[#3A372F] leading-relaxed whitespace-pre-wrap">{String(val)}</p>
               </div>
             )
           })}
         </div>
 
-        <p className="text-xs text-[#2D5016]/45 text-center">
+        <p className="text-xs text-[#6E6A60] text-center">
           Need to update something?{' '}
-          <a href="mailto:parentcoachwithmarissa@gmail.com" className="text-[#2D5016] hover:underline">
+          <a href="mailto:parentcoachwithmarissa@gmail.com" className="text-[#1F1D1A] hover:underline">
             Email your coach
           </a>
         </p>
@@ -99,8 +99,8 @@ export default async function IntakePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-[#2D5016]">Tell us about your family.</h1>
-        <p className="text-sm text-[#2D5016]/60 mt-1 max-w-lg">
+        <h1 className="text-2xl font-semibold text-[#1F1D1A]">Tell us about your family.</h1>
+        <p className="text-sm text-[#6E6A60] mt-1 max-w-lg">
           This helps your coach understand your situation before your first session. It only takes a few minutes.
         </p>
       </div>

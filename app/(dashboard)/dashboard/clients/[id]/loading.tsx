@@ -3,10 +3,10 @@ export default function Loading() {
     <div className="space-y-6 animate-pulse">
       <div className="flex items-start justify-between">
         <div className="space-y-2">
-          <div className="h-7 w-48 bg-[#2D5016]/10 rounded" />
-          <div className="h-4 w-36 bg-[#2D5016]/8 rounded" />
+          <div className="h-7 w-48 bg-[#C8D1DF]/40 rounded" />
+          <div className="h-4 w-36 bg-[#C8D1DF]/30 rounded" />
         </div>
-        <div className="h-9 w-28 bg-[#2D5016]/10 rounded-lg" />
+        <div className="h-9 w-28 bg-[#C8D1DF]/40 rounded-lg" />
       </div>
       <div className="grid grid-cols-3 gap-4">
         {[1, 2, 3].map((i) => (

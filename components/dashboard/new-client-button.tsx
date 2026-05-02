@@ -118,7 +118,7 @@ export function NewClientButton({ coachId, prefill, onSuccess, triggerLabel }: N
     <>
       <Button
         size="sm"
-        className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white"
+        className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
         onClick={() => setOpen(true)}
       >
         <Plus className="w-4 h-4 mr-1.5" />
@@ -142,7 +142,7 @@ export function NewClientButton({ coachId, prefill, onSuccess, triggerLabel }: N
                 </Button>
               </div>
               <DialogFooter className="pt-2">
-                <Button className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white" onClick={handleClose}>
+                <Button className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white" onClick={handleClose}>
                   Done
                 </Button>
               </DialogFooter>
@@ -200,7 +200,7 @@ export function NewClientButton({ coachId, prefill, onSuccess, triggerLabel }: N
                   <Button type="button" variant="outline" onClick={handleClose} disabled={loading}>
                     Cancel
                   </Button>
-                  <Button type="submit" className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white" disabled={loading}>
+                  <Button type="submit" className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white" disabled={loading}>
                     {loading ? 'Creating...' : 'Create Client'}
                   </Button>
                 </DialogFooter>

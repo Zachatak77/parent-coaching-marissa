@@ -63,8 +63,8 @@ function LogForm({ clientId, onDone }: { clientId: string; onDone: () => void })
   }
 
   return (
-    <form onSubmit={handleSubmit} className="border border-[#2D5016]/15 rounded-lg p-4 space-y-4 bg-white">
-      <h3 className="text-sm font-semibold text-[#2D5016]">Log New Session</h3>
+    <form onSubmit={handleSubmit} className="border border-[#D9CFB9] rounded-lg p-4 space-y-4 bg-white">
+      <h3 className="text-sm font-semibold text-[#1F1D1A]">Log New Session</h3>
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="space-y-1.5">
@@ -121,7 +121,7 @@ function LogForm({ clientId, onDone }: { clientId: string; onDone: () => void })
 
       <div className="flex justify-end gap-2 pt-2">
         <Button type="button" variant="outline" size="sm" onClick={onDone}>Cancel</Button>
-        <Button type="submit" size="sm" className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white" disabled={loading}>
+        <Button type="submit" size="sm" className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white" disabled={loading}>
           {loading ? 'Saving…' : 'Save Session'}
         </Button>
       </div>
@@ -165,13 +165,13 @@ function SessionCard({ session, clientId }: { session: Session; clientId: string
   const actionItems = Array.isArray(session.action_items) ? session.action_items : []
 
   return (
-    <div className="border border-[#2D5016]/15 rounded-lg bg-white overflow-hidden">
+    <div className="border border-[#D9CFB9] rounded-lg bg-white overflow-hidden">
       <div
         className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-muted/20"
         onClick={() => setExpanded(!expanded)}
       >
         <div className="flex items-center gap-3 min-w-0">
-          <p className="text-sm font-medium text-[#2D5016]">
+          <p className="text-sm font-medium text-[#1F1D1A]">
             {new Date(session.session_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
           {actionItems.length > 0 && (
@@ -191,7 +191,7 @@ function SessionCard({ session, clientId }: { session: Session; clientId: string
       </div>
 
       {expanded && (
-        <div className="border-t border-[#2D5016]/10 px-4 py-4 space-y-4">
+        <div className="border-t border-[#D9CFB9] px-4 py-4 space-y-4">
           {editing ? (
             <>
               <Textarea
@@ -201,7 +201,7 @@ function SessionCard({ session, clientId }: { session: Session; clientId: string
                 className="resize-none"
               />
               <div className="flex gap-2">
-                <Button size="sm" onClick={saveChanges} disabled={saving} className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white">
+                <Button size="sm" onClick={saveChanges} disabled={saving} className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white">
                   {saving ? 'Saving…' : 'Save'}
                 </Button>
                 <Button size="sm" variant="outline" onClick={() => setEditing(false)}>Cancel</Button>
@@ -218,14 +218,14 @@ function SessionCard({ session, clientId }: { session: Session; clientId: string
                   <ul className="space-y-1">
                     {actionItems.map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm">
-                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#2D5016] flex-shrink-0" />
+                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#4A5F7F] flex-shrink-0" />
                         {item}
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
-              <Button size="sm" variant="ghost" onClick={() => setEditing(true)} className="text-[#2D5016]">
+              <Button size="sm" variant="ghost" onClick={() => setEditing(true)} className="text-[#1F1D1A]">
                 Edit notes
               </Button>
             </>
@@ -244,7 +244,7 @@ export function SessionsList({ clientId, sessions }: { clientId: string; session
       <div className="flex justify-end">
         <Button
           size="sm"
-          className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white"
+          className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
           onClick={() => setShowForm(true)}
         >
           <Plus className="w-4 h-4 mr-1.5" /> Log Session
@@ -254,7 +254,7 @@ export function SessionsList({ clientId, sessions }: { clientId: string; session
       {showForm && <LogForm clientId={clientId} onDone={() => setShowForm(false)} />}
 
       {sessions.length === 0 && !showForm ? (
-        <div className="text-center py-12 text-muted-foreground text-sm border border-dashed border-[#2D5016]/20 rounded-lg">
+        <div className="text-center py-12 text-muted-foreground text-sm border border-dashed border-[#D9CFB9] rounded-lg">
           No sessions logged yet. Click &ldquo;Log Session&rdquo; to get started.
         </div>
       ) : (

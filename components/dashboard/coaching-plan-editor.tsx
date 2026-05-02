@@ -96,7 +96,7 @@ export function CoachingPlanEditor({ clientId, plan }: { clientId: string; plan:
           </Button>
           <Button
             size="sm"
-            className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white"
+            className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
             onClick={() => save(true)}
             disabled={saving}
           >

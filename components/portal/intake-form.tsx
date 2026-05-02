@@ -51,8 +51,8 @@ interface IntakeFormProps {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-2xl border border-[#2D5016]/10 p-6 shadow-sm space-y-4">
-      <h2 className="text-sm font-semibold text-[#2D5016] border-b border-[#2D5016]/10 pb-3">{title}</h2>
+    <div className="bg-white rounded-2xl border border-[#D9CFB9] p-6 shadow-sm space-y-4">
+      <h2 className="text-sm font-semibold text-[#1F1D1A] border-b border-[#D9CFB9] pb-3">{title}</h2>
       {children}
     </div>
   )
@@ -63,7 +63,7 @@ function Field({ label, required, children, error }: {
 }) {
   return (
     <div className="space-y-1.5">
-      <Label className="text-sm text-[#2D5016]">
+      <Label className="text-sm text-[#1F1D1A]">
         {label}{required && <span className="text-red-500 ml-0.5">*</span>}
       </Label>
       {children}
@@ -103,17 +103,17 @@ export function IntakeForm({ clientId, firstName, defaultName }: IntakeFormProps
 
   if (done) {
     return (
-      <div className="bg-white rounded-2xl border border-[#2D5016]/10 p-10 shadow-sm text-center space-y-4">
-        <div className="flex items-center justify-center w-16 h-16 rounded-full bg-[#2D5016]/10 mx-auto">
-          <CheckCircle2 className="w-8 h-8 text-[#2D5016]" />
+      <div className="bg-white rounded-2xl border border-[#D9CFB9] p-10 shadow-sm text-center space-y-4">
+        <div className="flex items-center justify-center w-16 h-16 rounded-full bg-[#C8D1DF]/40 mx-auto">
+          <CheckCircle2 className="w-8 h-8 text-[#1F1D1A]" />
         </div>
-        <h2 className="text-xl font-semibold text-[#2D5016]">Thank you, {firstName}!</h2>
-        <p className="text-sm text-[#2D5016]/65 max-w-sm mx-auto leading-relaxed">
+        <h2 className="text-xl font-semibold text-[#1F1D1A]">Thank you, {firstName}!</h2>
+        <p className="text-sm text-[#3A372F] max-w-sm mx-auto leading-relaxed">
           Your coach will review this before your first session. You&rsquo;re one step closer to a calmer, more connected home.
         </p>
         <Link
           href="/portal"
-          className="inline-flex items-center gap-2 mt-2 px-5 py-2.5 rounded-lg bg-[#2D5016] text-white text-sm font-semibold hover:bg-[#3a6b1e] transition-colors"
+          className="inline-flex items-center gap-2 mt-2 px-5 py-2.5 rounded-lg bg-[#4A5F7F] text-white text-sm font-semibold hover:bg-[#3E5070] transition-colors"
         >
           Go to My Dashboard <ArrowRight className="w-4 h-4" />
         </Link>
@@ -127,22 +127,22 @@ export function IntakeForm({ clientId, firstName, defaultName }: IntakeFormProps
       <Section title="Section 1: About Your Family">
         <div className="grid sm:grid-cols-2 gap-4">
           <Field label="Parent name(s)" required error={errors.parent_name?.message}>
-            <Input {...register('parent_name')} className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
+            <Input {...register('parent_name')} className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
           </Field>
           <Field label="Phone number" error={errors.phone?.message}>
-            <Input {...register('phone')} type="tel" className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
+            <Input {...register('phone')} type="tel" className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
           </Field>
         </div>
 
         <div>
-          <Label className="text-sm text-[#2D5016] mb-2 block">
+          <Label className="text-sm text-[#1F1D1A] mb-2 block">
             Children<span className="text-red-500 ml-0.5">*</span>
           </Label>
           <div className="space-y-3">
             {fields.map((field, i) => (
-              <div key={field.id} className="rounded-lg border border-[#2D5016]/15 p-3 space-y-3">
+              <div key={field.id} className="rounded-lg border border-[#D9CFB9] p-3 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-[#2D5016]/50">Child {i + 1}</span>
+                  <span className="text-xs font-semibold text-[#6E6A60]">Child {i + 1}</span>
                   {fields.length > 1 && (
                     <button type="button" onClick={() => remove(i)} className="text-red-400 hover:text-red-600">
                       <Trash2 className="w-4 h-4" />
@@ -153,36 +153,36 @@ export function IntakeForm({ clientId, firstName, defaultName }: IntakeFormProps
                   <Input
                     {...register(`children.${i}.name`)}
                     placeholder="Name *"
-                    className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+                    className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]"
                   />
                   <Input
                     {...register(`children.${i}.age`)}
                     placeholder="Age *"
-                    className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+                    className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <Input
                     {...register(`children.${i}.gender`)}
                     placeholder="Gender"
-                    className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+                    className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]"
                   />
                   <Input
                     {...register(`children.${i}.grade`)}
                     placeholder="Grade"
-                    className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+                    className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]"
                   />
                 </div>
                 <Input
                   {...register(`children.${i}.school`)}
                   placeholder="School"
-                  className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+                  className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]"
                 />
                 <Textarea
                   {...register(`children.${i}.notes`)}
                   placeholder="Notes about this child (optional)"
                   rows={2}
-                  className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+                  className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]"
                 />
                 {(errors.children?.[i]?.name || errors.children?.[i]?.age) && (
                   <p className="text-xs text-red-500">
@@ -195,7 +195,7 @@ export function IntakeForm({ clientId, firstName, defaultName }: IntakeFormProps
           <button
             type="button"
             onClick={() => append({ name: '', age: '', gender: '', school: '', grade: '', notes: '' })}
-            className="mt-2 flex items-center gap-1.5 text-xs text-[#2D5016] font-medium hover:underline"
+            className="mt-2 flex items-center gap-1.5 text-xs text-[#1F1D1A] font-medium hover:underline"
           >
             <Plus className="w-3.5 h-3.5" /> Add another child
           </button>
@@ -204,7 +204,7 @@ export function IntakeForm({ clientId, firstName, defaultName }: IntakeFormProps
 
         <Field label="Family structure" required error={errors.family_structure?.message}>
           <Select onValueChange={(v) => setValue('family_structure', v)}>
-            <SelectTrigger className="border-[#2D5016]/25 focus:ring-[#2D5016]">
+            <SelectTrigger className="border-[#D9CFB9] focus:ring-[#4A5F7F]">
               <SelectValue placeholder="Select..." />
             </SelectTrigger>
             <SelectContent>
@@ -219,11 +219,11 @@ export function IntakeForm({ clientId, firstName, defaultName }: IntakeFormProps
       {/* Section 2 */}
       <Section title="Section 2: What Brings You Here">
         <Field label="What is the main challenge you're facing right now?" required error={errors.main_challenge?.message}>
-          <Textarea {...register('main_challenge')} rows={3} className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
+          <Textarea {...register('main_challenge')} rows={3} className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
         </Field>
         <Field label="How long has this been a concern?" required error={errors.how_long?.message}>
           <Select onValueChange={(v) => setValue('how_long', v)}>
-            <SelectTrigger className="border-[#2D5016]/25 focus:ring-[#2D5016]">
+            <SelectTrigger className="border-[#D9CFB9] focus:ring-[#4A5F7F]">
               <SelectValue placeholder="Select..." />
             </SelectTrigger>
             <SelectContent>
@@ -234,39 +234,39 @@ export function IntakeForm({ clientId, firstName, defaultName }: IntakeFormProps
           </Select>
         </Field>
         <Field label="Have you tried any strategies so far? If so, what?" error={errors.strategies_tried?.message}>
-          <Textarea {...register('strategies_tried')} rows={2} className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
+          <Textarea {...register('strategies_tried')} rows={2} className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
         </Field>
         <Field label="What does success look like for your family?" required error={errors.success_looks_like?.message}>
-          <Textarea {...register('success_looks_like')} rows={3} className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
+          <Textarea {...register('success_looks_like')} rows={3} className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
         </Field>
       </Section>
 
       {/* Section 3 */}
       <Section title="Section 3: Your Child">
         <Field label="What words would you use to describe your child's temperament?" error={errors.child_temperament?.message}>
-          <Textarea {...register('child_temperament')} rows={2} className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
+          <Textarea {...register('child_temperament')} rows={2} className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
         </Field>
         <Field label="Are there any diagnoses or evaluations we should be aware of? (optional)" error={errors.diagnoses?.message}>
-          <Textarea {...register('diagnoses')} rows={2} className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
+          <Textarea {...register('diagnoses')} rows={2} className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
         </Field>
         <Field label="What does your child respond well to?" error={errors.responds_well?.message}>
-          <Textarea {...register('responds_well')} rows={2} className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
+          <Textarea {...register('responds_well')} rows={2} className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
         </Field>
         <Field label="What tends to escalate situations?" error={errors.escalates?.message}>
-          <Textarea {...register('escalates')} rows={2} className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
+          <Textarea {...register('escalates')} rows={2} className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
         </Field>
       </Section>
 
       {/* Section 4 */}
       <Section title="Section 4: Your Parenting Style">
         <Field label="How would you describe your current parenting approach?" error={errors.parenting_approach?.message}>
-          <Textarea {...register('parenting_approach')} rows={2} className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
+          <Textarea {...register('parenting_approach')} rows={2} className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
         </Field>
         <Field label="What are your biggest strengths as a parent?" error={errors.strengths?.message}>
-          <Textarea {...register('strengths')} rows={2} className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
+          <Textarea {...register('strengths')} rows={2} className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
         </Field>
         <Field label="Where do you feel you need the most support?" error={errors.needs_support?.message}>
-          <Textarea {...register('needs_support')} rows={2} className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
+          <Textarea {...register('needs_support')} rows={2} className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
         </Field>
       </Section>
 
@@ -274,7 +274,7 @@ export function IntakeForm({ clientId, firstName, defaultName }: IntakeFormProps
       <Section title="Section 5: Logistics">
         <Field label="Preferred contact method" required error={errors.contact_method?.message}>
           <Select onValueChange={(v) => setValue('contact_method', v)}>
-            <SelectTrigger className="border-[#2D5016]/25 focus:ring-[#2D5016]">
+            <SelectTrigger className="border-[#D9CFB9] focus:ring-[#4A5F7F]">
               <SelectValue placeholder="Select..." />
             </SelectTrigger>
             <SelectContent>
@@ -286,7 +286,7 @@ export function IntakeForm({ clientId, firstName, defaultName }: IntakeFormProps
         </Field>
         <Field label="Best time to reach you" required error={errors.best_time?.message}>
           <Select onValueChange={(v) => setValue('best_time', v)}>
-            <SelectTrigger className="border-[#2D5016]/25 focus:ring-[#2D5016]">
+            <SelectTrigger className="border-[#D9CFB9] focus:ring-[#4A5F7F]">
               <SelectValue placeholder="Select..." />
             </SelectTrigger>
             <SelectContent>
@@ -297,14 +297,14 @@ export function IntakeForm({ clientId, firstName, defaultName }: IntakeFormProps
           </Select>
         </Field>
         <Field label="Anything else you'd like your coach to know? (optional)" error={errors.anything_else?.message}>
-          <Textarea {...register('anything_else')} rows={3} className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]" />
+          <Textarea {...register('anything_else')} rows={3} className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
         </Field>
       </Section>
 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full py-3 rounded-lg bg-[#2D5016] text-white font-semibold text-sm hover:bg-[#3a6b1e] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full py-3 rounded-lg bg-[#4A5F7F] text-white font-semibold text-sm hover:bg-[#3E5070] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {isSubmitting ? 'Submitting…' : 'Submit Intake Form'}
       </button>

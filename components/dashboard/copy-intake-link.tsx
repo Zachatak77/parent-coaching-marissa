@@ -16,7 +16,7 @@ export function CopyIntakeLinkButton() {
   return (
     <button
       onClick={handleCopy}
-      className="text-xs text-[#2D5016] hover:underline mt-1"
+      className="text-xs text-[#1F1D1A] hover:underline mt-1"
     >
       Copy intake link
     </button>

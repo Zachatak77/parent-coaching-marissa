@@ -14,16 +14,16 @@ export default async function DiscoveryCallsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-[#2D5016]">Discovery Calls</h1>
+        <h1 className="text-2xl font-semibold text-[#1F1D1A]">Discovery Calls</h1>
         <p className="text-sm text-muted-foreground mt-1">
           Leads who have submitted the booking form
         </p>
       </div>
 
       {!calls?.length ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center border border-dashed border-[#2D5016]/20 rounded-lg bg-white">
-          <PhoneCall className="w-10 h-10 text-[#2D5016]/30 mb-4" />
-          <p className="text-base font-medium text-[#2D5016]/60 mb-1">No discovery calls yet</p>
+        <div className="flex flex-col items-center justify-center py-24 text-center border border-dashed border-[#D9CFB9] rounded-lg bg-white">
+          <PhoneCall className="w-10 h-10 text-[#1F1D1A]/30 mb-4" />
+          <p className="text-base font-medium text-[#6E6A60] mb-1">No discovery calls yet</p>
           <p className="text-sm text-muted-foreground max-w-xs">
             Submissions from the booking form will appear here.
           </p>

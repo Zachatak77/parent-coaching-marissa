@@ -22,7 +22,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     .eq('status', 'new')
 
   return (
-    <div className="min-h-screen flex bg-white">
+    <div className="min-h-screen flex bg-[#F5EFE2]">
       <Sidebar
         fullName={profile?.full_name ?? null}
         role={profile?.role ?? null}

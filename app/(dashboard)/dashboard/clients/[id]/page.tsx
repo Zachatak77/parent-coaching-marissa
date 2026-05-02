@@ -90,17 +90,17 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
   return (
     <div>
       <div className="flex items-center gap-3 mb-6">
-        <Link href="/dashboard/clients" className="text-sm text-muted-foreground hover:text-[#2D5016] flex items-center gap-1">
+        <Link href="/dashboard/clients" className="text-sm text-muted-foreground hover:text-[#1F1D1A] flex items-center gap-1">
           <ArrowLeft className="w-4 h-4" /> Clients
         </Link>
         <span className="text-muted-foreground">/</span>
-        <span className="text-sm font-medium text-[#2D5016]">{clientName}</span>
+        <span className="text-sm font-medium text-[#1F1D1A]">{clientName}</span>
       </div>
 
       {/* Client header */}
       <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-semibold text-[#2D5016]">{clientName}</h1>
+          <h1 className="text-2xl font-semibold text-[#1F1D1A]">{clientName}</h1>
           <p className="text-sm text-muted-foreground mt-0.5">{clientEmail}</p>
           {clientPhone && <p className="text-sm text-muted-foreground">{clientPhone}</p>}
           <div className="flex flex-wrap items-center gap-2 mt-2">
@@ -112,17 +112,17 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
 
         <div className="flex gap-6 text-center">
           <div>
-            <p className="text-2xl font-semibold text-[#2D5016]">{sessions?.length ?? 0}</p>
+            <p className="text-2xl font-semibold text-[#1F1D1A]">{sessions?.length ?? 0}</p>
             <p className="text-xs text-muted-foreground">Total sessions</p>
           </div>
           <div>
-            <p className="text-sm font-semibold text-[#2D5016]">
+            <p className="text-sm font-semibold text-[#1F1D1A]">
               {lastSession ? new Date(lastSession).toLocaleDateString() : '—'}
             </p>
             <p className="text-xs text-muted-foreground">Last session</p>
           </div>
           <div>
-            <p className="text-2xl font-semibold text-[#2D5016]">{assignments?.length ?? 0}</p>
+            <p className="text-2xl font-semibold text-[#1F1D1A]">{assignments?.length ?? 0}</p>
             <p className="text-xs text-muted-foreground">Resources</p>
           </div>
         </div>
@@ -140,10 +140,10 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
         {/* Tab 1: Overview */}
         <TabsContent value="overview" className="space-y-6">
           <div className="grid sm:grid-cols-3 gap-4">
-            <Card className="border-[#2D5016]/15">
+            <Card className="border-[#D9CFB9]">
               <CardHeader className="pb-2">
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-[#2D5016]/60" />
+                  <Calendar className="w-4 h-4 text-[#6E6A60]" />
                   <CardTitle className="text-xs text-muted-foreground uppercase tracking-wide">Start Date</CardTitle>
                 </div>
               </CardHeader>
@@ -154,10 +154,10 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
               </CardContent>
             </Card>
 
-            <Card className="border-[#2D5016]/15">
+            <Card className="border-[#D9CFB9]">
               <CardHeader className="pb-2">
                 <div className="flex items-center gap-2">
-                  <BookOpen className="w-4 h-4 text-[#2D5016]/60" />
+                  <BookOpen className="w-4 h-4 text-[#6E6A60]" />
                   <CardTitle className="text-xs text-muted-foreground uppercase tracking-wide">Intake Form</CardTitle>
                 </div>
               </CardHeader>
@@ -175,10 +175,10 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
               </CardContent>
             </Card>
 
-            <Card className="border-[#2D5016]/15">
+            <Card className="border-[#D9CFB9]">
               <CardHeader className="pb-2">
                 <div className="flex items-center gap-2">
-                  <BarChart2 className="w-4 h-4 text-[#2D5016]/60" />
+                  <BarChart2 className="w-4 h-4 text-[#6E6A60]" />
                   <CardTitle className="text-xs text-muted-foreground uppercase tracking-wide">Coaching Plan</CardTitle>
                 </div>
               </CardHeader>
@@ -219,18 +219,18 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
               { q: 'Anything else', k: 'anything_else' },
             ]
             return (
-              <div className="bg-white rounded-2xl border border-[#2D5016]/10 p-6 shadow-sm space-y-5">
-                <h2 className="text-sm font-semibold text-[#2D5016] uppercase tracking-wide">Intake Form</h2>
+              <div className="bg-white rounded-2xl border border-[#D9CFB9] p-6 shadow-sm space-y-5">
+                <h2 className="text-sm font-semibold text-[#1F1D1A] uppercase tracking-wide">Intake Form</h2>
                 {children && children.length > 0 && (
                   <div className="space-y-2">
-                    <p className="text-xs font-semibold text-[#2D5016]/50 uppercase tracking-wide">Children</p>
+                    <p className="text-xs font-semibold text-[#6E6A60] uppercase tracking-wide">Children</p>
                     {children.map((c, i) => (
-                      <div key={i} className="text-sm text-[#2D5016]/80">
+                      <div key={i} className="text-sm text-[#3A372F]">
                         <p className="font-medium">{c.name}, age {c.age}{c.gender ? ` · ${c.gender}` : ''}</p>
                         {(c.school || c.grade) && (
-                          <p className="text-xs text-[#2D5016]/60">{[c.school, c.grade].filter(Boolean).join(' · ')}</p>
+                          <p className="text-xs text-[#6E6A60]">{[c.school, c.grade].filter(Boolean).join(' · ')}</p>
                         )}
-                        {c.notes && <p className="text-xs text-[#2D5016]/60 mt-0.5">{c.notes}</p>}
+                        {c.notes && <p className="text-xs text-[#6E6A60] mt-0.5">{c.notes}</p>}
                       </div>
                     ))}
                   </div>
@@ -240,8 +240,8 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
                   if (!val || (typeof val === 'string' && !val.trim())) return null
                   return (
                     <div key={k} className="space-y-1">
-                      <p className="text-xs font-semibold text-[#2D5016]/50 uppercase tracking-wide">{q}</p>
-                      <p className="text-sm text-[#2D5016]/80 leading-relaxed whitespace-pre-wrap">{String(val)}</p>
+                      <p className="text-xs font-semibold text-[#6E6A60] uppercase tracking-wide">{q}</p>
+                      <p className="text-sm text-[#3A372F] leading-relaxed whitespace-pre-wrap">{String(val)}</p>
                     </div>
                   )
                 })}

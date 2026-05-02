@@ -165,7 +165,7 @@ export function ResourceLibrary({
         </div>
         <Button
           size="sm"
-          className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white"
+          className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
           onClick={() => setUploadOpen(true)}
         >
           <Plus className="w-4 h-4 mr-1.5" /> Upload Resource
@@ -174,15 +174,15 @@ export function ResourceLibrary({
 
       {/* Resource grid */}
       {filtered.length === 0 ? (
-        <div className="text-center py-12 text-muted-foreground text-sm border border-dashed border-[#2D5016]/20 rounded-lg">
+        <div className="text-center py-12 text-muted-foreground text-sm border border-dashed border-[#D9CFB9] rounded-lg">
           No resources found.
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((r) => (
-            <div key={r.id} className="border border-[#2D5016]/15 rounded-lg bg-white p-4 space-y-3">
+            <div key={r.id} className="border border-[#D9CFB9] rounded-lg bg-white p-4 space-y-3">
               <div className="flex items-start justify-between gap-2">
-                <p className="text-sm font-semibold text-[#2D5016] leading-snug">{r.title}</p>
+                <p className="text-sm font-semibold text-[#1F1D1A] leading-snug">{r.title}</p>
                 <Badge variant={r.is_public ? 'green' : 'gray'} className="text-[10px] flex-shrink-0">
                   {r.is_public ? 'Public' : 'Private'}
                 </Badge>
@@ -255,7 +255,7 @@ export function ResourceLibrary({
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setUploadOpen(false)}>Cancel</Button>
-              <Button type="submit" disabled={uploading} className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white">
+              <Button type="submit" disabled={uploading} className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white">
                 {uploading ? 'Uploading…' : 'Upload'}
               </Button>
             </DialogFooter>
@@ -292,7 +292,7 @@ export function ResourceLibrary({
               </div>
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={() => setEditResource(null)}>Cancel</Button>
-                <Button type="submit" disabled={saving} className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white">
+                <Button type="submit" disabled={saving} className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white">
                   {saving ? 'Saving…' : 'Save Changes'}
                 </Button>
               </DialogFooter>
@@ -326,7 +326,7 @@ export function ResourceLibrary({
                     <p className="text-sm font-medium">{c.profiles?.full_name ?? '—'}</p>
                     <Button
                       size="sm"
-                      className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white"
+                      className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
                       disabled={assigning === c.id}
                       onClick={() => handleAssign(assignResource.id, c.id)}
                     >

@@ -26,17 +26,17 @@ export function NameForm({ defaultName }: { defaultName: string }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
       <div className="space-y-1.5">
-        <Label className="text-sm text-[#2D5016]">Full Name</Label>
+        <Label className="text-sm text-[#1F1D1A]">Full Name</Label>
         <Input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="border-[#2D5016]/25 focus-visible:ring-[#2D5016] max-w-sm"
+          className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F] max-w-sm"
         />
       </div>
       <button
         type="submit"
         disabled={loading || !name.trim()}
-        className="px-4 py-2 rounded-lg bg-[#2D5016] text-white text-sm font-semibold hover:bg-[#3a6b1e] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        className="px-4 py-2 rounded-lg bg-[#4A5F7F] text-white text-sm font-semibold hover:bg-[#3E5070] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {loading ? 'Saving…' : 'Save Name'}
       </button>
@@ -68,31 +68,31 @@ export function PasswordForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
       <div className="space-y-1.5">
-        <Label className="text-sm text-[#2D5016]">New Password</Label>
+        <Label className="text-sm text-[#1F1D1A]">New Password</Label>
         <Input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="At least 6 characters"
           autoComplete="new-password"
-          className="border-[#2D5016]/25 focus-visible:ring-[#2D5016] max-w-sm"
+          className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F] max-w-sm"
         />
       </div>
       <div className="space-y-1.5">
-        <Label className="text-sm text-[#2D5016]">Confirm Password</Label>
+        <Label className="text-sm text-[#1F1D1A]">Confirm Password</Label>
         <Input
           type="password"
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
           placeholder="Repeat your new password"
           autoComplete="new-password"
-          className="border-[#2D5016]/25 focus-visible:ring-[#2D5016] max-w-sm"
+          className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F] max-w-sm"
         />
       </div>
       <button
         type="submit"
         disabled={loading || !password}
-        className="px-4 py-2 rounded-lg bg-[#2D5016] text-white text-sm font-semibold hover:bg-[#3a6b1e] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        className="px-4 py-2 rounded-lg bg-[#4A5F7F] text-white text-sm font-semibold hover:bg-[#3E5070] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {loading ? 'Updating…' : 'Update Password'}
       </button>
