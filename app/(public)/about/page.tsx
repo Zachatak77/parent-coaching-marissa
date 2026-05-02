@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { ArrowRight, Heart, Lightbulb, TrendingUp, Award } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'About Marissa | Parent Coaching with Marissa',
+  title: 'About Marissa | Reimagine Parenting',
   description:
     'Learn about Marissa, her story, her coaching philosophy, and why she became a certified parent coach dedicated to helping families thrive.',
 }

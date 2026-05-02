@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { ArrowRight, CheckCircle2, Star } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Parent Coaching with Marissa | Calmer Families, Real Results',
+  title: 'Reimagine Parenting | More Calm. More Confidence. More Connection.',
   description:
     'Work one-on-one with a certified parent coach to build calmer routines, reduce daily struggles, and raise confident kids. Serving families across New Jersey.',
 }
@@ -25,26 +25,36 @@ export default function HomePage() {
     <div className="overflow-x-hidden">
 
       {/* ── 1. Hero ──────────────────────────────────────── */}
-      <section className="relative bg-[#F5F0E8] pt-16 pb-24 sm:pt-24 sm:pb-32">
+      <section className="relative bg-[#F5F0E8] pt-16 pb-24 sm:pt-24 sm:pb-32 overflow-hidden">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
-            <p className="text-sm font-semibold text-[#2D5016]/60 uppercase tracking-widest mb-4">
-              Parent Coaching · New Jersey
-            </p>
-            <h1 className="font-nunito text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#2D5016] leading-tight mb-6">
-              Parenting is hard.<br />
-              You don&apos;t have to<br />
-              figure it out alone.
+            {/* REIMAGINE badge */}
+            <div className="inline-flex items-center bg-[#4A7A9B] text-white text-[11px] font-bold uppercase tracking-[.22em] px-5 py-2 rounded-full mb-6">
+              Reimagine
+            </div>
+
+            {/* Large serif headline */}
+            <h1 className="font-playfair font-bold text-[#1A1614] leading-[0.92] text-[68px] sm:text-[88px] lg:text-[112px]">
+              Parenting
             </h1>
-            <p className="text-lg text-[#2D5016]/70 leading-relaxed mb-10 max-w-xl">
-              Support for families who want calmer routines, fewer daily struggles,
-              and real strategies that actually work.
+
+            {/* Heart divider */}
+            <div className="flex items-center gap-3 my-7">
+              <div className="h-px w-14 bg-[#1A1614]/25" />
+              <span className="text-[#1A1614]/50 text-sm">♥</span>
+              <div className="h-px w-14 bg-[#1A1614]/25" />
+            </div>
+
+            {/* Tagline */}
+            <p className="font-playfair text-xl sm:text-2xl font-semibold text-[#1A1614] leading-snug mb-10">
+              More calm. More confidence.<br />More connection.
             </p>
+
             <div className="flex flex-col sm:flex-row gap-4 items-start">
               <GreenButton href="/book" large>Book a Free Discovery Call</GreenButton>
               <Link
                 href="/services"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#2D5016] hover:text-[#3a6b1e] transition-colors pt-1 sm:pt-3"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#1A1614] hover:text-[#4A7A9B] transition-colors pt-1 sm:pt-3"
               >
                 Learn about the programs <ArrowRight className="w-4 h-4" />
               </Link>
@@ -52,13 +62,13 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Decorative blob */}
-        <div
-          aria-hidden
-          className="absolute right-0 top-0 w-[45%] h-full hidden lg:block overflow-hidden"
-        >
-          <div className="absolute inset-0 bg-[#2D5016]/8 rounded-bl-[120px]" />
-          <div className="absolute inset-12 bg-[#2D5016]/5 rounded-bl-[80px]" />
+        {/* Sparkle decorations */}
+        <span aria-hidden className="absolute right-[28%] top-14 hidden lg:block text-[#1A1614] text-3xl leading-none select-none pointer-events-none">✦</span>
+        <span aria-hidden className="absolute right-[20%] top-36 hidden lg:block text-[#1A1614] text-xl leading-none select-none pointer-events-none">✦</span>
+
+        {/* Decorative fill */}
+        <div aria-hidden className="absolute right-0 top-0 w-[40%] h-full hidden lg:block overflow-hidden">
+          <div className="absolute inset-0 bg-[#2D5016]/5 rounded-bl-[120px]" />
         </div>
       </section>
 

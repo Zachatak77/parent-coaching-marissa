@@ -50,6 +50,7 @@ const config: Config = {
         },
       },
       fontFamily: {
+        playfair: ['var(--font-playfair)', 'serif'],
         nunito: ['var(--font-nunito)', 'sans-serif'],
         inter: ['var(--font-inter)', 'sans-serif'],
       },

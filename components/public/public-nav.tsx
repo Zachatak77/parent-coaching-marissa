@@ -3,7 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, Leaf } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const links = [
@@ -34,14 +34,11 @@ export function PublicNav() {
     >
       <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[#2D5016]">
-            <Leaf className="w-4 h-4 text-[#F5F0E8]" />
+        <Link href="/" className="flex items-center flex-shrink-0">
+          <div>
+            <span className="block text-[10px] font-extrabold uppercase tracking-[.22em] text-[#4A7A9B] leading-none mb-0.5">Reimagine</span>
+            <span className="block font-playfair font-bold text-[#1A1614] text-lg leading-tight">Parenting</span>
           </div>
-          <span className="font-semibold text-[#2D5016] text-sm sm:text-base leading-tight">
-            Parent Coaching<br className="hidden sm:block" />
-            <span className="sm:hidden"> </span>with Marissa
-          </span>
         </Link>
 
         {/* Desktop links */}

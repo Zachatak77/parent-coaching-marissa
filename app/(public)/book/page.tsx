@@ -3,7 +3,7 @@ import { BookForm } from '@/components/public/book-form'
 import { Shield, Clock, MessageCircle } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Book a Free Discovery Call | Parent Coaching with Marissa',
+  title: 'Book a Free Discovery Call | Reimagine Parenting',
   description:
     "Book a free, no-pressure discovery call with Marissa. Share what's going on at home and find out if coaching is the right fit for your family.",
 }

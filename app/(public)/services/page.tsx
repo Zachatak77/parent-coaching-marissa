@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/accordion'
 
 export const metadata: Metadata = {
-  title: 'Coaching Programs | Parent Coaching with Marissa',
+  title: 'Coaching Programs | Reimagine Parenting',
   description:
     'Explore parent coaching packages — from a focused 2-week program to ongoing monthly support. All pricing discussed during your free discovery call.',
 }
