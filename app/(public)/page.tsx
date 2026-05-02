@@ -51,14 +51,6 @@ function HeartRule({ light, center }: { light?: boolean; center?: boolean }) {
   )
 }
 
-function Sparkle({ size = 24 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" style={{ color: NAVY }}>
-      <path d="M12 0 L13.2 9.4 L22 11 L13.2 12.6 L12 22 L10.8 12.6 L2 11 L10.8 9.4 Z"/>
-    </svg>
-  )
-}
-
 function SecHead({ pill, title, lede }: { pill: string; title: React.ReactNode; lede?: string }) {
   return (
     <div style={{ textAlign: 'center', maxWidth: 680, margin: '0 auto 56px' }}>
@@ -88,10 +80,8 @@ export default function HomePage() {
           <path fill="#4A5F7F" opacity="0.14" d="M200 0 L200 120 C150 100 110 60 90 0 Z"/>
         </svg>
 
-        <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-24 grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-10 lg:gap-16 items-center">
-
-          {/* Left: text */}
-          <div>
+        <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-24">
+          <div style={{ maxWidth: 600 }}>
             <div style={{ marginBottom: 20 }}><Pill>REIMAGINE</Pill></div>
             <h1 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(3.6rem, 9vw, 7rem)', lineHeight: 0.95, color: TEXT, margin: '0 0 14px', letterSpacing: '-0.02em' }}>
               Parenting
@@ -110,28 +100,6 @@ export default function HomePage() {
               BOOK YOUR FREE CALL →
             </Link>
           </div>
-
-          {/* Right: illustration panel */}
-          <div style={{ position: 'relative', aspectRatio: '1/1', borderRadius: 22, background: NAVY_TINT, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {/* parent + child figure */}
-            <svg viewBox="0 0 160 160" width="62%" fill="none" stroke="#1F1D1A" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-              {/* adult */}
-              <circle cx="60" cy="38" r="16"/>
-              <path d="M28 108 C28 84 40 74 60 74 C80 74 92 84 92 108"/>
-              {/* child */}
-              <circle cx="106" cy="54" r="11"/>
-              <path d="M82 108 C82 90 92 82 106 82 C120 82 130 90 130 108"/>
-              {/* heart between them */}
-              <path d="M84 45 C84 40 79 36 76 40 C73 36 68 40 68 45 C68 50 76 56 76 56 C76 56 84 50 84 45Z" fill="#1F1D1A" stroke="none"/>
-            </svg>
-            <span aria-hidden style={{ position: 'absolute', top: 32, right: 40, color: NAVY }}>
-              <Sparkle size={26} />
-            </span>
-            <span aria-hidden style={{ position: 'absolute', top: 80, right: 24, color: NAVY }}>
-              <Sparkle size={16} />
-            </span>
-          </div>
-
         </div>
       </section>
 
@@ -156,44 +124,17 @@ export default function HomePage() {
             {
               title: 'Parent Coach Consultant',
               body: 'Everyday parenting support — grounded in expertise, delivered with compassion.',
-              icon: (
-                <svg viewBox="0 0 40 40" width="48" height="48" fill="none" stroke="#1F1D1A" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="20" cy="14" r="7"/>
-                  <path d="M6 36 C6 26 12 22 20 22 C28 22 34 26 34 36"/>
-                  <path d="M26 10 C26 10 29 8 32 10" strokeWidth="1.2"/>
-                </svg>
-              ),
             },
             {
               title: '1:1 Support',
               body: 'A behavior plan created based on individual needs for your family and child.',
-              icon: (
-                <svg viewBox="0 0 40 40" width="48" height="48" fill="none" stroke="#1F1D1A" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="14" cy="14" r="6"/>
-                  <path d="M2 34 C2 25 7 21 14 21 C21 21 26 25 26 34"/>
-                  <circle cx="28" cy="16" r="5"/>
-                  <path d="M22 34 C22 27 26 23 32 23 C36 23 38 24.5 38 24.5"/>
-                </svg>
-              ),
             },
             {
               title: 'Ongoing Services',
               body: 'Access ongoing email check-ins designed to support your family week to week.',
-              icon: (
-                <svg viewBox="0 0 40 40" width="48" height="48" fill="none" stroke="#1F1D1A" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="5" y="10" width="30" height="26" rx="3"/>
-                  <line x1="5" y1="18" x2="35" y2="18"/>
-                  <line x1="13" y1="5" x2="13" y2="13"/>
-                  <line x1="27" y1="5" x2="27" y2="13"/>
-                  <path d="M12 26 L18 30 L28 22" strokeWidth="1.8"/>
-                </svg>
-              ),
             },
-          ].map(({ title, body, icon }, i) => (
+          ].map(({ title, body }, i) => (
             <div key={title} style={{ padding: '0 32px', textAlign: 'center', borderRight: i < 2 ? `1px solid ${HAIRLINE}` : 'none' }} className="mb-10 sm:mb-0">
-              <div style={{ width: 130, height: 130, borderRadius: '50%', margin: '0 auto 24px', background: NAVY_TINT, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                {icon}
-              </div>
               <h3 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.65rem', lineHeight: 1.1, color: TEXT, margin: '0 0 14px' }}>{title}</h3>
               <p style={{ fontFamily: B, fontSize: '1rem', color: TEXT2, lineHeight: 1.55, margin: '0 0 18px' }}>{body}</p>
               <Link href="/services" style={{ fontFamily: U, fontWeight: 600, fontSize: '0.72rem', letterSpacing: '.16em', textTransform: 'uppercase', color: NAVY, textDecoration: 'none' }}>
@@ -206,46 +147,31 @@ export default function HomePage() {
 
       {/* ── 4. About Marissa ── */}
       <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24 lg:py-28" style={{ background: CREAM }}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 lg:gap-16 max-w-5xl mx-auto items-center">
-
-          {/* Portrait panel */}
-          <div style={{ aspectRatio: '1/1', borderRadius: 22, background: NAVY_TINT, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-            <svg viewBox="0 0 160 160" width="55%" fill="none" stroke="#1F1D1A" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="80" cy="56" r="28"/>
-              <path d="M20 148 C20 112 44 96 80 96 C116 96 140 112 140 148"/>
-            </svg>
-            <span aria-hidden style={{ position: 'absolute', top: 28, right: 36, color: NAVY }}>
-              <Sparkle size={22} />
-            </span>
+        <div style={{ maxWidth: 600, margin: '0 auto' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start', marginBottom: 24 }}>
+            <Pill>REIMAGINE</Pill>
+            <Pill char>HI, I&apos;M MARISSA</Pill>
           </div>
-
-          {/* Copy */}
-          <div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start', marginBottom: 24 }}>
-              <Pill>REIMAGINE</Pill>
-              <Pill char>HI, I&apos;M MARISSA</Pill>
+          <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.4rem)', lineHeight: 1.1, color: TEXT, margin: '0 0 20px', letterSpacing: '-0.01em' }}>
+            I help parents feel more calm, confident, and in control.
+          </h2>
+          <p style={{ fontFamily: B, fontSize: '1.05rem', color: TEXT2, lineHeight: 1.6, margin: '0 0 16px' }}>
+            Parenting can feel overwhelming, but you don&apos;t have to figure it out alone. I&apos;m here to guide you with practical strategies that work for your family.
+          </p>
+          <Link href="/about" style={{ fontFamily: U, fontWeight: 600, fontSize: '0.72rem', letterSpacing: '.16em', textTransform: 'uppercase', color: NAVY, textDecoration: 'none' }}>
+            MEET MARISSA →
+          </Link>
+          {/* Info ribbon */}
+          <div style={{ background: NAVY_TINT, borderRadius: 22, padding: '18px 20px', display: 'flex', gap: 14, alignItems: 'center', marginTop: 28 }}>
+            <div style={{ width: 48, height: 48, borderRadius: '50%', background: CHAR, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg viewBox="0 0 100 100" width="26" height="26" fill="none" stroke="#FAF5EA" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="50" cy="38" r="13"/>
+                <path d="M22 80 C22 64 34 56 50 56 C66 56 78 64 78 80"/>
+              </svg>
             </div>
-            <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.4rem)', lineHeight: 1.1, color: TEXT, margin: '0 0 20px', letterSpacing: '-0.01em' }}>
-              I help parents feel more calm, confident, and in control.
-            </h2>
-            <p style={{ fontFamily: B, fontSize: '1.05rem', color: TEXT2, lineHeight: 1.6, margin: '0 0 16px' }}>
-              Parenting can feel overwhelming, but you don&apos;t have to figure it out alone. I&apos;m here to guide you with practical strategies that work for your family.
+            <p style={{ fontFamily: B, fontSize: '0.94rem', lineHeight: 1.4, color: TEXT, margin: 0 }}>
+              Special education teacher with 10+ years working with neurodiverse children ages 3–12.
             </p>
-            <Link href="/about" style={{ fontFamily: U, fontWeight: 600, fontSize: '0.72rem', letterSpacing: '.16em', textTransform: 'uppercase', color: NAVY, textDecoration: 'none' }}>
-              MEET MARISSA →
-            </Link>
-            {/* Info ribbon */}
-            <div style={{ background: NAVY_TINT, borderRadius: 22, padding: '18px 20px', display: 'flex', gap: 14, alignItems: 'center', marginTop: 28 }}>
-              <div style={{ width: 48, height: 48, borderRadius: '50%', background: CHAR, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <svg viewBox="0 0 100 100" width="26" height="26" fill="none" stroke="#FAF5EA" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="50" cy="38" r="13"/>
-                  <path d="M22 80 C22 64 34 56 50 56 C66 56 78 64 78 80"/>
-                </svg>
-              </div>
-              <p style={{ fontFamily: B, fontSize: '0.94rem', lineHeight: 1.4, color: TEXT, margin: 0 }}>
-                Special education teacher with 10+ years working with neurodiverse children ages 3–12.
-              </p>
-            </div>
           </div>
         </div>
       </section>
