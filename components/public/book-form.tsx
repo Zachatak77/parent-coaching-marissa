@@ -61,12 +61,12 @@ export function BookForm() {
       <div className="space-y-8">
         <div className="text-center py-8">
           <div className="flex justify-center mb-4">
-            <CheckCircle2 className="w-16 h-16 text-[#2D5016]" />
+            <CheckCircle2 className="w-16 h-16 text-[#4A5F7F]" />
           </div>
-          <h2 className="font-nunito text-2xl font-extrabold text-[#2D5016] mb-2">
+          <h2 className="text-2xl font-bold text-[#1F1D1A] mb-2" style={{ fontFamily: 'var(--font-display)' }}>
             Thanks, {submittedName}!
           </h2>
-          <p className="text-[#2D5016]/70">
+          <p className="text-[#3A372F]">
             Now pick a time that works for you.
           </p>
         </div>
@@ -84,13 +84,14 @@ export function BookForm() {
             />
           </>
         ) : (
-          <div className="text-center p-8 bg-[#2D5016]/5 rounded-xl border border-[#2D5016]/15">
-            <p className="text-sm text-[#2D5016]/70 mb-3">
+          <div className="text-center p-8 rounded-xl border" style={{ background: '#FAF5EA', borderColor: '#D9CFB9' }}>
+            <p className="text-sm mb-3" style={{ color: '#3A372F' }}>
               Scheduling coming soon. In the meantime, reach out directly:
             </p>
             <a
               href="mailto:parentcoachwithmarissa@gmail.com"
-              className="text-sm font-semibold text-[#2D5016] hover:underline"
+              className="text-sm font-semibold hover:underline"
+              style={{ color: '#4A5F7F' }}
             >
               parentcoachwithmarissa@gmail.com
             </a>
@@ -161,7 +162,8 @@ export function BookForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full inline-flex items-center justify-center rounded-lg bg-[#2D5016] text-[#F5F0E8] font-bold px-6 py-4 text-base hover:bg-[#3a6b1e] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full inline-flex items-center justify-center rounded-full text-[#FAF5EA] font-semibold px-6 py-4 text-sm tracking-widest uppercase transition-opacity disabled:opacity-60 disabled:cursor-not-allowed hover:opacity-90"
+        style={{ background: '#4A5F7F', letterSpacing: '.14em' }}
       >
         {isSubmitting ? 'Sending…' : 'Send My Request'}
       </button>
