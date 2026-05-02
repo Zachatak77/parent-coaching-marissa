@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'Reimagine Parenting | More Calm. More Confidence. More Connection.',
@@ -112,15 +111,24 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* Right: photo */}
-          <div style={{ position: 'relative', aspectRatio: '1/1', borderRadius: 22, overflow: 'hidden', background: `linear-gradient(135deg, ${NAVY_TINT} 0%, #6B7E9C 100%)` }}>
-            <Image src="/uploads/IMG_7500.jpeg" alt="Parent and child" fill style={{ objectFit: 'cover' }} />
-            {/* sparkles overlay */}
-            <span aria-hidden style={{ position: 'absolute', top: 80, left: '48%', color: NAVY }}>
-              <Sparkle size={28} />
+          {/* Right: illustration panel */}
+          <div style={{ position: 'relative', aspectRatio: '1/1', borderRadius: 22, background: NAVY_TINT, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {/* parent + child figure */}
+            <svg viewBox="0 0 160 160" width="62%" fill="none" stroke="#1F1D1A" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+              {/* adult */}
+              <circle cx="60" cy="38" r="16"/>
+              <path d="M28 108 C28 84 40 74 60 74 C80 74 92 84 92 108"/>
+              {/* child */}
+              <circle cx="106" cy="54" r="11"/>
+              <path d="M82 108 C82 90 92 82 106 82 C120 82 130 90 130 108"/>
+              {/* heart between them */}
+              <path d="M84 45 C84 40 79 36 76 40 C73 36 68 40 68 45 C68 50 76 56 76 56 C76 56 84 50 84 45Z" fill="#1F1D1A" stroke="none"/>
+            </svg>
+            <span aria-hidden style={{ position: 'absolute', top: 32, right: 40, color: NAVY }}>
+              <Sparkle size={26} />
             </span>
-            <span aria-hidden style={{ position: 'absolute', top: 190, left: '58%', color: NAVY }}>
-              <Sparkle size={18} />
+            <span aria-hidden style={{ position: 'absolute', top: 80, right: 24, color: NAVY }}>
+              <Sparkle size={16} />
             </span>
           </div>
 
@@ -145,13 +153,46 @@ export default function HomePage() {
         />
         <div className="grid grid-cols-1 sm:grid-cols-3 max-w-5xl mx-auto">
           {[
-            { img: '/uploads/IMG_7501.png',  title: 'Parent Coach Consultant', body: 'Everyday parenting support — grounded in expertise, delivered with compassion.' },
-            { img: '/uploads/IMG_7502.jpeg', title: '1:1 Support',             body: 'A behavior plan created based on individual needs for your family and child.' },
-            { img: '/uploads/IMG_7503.jpeg', title: 'Ongoing Services',        body: 'Access ongoing email check-ins designed to support your family week to week.' },
-          ].map(({ img, title, body }, i) => (
+            {
+              title: 'Parent Coach Consultant',
+              body: 'Everyday parenting support — grounded in expertise, delivered with compassion.',
+              icon: (
+                <svg viewBox="0 0 40 40" width="48" height="48" fill="none" stroke="#1F1D1A" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="20" cy="14" r="7"/>
+                  <path d="M6 36 C6 26 12 22 20 22 C28 22 34 26 34 36"/>
+                  <path d="M26 10 C26 10 29 8 32 10" strokeWidth="1.2"/>
+                </svg>
+              ),
+            },
+            {
+              title: '1:1 Support',
+              body: 'A behavior plan created based on individual needs for your family and child.',
+              icon: (
+                <svg viewBox="0 0 40 40" width="48" height="48" fill="none" stroke="#1F1D1A" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="14" cy="14" r="6"/>
+                  <path d="M2 34 C2 25 7 21 14 21 C21 21 26 25 26 34"/>
+                  <circle cx="28" cy="16" r="5"/>
+                  <path d="M22 34 C22 27 26 23 32 23 C36 23 38 24.5 38 24.5"/>
+                </svg>
+              ),
+            },
+            {
+              title: 'Ongoing Services',
+              body: 'Access ongoing email check-ins designed to support your family week to week.',
+              icon: (
+                <svg viewBox="0 0 40 40" width="48" height="48" fill="none" stroke="#1F1D1A" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="5" y="10" width="30" height="26" rx="3"/>
+                  <line x1="5" y1="18" x2="35" y2="18"/>
+                  <line x1="13" y1="5" x2="13" y2="13"/>
+                  <line x1="27" y1="5" x2="27" y2="13"/>
+                  <path d="M12 26 L18 30 L28 22" strokeWidth="1.8"/>
+                </svg>
+              ),
+            },
+          ].map(({ title, body, icon }, i) => (
             <div key={title} style={{ padding: '0 32px', textAlign: 'center', borderRight: i < 2 ? `1px solid ${HAIRLINE}` : 'none' }} className="mb-10 sm:mb-0">
-              <div style={{ width: 140, height: 140, borderRadius: '50%', margin: '0 auto 24px', overflow: 'hidden', background: `linear-gradient(135deg, ${NAVY_TINT}, #6B7E9C)`, position: 'relative' }}>
-                <Image src={img} alt={title} fill style={{ objectFit: 'cover' }} />
+              <div style={{ width: 130, height: 130, borderRadius: '50%', margin: '0 auto 24px', background: NAVY_TINT, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {icon}
               </div>
               <h3 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.65rem', lineHeight: 1.1, color: TEXT, margin: '0 0 14px' }}>{title}</h3>
               <p style={{ fontFamily: B, fontSize: '1rem', color: TEXT2, lineHeight: 1.55, margin: '0 0 18px' }}>{body}</p>
@@ -167,9 +208,15 @@ export default function HomePage() {
       <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24 lg:py-28" style={{ background: CREAM }}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 lg:gap-16 max-w-5xl mx-auto items-center">
 
-          {/* Photo */}
-          <div style={{ aspectRatio: '1/1', borderRadius: 22, overflow: 'hidden', background: `linear-gradient(135deg, ${NAVY_TINT}, #6B7E9C)`, position: 'relative' }}>
-            <Image src="/uploads/IMG_7504.jpeg" alt="Marissa" fill style={{ objectFit: 'cover' }} />
+          {/* Portrait panel */}
+          <div style={{ aspectRatio: '1/1', borderRadius: 22, background: NAVY_TINT, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+            <svg viewBox="0 0 160 160" width="55%" fill="none" stroke="#1F1D1A" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="80" cy="56" r="28"/>
+              <path d="M20 148 C20 112 44 96 80 96 C116 96 140 112 140 148"/>
+            </svg>
+            <span aria-hidden style={{ position: 'absolute', top: 28, right: 36, color: NAVY }}>
+              <Sparkle size={22} />
+            </span>
           </div>
 
           {/* Copy */}
