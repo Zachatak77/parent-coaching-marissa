@@ -105,11 +105,12 @@ export default function HomePage() {
 
       {/* ── 2. Tagline ribbon ── */}
       <div style={{ background: NAVY, color: '#FAF5EA', padding: '20px 24px', textAlign: 'center', fontFamily: U, fontWeight: 600, fontSize: '0.88rem', letterSpacing: '.26em', textTransform: 'uppercase' }}>
-        SUPPORT{' '}
-        <span style={{ color: NAVY_TINT, margin: '0 14px', fontSize: '1.1rem', verticalAlign: '-2px' }}>•</span>
-        STRATEGY{' '}
-        <span style={{ color: NAVY_TINT, margin: '0 14px', fontSize: '1.1rem', verticalAlign: '-2px' }}>•</span>
-        CONFIDENCE
+        <span style={{ display: 'block' }}>
+          SUPPORT{' '}
+          <span style={{ color: NAVY_TINT, margin: '0 14px', fontSize: '1.1rem', verticalAlign: '-2px' }}>•</span>
+          {' '}STRATEGY
+        </span>
+        <span style={{ display: 'block' }}>CONFIDENCE</span>
       </div>
 
       {/* ── 3. Services ── */}
