@@ -5,35 +5,28 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { Suspense } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Leaf } from 'lucide-react'
 import Link from 'next/link'
 
-type Mode = 'signin' | 'signup' | 'forgot'
-
-const roleLabels: Record<string, { desc: string; portal: string }> = {
-  coach: {
-    desc: 'Sign in to manage clients, sessions, and resources.',
-    portal: 'Coach',
-  },
-  parent: {
-    desc: 'Sign in to view your coaching plan and session notes.',
-    portal: 'Parent',
-  },
-}
+const NAVY     = '#4A5F7F'
+const CREAM    = '#F5EFE2'
+const TEXT     = '#1F1D1A'
+const TEXT2    = '#3A372F'
+const DIM      = '#6E6A60'
+const HAIRLINE = '#D9CFB9'
+const D = 'var(--font-display)'
+const U = 'var(--font-ui)'
+const B = 'var(--font-body)'
 
 function LoginForm() {
   const searchParams = useSearchParams()
-  const role = searchParams.get('role') ?? 'parent'
-  const info = roleLabels[role] ?? roleLabels.parent
   const router = useRouter()
 
   const linkExpired = searchParams.get('error') === 'link-expired'
-  const [mode, setMode] = useState<Mode>(linkExpired ? 'forgot' : 'signin')
+  const [mode, setMode] = useState<'signin' | 'forgot'>(linkExpired ? 'forgot' : 'signin')
   const [error, setError] = useState<string | null>(
     linkExpired ? 'That link has expired. Enter your email to request a new one.' : null
   )
   const [loading, setLoading] = useState(false)
-  const [emailSent, setEmailSent] = useState(false)
   const [resetSent, setResetSent] = useState(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -58,18 +51,14 @@ function LoginForm() {
       }
 
       const password = fd.get('password') as string
-      const full_name = (fd.get('full_name') as string | null)?.trim() ?? ''
-      const endpoint = mode === 'signin' ? '/api/auth/signin' : '/api/auth/signup'
-      const res = await fetch(endpoint, {
+      const res = await fetch('/api/auth/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, full_name, role }),
+        body: JSON.stringify({ email, password }),
       })
 
       const data = await res.json()
-
       if (data.error) { setError(data.error); return }
-      if (data.emailConfirmation) { setEmailSent(true); return }
       if (data.redirectTo) {
         router.push(data.redirectTo)
         router.refresh()
@@ -85,70 +74,62 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[#F5F0E8]">
-      <div className="w-full max-w-md">
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: CREAM }}>
+      <div style={{ width: '100%', maxWidth: 400 }}>
 
-        {/* Logo */}
-        <div className="flex flex-col items-center mb-8">
-          <Link href="/" className="flex items-center justify-center w-14 h-14 rounded-full bg-[#2D5016] mb-4">
-            <Leaf className="w-7 h-7 text-[#F5F0E8]" />
+        {/* Wordmark */}
+        <div style={{ textAlign: 'center', marginBottom: 36 }}>
+          <Link href="/" style={{ textDecoration: 'none', display: 'inline-block' }}>
+            <span style={{ display: 'block', fontFamily: U, fontWeight: 700, fontSize: '0.58rem', letterSpacing: '.22em', textTransform: 'uppercase', color: DIM, lineHeight: 1, marginBottom: 4 }}>
+              Reimagine
+            </span>
+            <span style={{ display: 'block', fontFamily: D, fontWeight: 700, fontSize: '1.6rem', color: TEXT, lineHeight: 1, paddingLeft: 14 }}>
+              Parenting
+            </span>
           </Link>
-          <h1 className="text-xl font-semibold text-[#2D5016]">Parent Coaching with Marissa</h1>
-          <p className="text-sm text-[#2D5016]/60 mt-1">{info.portal} Portal</p>
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-2xl border border-[#2D5016]/15 shadow-sm overflow-hidden">
+        <div style={{ background: '#fff', borderRadius: 20, border: `1px solid ${HAIRLINE}`, boxShadow: '0 2px 16px rgba(0,0,0,0.06)', overflow: 'hidden' }}>
 
           {resetSent ? (
-            <div className="p-8 text-center space-y-3">
-              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#2D5016]/10 mx-auto">
-                <Leaf className="w-6 h-6 text-[#2D5016]" />
+            <div style={{ padding: '40px 32px', textAlign: 'center' }}>
+              <div style={{ width: 48, height: 48, borderRadius: '50%', background: CREAM, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={NAVY} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                </svg>
               </div>
-              <h2 className="text-base font-semibold text-[#2D5016]">Check your email</h2>
-              <p className="text-sm text-[#2D5016]/60">
+              <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.4rem', color: TEXT, margin: '0 0 10px' }}>Check your email</h2>
+              <p style={{ fontFamily: B, fontSize: '0.9rem', color: TEXT2, lineHeight: 1.55, margin: '0 0 20px' }}>
                 If that email has an account, we sent a password reset link. Check your inbox.
               </p>
               <button
                 type="button"
                 onClick={() => { setResetSent(false); setMode('signin') }}
-                className="text-sm text-[#2D5016] font-medium hover:underline mt-2"
+                style={{ fontFamily: U, fontWeight: 600, fontSize: '0.78rem', letterSpacing: '.12em', textTransform: 'uppercase', color: NAVY, background: 'none', border: 'none', cursor: 'pointer' }}
               >
-                Back to sign in
+                ← Back to sign in
               </button>
             </div>
-          ) : emailSent ? (
-            <div className="p-8 text-center space-y-3">
-              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#2D5016]/10 mx-auto">
-                <Leaf className="w-6 h-6 text-[#2D5016]" />
-              </div>
-              <h2 className="text-base font-semibold text-[#2D5016]">Check your email</h2>
-              <p className="text-sm text-[#2D5016]/60">
-                We sent a confirmation link to your inbox. Click it to activate your account, then come back to sign in.
+          ) : (
+            <form onSubmit={handleSubmit} style={{ padding: '36px 32px' }}>
+              <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.5rem', color: TEXT, margin: '0 0 6px' }}>
+                {mode === 'signin' ? 'Welcome back' : 'Reset password'}
+              </h2>
+              <p style={{ fontFamily: B, fontSize: '0.88rem', color: DIM, margin: '0 0 24px', lineHeight: 1.5 }}>
+                {mode === 'signin'
+                  ? 'Sign in to access your portal.'
+                  : 'Enter your email and we\'ll send a reset link.'}
               </p>
-              <button
-                type="button"
-                onClick={() => { setEmailSent(false); setMode('signin') }}
-                className="text-sm text-[#2D5016] font-medium hover:underline mt-2"
-              >
-                Back to sign in
-              </button>
-            </div>
-          ) : mode === 'forgot' ? (
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
-              <div>
-                <h2 className="text-base font-semibold text-[#2D5016]">Reset your password</h2>
-                <p className="text-xs text-[#2D5016]/55 mt-1">Enter your email and we'll send a reset link.</p>
-              </div>
 
               {error && (
-                <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive">
+                <div style={{ background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: 10, padding: '10px 14px', marginBottom: 18, fontSize: '0.85rem', color: '#DC2626', fontFamily: B }}>
                   {error}
                 </div>
               )}
 
-              <div className="space-y-1.5">
-                <Label htmlFor="email">Email</Label>
+              <div style={{ marginBottom: 16 }}>
+                <Label htmlFor="email" style={{ fontFamily: U, fontWeight: 600, fontSize: '0.75rem', letterSpacing: '.08em', color: TEXT }}>Email</Label>
                 <Input
                   id="email"
                   name="email"
@@ -156,91 +137,22 @@ function LoginForm() {
                   placeholder="you@example.com"
                   required
                   autoComplete="email"
-                  className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+                  style={{ marginTop: 6, borderColor: HAIRLINE }}
+                  className="focus-visible:ring-[#4A5F7F]"
                 />
               </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-lg bg-[#2D5016] text-[#F5F0E8] font-semibold py-2.5 text-sm hover:bg-[#3a6b1e] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                {loading ? 'Sending…' : 'Send reset link'}
-              </button>
-
-              <p className="text-xs text-center text-[#2D5016]/45">
-                <button type="button" onClick={() => { setMode('signin'); setError(null) }} className="text-[#2D5016] font-medium hover:underline">
-                  Back to sign in
-                </button>
-              </p>
-            </form>
-          ) : (
-            <>
-              {/* Tabs */}
-              <div className="flex border-b border-[#2D5016]/10">
-                {(['signin', 'signup'] as Mode[]).map((m) => (
-                  <button
-                    key={m}
-                    type="button"
-                    onClick={() => { setMode(m); setError(null) }}
-                    className={`flex-1 py-3.5 text-sm font-semibold transition-colors ${
-                      mode === m
-                        ? 'text-[#2D5016] border-b-2 border-[#2D5016]'
-                        : 'text-[#2D5016]/45 hover:text-[#2D5016]/70'
-                    }`}
-                  >
-                    {m === 'signin' ? 'Sign In' : 'Create Account'}
-                  </button>
-                ))}
-              </div>
-
-              <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                <p className="text-xs text-[#2D5016]/55">{info.desc}</p>
-
-                {error && (
-                  <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive">
-                    {error}
-                  </div>
-                )}
-
-                {mode === 'signup' && (
-                  <div className="space-y-1.5">
-                    <Label htmlFor="full_name">Full Name</Label>
-                    <Input
-                      id="full_name"
-                      name="full_name"
-                      placeholder="Jane Smith"
-                      required
-                      className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
-                    />
-                  </div>
-                )}
-
-                <div className="space-y-1.5">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    required
-                    autoComplete="email"
-                    className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="password">Password</Label>
-                    {mode === 'signin' && (
-                      <button
-                        type="button"
-                        onClick={() => { setMode('forgot'); setError(null) }}
-                        className="text-xs text-[#2D5016]/55 hover:text-[#2D5016] hover:underline"
-                      >
-                        Forgot password?
-                      </button>
-                    )}
+              {mode === 'signin' && (
+                <div style={{ marginBottom: 24 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                    <Label htmlFor="password" style={{ fontFamily: U, fontWeight: 600, fontSize: '0.75rem', letterSpacing: '.08em', color: TEXT }}>Password</Label>
+                    <button
+                      type="button"
+                      onClick={() => { setMode('forgot'); setError(null) }}
+                      style={{ fontFamily: U, fontSize: '0.72rem', color: DIM, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                    >
+                      Forgot password?
+                    </button>
                   </div>
                   <Input
                     id="password"
@@ -248,50 +160,44 @@ function LoginForm() {
                     type="password"
                     placeholder="••••••••"
                     required
-                    autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
-                    className="border-[#2D5016]/25 focus-visible:ring-[#2D5016]"
+                    autoComplete="current-password"
+                    style={{ borderColor: HAIRLINE }}
+                    className="focus-visible:ring-[#4A5F7F]"
                   />
-                  {mode === 'signup' && (
-                    <p className="text-xs text-[#2D5016]/45">Minimum 6 characters</p>
-                  )}
                 </div>
+              )}
 
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full rounded-lg bg-[#2D5016] text-[#F5F0E8] font-semibold py-2.5 text-sm hover:bg-[#3a6b1e] transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2"
-                >
-                  {loading
-                    ? (mode === 'signin' ? 'Signing in…' : 'Creating account…')
-                    : (mode === 'signin' ? 'Sign In' : 'Create Account')}
-                </button>
+              <button
+                type="submit"
+                disabled={loading}
+                style={{
+                  width: '100%', padding: '13px 24px', background: NAVY, color: '#FAF5EA',
+                  borderRadius: 999, border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
+                  fontFamily: U, fontWeight: 600, fontSize: '0.82rem', letterSpacing: '.14em',
+                  textTransform: 'uppercase', opacity: loading ? 0.65 : 1, transition: 'opacity .15s',
+                }}
+              >
+                {loading
+                  ? (mode === 'signin' ? 'Signing in…' : 'Sending…')
+                  : (mode === 'signin' ? 'Sign In' : 'Send Reset Link')}
+              </button>
 
-                <p className="text-xs text-center text-[#2D5016]/45 pt-1">
-                  {mode === 'signin' ? (
-                    <>No account?{' '}
-                      <button type="button" onClick={() => setMode('signup')} className="text-[#2D5016] font-medium hover:underline">
-                        Create one
-                      </button>
-                    </>
-                  ) : (
-                    <>Already have an account?{' '}
-                      <button type="button" onClick={() => setMode('signin')} className="text-[#2D5016] font-medium hover:underline">
-                        Sign in
-                      </button>
-                    </>
-                  )}
+              {mode === 'forgot' && (
+                <p style={{ textAlign: 'center', marginTop: 18, fontFamily: U, fontSize: '0.75rem', color: DIM }}>
+                  <button type="button" onClick={() => { setMode('signin'); setError(null) }} style={{ color: NAVY, background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}>
+                    ← Back to sign in
+                  </button>
                 </p>
-              </form>
-            </>
+              )}
+            </form>
           )}
         </div>
 
-        {/* Switch role */}
-        <p className="text-center text-xs text-[#2D5016]/40 mt-5">
-          {role === 'coach'
-            ? <Link href="/login?role=parent" className="hover:text-[#2D5016] hover:underline">Switch to Parent portal →</Link>
-            : <Link href="/login?role=coach" className="hover:text-[#2D5016] hover:underline">Switch to Coach portal →</Link>
-          }
+        <p style={{ textAlign: 'center', marginTop: 20, fontFamily: U, fontSize: '0.72rem', color: DIM }}>
+          Need access?{' '}
+          <a href="mailto:parentcoachwithmarissa@gmail.com" style={{ color: NAVY, textDecoration: 'none', fontWeight: 600 }}>
+            Contact Marissa
+          </a>
         </p>
 
       </div>
@@ -301,7 +207,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#F5F0E8]" />}>
+    <Suspense fallback={<div style={{ minHeight: '100vh', background: '#F5EFE2' }} />}>
       <LoginForm />
     </Suspense>
   )
