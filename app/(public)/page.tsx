@@ -15,6 +15,7 @@ const LINEN     = '#FAF5EA'
 const CHAR      = '#2C2A28'
 const TEXT      = '#1F1D1A'
 const TEXT2     = '#3A372F'
+const DIM       = '#6E6A60'
 const HAIRLINE  = '#D9CFB9'
 
 const D = 'var(--font-display)'
@@ -27,7 +28,7 @@ function Pill({ children, char, cream }: { children: string; char?: boolean; cre
     <span style={{
       display: 'inline-flex', alignItems: 'center',
       padding: '7px 22px 8px',
-      background: cream ? '#FAF5EA' : char ? CHAR : NAVY,
+      background: cream ? LINEN : char ? CHAR : NAVY,
       color: cream ? TEXT : '#FAF5EA',
       borderRadius: 999,
       fontFamily: U, fontWeight: 600, fontSize: '0.72rem',
@@ -81,16 +82,20 @@ export default function HomePage() {
         </svg>
 
         <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-24">
-          <div style={{ maxWidth: 600 }}>
+          <div style={{ maxWidth: 680 }}>
             <div style={{ marginBottom: 20 }}><Pill>REIMAGINE</Pill></div>
             <h1 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(3.6rem, 9vw, 7rem)', lineHeight: 0.95, color: TEXT, margin: '0 0 14px', letterSpacing: '-0.02em' }}>
               Parenting
             </h1>
-            <div style={{ margin: '20px 0 24px' }}><HeartRule /></div>
+            <div style={{ margin: '20px 0 22px' }}><HeartRule /></div>
+            {/* Audience specificity */}
+            <p style={{ fontFamily: B, fontSize: '0.96rem', fontStyle: 'italic', color: DIM, margin: '0 0 18px', lineHeight: 1.4 }}>
+              Specialized coaching for parents of neurodiverse children ages 3–12
+            </p>
             <h2 style={{ fontFamily: D, fontWeight: 600, fontSize: '1.15rem', letterSpacing: '.10em', textTransform: 'uppercase', color: TEXT, margin: '0 0 18px', lineHeight: 1.35 }}>
               Take charge of parenting<br />in your home
             </h2>
-            <p style={{ fontFamily: B, fontSize: '1.1rem', color: TEXT2, lineHeight: 1.6, maxWidth: 460, margin: '0 0 36px' }}>
+            <p style={{ fontFamily: B, fontSize: '1.1rem', color: TEXT2, lineHeight: 1.6, maxWidth: 520, margin: '0 0 36px' }}>
               You don&apos;t have to do it alone. I&apos;m here to help you feel confident, supported, and in control.
             </p>
             <Link
@@ -104,16 +109,50 @@ export default function HomePage() {
       </section>
 
       {/* ── 2. Tagline ribbon ── */}
-      <div style={{ background: NAVY, color: '#FAF5EA', padding: '20px 24px', textAlign: 'center', fontFamily: U, fontWeight: 600, fontSize: '0.88rem', letterSpacing: '.26em', textTransform: 'uppercase' }}>
-        <span style={{ display: 'block' }}>
-          SUPPORT{' '}
-          <span style={{ color: NAVY_TINT, margin: '0 14px', fontSize: '1.1rem', verticalAlign: '-2px' }}>•</span>
-          {' '}STRATEGY
-        </span>
-        <span style={{ display: 'block' }}>CONFIDENCE</span>
+      <div style={{ background: NAVY, color: '#FAF5EA', padding: '20px 24px', textAlign: 'center', fontFamily: U, fontWeight: 600, fontSize: '0.78rem', letterSpacing: '.22em', textTransform: 'uppercase' }}>
+        NEURODIVERSE FAMILIES{' '}
+        <span style={{ color: NAVY_TINT, margin: '0 14px', fontSize: '1rem', verticalAlign: '-1px' }}>•</span>
+        {' '}AGES 3–12{' '}
+        <span style={{ color: NAVY_TINT, margin: '0 14px', fontSize: '1rem', verticalAlign: '-1px' }}>•</span>
+        {' '}REAL STRATEGIES
       </div>
 
-      {/* ── 3. Services ── */}
+      {/* ── 3. How It Works ── */}
+      <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: CREAM }}>
+        <SecHead
+          pill="HOW IT WORKS"
+          title="Getting started is simple."
+        />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-4xl mx-auto">
+          {[
+            {
+              step: '1',
+              title: 'Book a Free Call',
+              body: '20 minutes. No pressure. Just a real conversation about your family and what you\'re navigating.',
+            },
+            {
+              step: '2',
+              title: 'Get Your Plan',
+              body: 'Marissa builds a personalized strategy plan around your child\'s specific needs and your family\'s goals.',
+            },
+            {
+              step: '3',
+              title: 'See the Change',
+              body: 'Week by week, you\'ll have the tools, support, and confidence to handle whatever comes up.',
+            },
+          ].map(({ step, title, body }) => (
+            <div key={step} style={{ textAlign: 'center' }}>
+              <div style={{ width: 52, height: 52, borderRadius: '50%', background: NAVY, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+                <span style={{ fontFamily: U, fontWeight: 700, fontSize: '1rem', color: '#FAF5EA' }}>{step}</span>
+              </div>
+              <h3 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.5rem', lineHeight: 1.1, color: TEXT, margin: '0 0 12px' }}>{title}</h3>
+              <p style={{ fontFamily: B, fontSize: '0.98rem', color: TEXT2, lineHeight: 1.6, margin: 0 }}>{body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── 4. Services ── */}
       <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24 lg:py-28" style={{ background: LINEN }}>
         <SecHead
           pill="PARENT COACHING"
@@ -123,47 +162,77 @@ export default function HomePage() {
         <div className="grid grid-cols-1 sm:grid-cols-3 max-w-5xl mx-auto">
           {[
             {
-              title: 'Parent Coach Consultant',
-              body: 'Everyday parenting support — grounded in expertise, delivered with compassion.',
+              title: 'One-Time Consultation',
+              best: 'Best for parents who need a clear starting point',
+              body: 'A focused session to tackle your most pressing challenge — grounded in expertise, delivered with compassion.',
             },
             {
-              title: '1:1 Support',
-              body: 'A behavior plan created based on individual needs for your family and child.',
+              title: 'Personalized Coaching Plan',
+              best: 'Best for families with specific behavior goals',
+              body: 'A behavior plan built around your child\'s individual needs, with weekly support to put it into action.',
             },
             {
-              title: 'Ongoing Services',
-              body: 'Access ongoing email check-ins designed to support your family week to week.',
+              title: 'Ongoing Monthly Support',
+              best: 'Best for continued accountability and week-to-week guidance',
+              body: 'Regular check-ins and strategy adjustments to keep your family moving forward, week by week.',
             },
-          ].map(({ title, body }, i) => (
+          ].map(({ title, best, body }, i) => (
             <div key={title} style={{ padding: '0 32px', textAlign: 'center', borderRight: i < 2 ? `1px solid ${HAIRLINE}` : 'none' }} className="mb-10 sm:mb-0">
-              <h3 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.65rem', lineHeight: 1.1, color: TEXT, margin: '0 0 14px' }}>{title}</h3>
+              <h3 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.65rem', lineHeight: 1.1, color: TEXT, margin: '0 0 8px' }}>{title}</h3>
+              <p style={{ fontFamily: B, fontSize: '0.82rem', fontStyle: 'italic', color: DIM, lineHeight: 1.4, margin: '0 0 14px' }}>{best}</p>
               <p style={{ fontFamily: B, fontSize: '1rem', color: TEXT2, lineHeight: 1.55, margin: '0 0 18px' }}>{body}</p>
               <Link href="/services" style={{ fontFamily: U, fontWeight: 600, fontSize: '0.72rem', letterSpacing: '.16em', textTransform: 'uppercase', color: NAVY, textDecoration: 'none' }}>
-                LEARN MORE →
+                VIEW DETAILS →
               </Link>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── 4. About Marissa ── */}
-      <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24 lg:py-28" style={{ background: CREAM }}>
+      {/* ── 5. Testimonials ── */}
+      <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: CREAM }}>
+        <SecHead
+          pill="PARENT STORIES"
+          title="Families who said yes."
+        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {[
+            {
+              quote: 'I was nervous to reach out, but Marissa made me feel so at ease on our first call. I knew within five minutes it was exactly what I needed.',
+              byline: '— Parent of a 7-year-old, Montclair NJ',
+            },
+            {
+              quote: 'We had tried everything. Marissa helped us understand why our son was struggling and gave us a real plan. The difference in our house within a month was remarkable.',
+              byline: '— Parent of a 9-year-old',
+            },
+          ].map(({ quote, byline }) => (
+            <div key={byline} style={{ background: LINEN, borderRadius: 20, padding: '32px 32px', border: `1px solid ${HAIRLINE}` }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill={NAVY_TINT} style={{ marginBottom: 18, display: 'block' }}>
+                <path d="M12 21s-7.5-4.6-9.5-10.2C1.2 7.4 3.7 4 7.1 4c2 0 3.6 1 4.9 2.6C13.3 5 14.9 4 16.9 4c3.4 0 5.9 3.4 4.6 6.8C19.5 16.4 12 21 12 21z"/>
+              </svg>
+              <p style={{ fontFamily: B, fontSize: '1.05rem', fontStyle: 'italic', color: TEXT2, lineHeight: 1.65, margin: '0 0 20px' }}>
+                &ldquo;{quote}&rdquo;
+              </p>
+              <p style={{ fontFamily: U, fontWeight: 600, fontSize: '0.7rem', letterSpacing: '.12em', textTransform: 'uppercase', color: DIM, margin: 0 }}>
+                {byline}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── 6. About Marissa ── */}
+      <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24 lg:py-28" style={{ background: LINEN }}>
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start', marginBottom: 24 }}>
             <Pill>REIMAGINE</Pill>
             <Pill char>HI, I&apos;M MARISSA</Pill>
           </div>
-          <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.4rem)', lineHeight: 1.1, color: TEXT, margin: '0 0 20px', letterSpacing: '-0.01em' }}>
+          <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.4rem)', lineHeight: 1.1, color: TEXT, margin: '0 0 22px', letterSpacing: '-0.01em' }}>
             I help parents feel more calm, confident, and in control.
           </h2>
-          <p style={{ fontFamily: B, fontSize: '1.05rem', color: TEXT2, lineHeight: 1.6, margin: '0 0 16px' }}>
-            Parenting can feel overwhelming, but you don&apos;t have to figure it out alone. I&apos;m here to guide you with practical strategies that work for your family.
-          </p>
-          <Link href="/about" style={{ fontFamily: U, fontWeight: 600, fontSize: '0.72rem', letterSpacing: '.16em', textTransform: 'uppercase', color: NAVY, textDecoration: 'none' }}>
-            MEET MARISSA →
-          </Link>
-          {/* Info ribbon */}
-          <div style={{ background: NAVY_TINT, borderRadius: 22, padding: '18px 20px', display: 'flex', gap: 14, alignItems: 'center', marginTop: 28 }}>
+          {/* Credential ribbon — leads the section */}
+          <div style={{ background: NAVY_TINT, borderRadius: 22, padding: '18px 20px', display: 'flex', gap: 14, alignItems: 'center', marginBottom: 24 }}>
             <div style={{ width: 48, height: 48, borderRadius: '50%', background: CHAR, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <svg viewBox="0 0 100 100" width="26" height="26" fill="none" stroke="#FAF5EA" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="50" cy="38" r="13"/>
@@ -174,11 +243,20 @@ export default function HomePage() {
               Special education teacher with 10+ years working with neurodiverse children ages 3–12.
             </p>
           </div>
+          <p style={{ fontFamily: B, fontSize: '1.05rem', color: TEXT2, lineHeight: 1.6, margin: '0 0 16px' }}>
+            Parenting can feel overwhelming, but you don&apos;t have to figure it out alone. I&apos;m here to guide you with practical strategies that work for your family.
+          </p>
+          <p style={{ fontFamily: B, fontSize: '1.05rem', color: TEXT2, lineHeight: 1.6, margin: '0 0 24px' }}>
+            My work is grounded in special education — I understand how neurodiverse kids experience the world, and I help parents build strategies that fit their child&apos;s nervous system, not someone else&apos;s ideal.
+          </p>
+          <Link href="/about" style={{ fontFamily: U, fontWeight: 600, fontSize: '0.72rem', letterSpacing: '.16em', textTransform: 'uppercase', color: NAVY, textDecoration: 'none' }}>
+            MEET MARISSA →
+          </Link>
         </div>
       </section>
 
-      {/* ── 5. Outcomes ── */}
-      <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24 lg:py-28" style={{ background: LINEN }}>
+      {/* ── 7. Outcomes ── */}
+      <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24 lg:py-28" style={{ background: CREAM }}>
         <SecHead
           pill="PARENT COACHING CAN HELP YOU"
           title={<>Small shifts today.<br />Big changes tomorrow.</>}
@@ -186,19 +264,19 @@ export default function HomePage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-9 max-w-5xl mx-auto">
           {[
             {
-              name: 'Reduce\npower struggles',
+              name: 'Fewer meltdowns,\ncalmer evenings',
               icon: <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4 C8 4 5 7 5 11 C5 14 7 16 7 18 L17 18 C17 16 19 14 19 11 C19 7 16 4 12 4 Z"/><line x1="12" y1="4" x2="12" y2="18"/></svg>,
             },
             {
-              name: 'Build routines\nthat actually work',
+              name: 'Routines your kids\nactually follow',
               icon: <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="6" width="16" height="14" rx="1.5"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>,
             },
             {
-              name: 'Feel more\nconfident',
+              name: 'Show up as the\nparent you want to be',
               icon: <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3 L19 6 V12 C19 16 16 19 12 21 C8 19 5 16 5 12 V6 Z"/></svg>,
             },
             {
-              name: 'Strengthen\nyour connection',
+              name: 'A closer bond\nwith your child',
               icon: <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="9" r="3"/><circle cx="16" cy="11" r="2.4"/><path d="M3 19 C3 16 5.5 14 9 14 C12.5 14 15 16 15 19"/><path d="M14 19 C14 17 16 15.5 18.5 15.5"/></svg>,
             },
           ].map(({ name, icon }) => (
@@ -212,7 +290,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── 6. Final CTA ── */}
+      {/* ── 8. Final CTA ── */}
       <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24 lg:py-28" style={{ background: NAVY, textAlign: 'center', color: '#FAF5EA' }}>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
           <Pill cream>REIMAGINE</Pill>
