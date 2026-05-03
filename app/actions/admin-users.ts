@@ -149,6 +149,52 @@ export async function adminGenerateMagicLinkAction(userId: string) {
   return { url: linkData?.properties?.action_link ?? null }
 }
 
+export async function adminSetPasswordAction(userId: string, password: string) {
+  const { error: authError } = await requireAdmin()
+  if (authError) return { error: authError }
+
+  if (password.length < 6) return { error: 'Password must be at least 6 characters.' }
+
+  let admin
+  try {
+    admin = createAdminClient()
+  } catch (e) {
+    return { error: String(e) }
+  }
+
+  const { error: updateError } = await admin.auth.admin.updateUserById(userId, { password })
+  if (updateError) return { error: updateError.message }
+  return { success: true as const }
+}
+
+export async function adminGenerateResetLinkAction(userId: string) {
+  const { error: authError } = await requireAdmin()
+  if (authError) return { error: authError }
+
+  let admin
+  try {
+    admin = createAdminClient()
+  } catch (e) {
+    return { error: String(e) }
+  }
+
+  const { data: profile } = await admin
+    .from('profiles')
+    .select('email')
+    .eq('id', userId)
+    .single()
+
+  if (!profile?.email) return { error: 'No email on file for this user' }
+
+  const { data: linkData, error: linkError } = await admin.auth.admin.generateLink({
+    type: 'recovery',
+    email: profile.email,
+  })
+
+  if (linkError) return { error: linkError.message }
+  return { url: linkData?.properties?.action_link ?? null }
+}
+
 export async function adminDeleteUserAction(userId: string) {
   const { error: authError } = await requireAdmin()
   if (authError) return { error: authError }

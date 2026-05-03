@@ -16,9 +16,11 @@ import {
   adminCreateUserAction,
   adminUpdateUserAction,
   adminGenerateMagicLinkAction,
+  adminSetPasswordAction,
+  adminGenerateResetLinkAction,
   adminDeleteUserAction,
 } from '@/app/actions/admin-users'
-import { ExternalLink, Pencil, Trash2, Plus, Copy, Check } from 'lucide-react'
+import { ExternalLink, Pencil, Trash2, Plus, Copy, Check, KeyRound, RotateCcw } from 'lucide-react'
 
 interface User {
   id: string
@@ -98,6 +100,97 @@ function MagicLinkButton({ userId }: { userId: string }) {
         className="p-1.5 rounded hover:bg-[#F5EFE2] text-[#6E6A60] hover:text-[#4A5F7F] transition-colors disabled:opacity-50"
       >
         <ExternalLink className="w-3.5 h-3.5" />
+      </button>
+      {error && <p className="text-[10px] text-red-500 mt-1">{error}</p>}
+    </div>
+  )
+}
+
+function SetPasswordDialog({ user, onClose }: { user: User; onClose: () => void }) {
+  const [loading, setLoading] = React.useState(false)
+  const [error, setError] = React.useState<string | null>(null)
+  const [done, setDone] = React.useState(false)
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setError(null)
+    setLoading(true)
+    const fd = new FormData(e.currentTarget)
+    const password = fd.get('password') as string
+    const result = await adminSetPasswordAction(user.id, password)
+    setLoading(false)
+    if (result.error) { setError(result.error); return }
+    setDone(true)
+  }
+
+  return (
+    <Dialog open onOpenChange={(v) => { if (!v) onClose() }}>
+      <DialogContent className="sm:max-w-sm bg-[#FAF5EA] border-[#D9CFB9]">
+        <DialogHeader>
+          <DialogTitle className="text-[#1F1D1A]">Set password</DialogTitle>
+        </DialogHeader>
+        {done ? (
+          <div className="space-y-4">
+            <p className="text-sm text-[#3A372F]">Password updated for <strong>{user.full_name ?? user.email}</strong>.</p>
+            <Button onClick={onClose} className="w-full bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full">Done</Button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <p className="text-sm text-[#6E6A60]">Set a new password for <strong className="text-[#1F1D1A]">{user.full_name ?? user.email}</strong>. The field is masked — the user's password will not be visible.</p>
+            {error && <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{error}</p>}
+            <div className="space-y-1.5">
+              <Label className="text-xs font-semibold text-[#1F1D1A]">New Password</Label>
+              <Input
+                name="password"
+                type="password"
+                placeholder="••••••••"
+                required
+                minLength={6}
+                autoComplete="new-password"
+                className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]"
+              />
+              <p className="text-xs text-[#6E6A60]">Minimum 6 characters.</p>
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={onClose} className="border-[#D9CFB9]">Cancel</Button>
+              <Button type="submit" disabled={loading} className="bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full">
+                {loading ? 'Saving…' : 'Set password'}
+              </Button>
+            </DialogFooter>
+          </form>
+        )}
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function ResetLinkButton({ userId }: { userId: string }) {
+  const [loading, setLoading] = React.useState(false)
+  const [copied, setCopied] = React.useState(false)
+  const [error, setError] = React.useState<string | null>(null)
+
+  async function handleClick() {
+    setLoading(true)
+    setError(null)
+    const result = await adminGenerateResetLinkAction(userId)
+    setLoading(false)
+    if (result.error) { setError(result.error); return }
+    if (result.url) {
+      await navigator.clipboard.writeText(result.url)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2500)
+    }
+  }
+
+  return (
+    <div>
+      <button
+        onClick={handleClick}
+        disabled={loading}
+        title="Copy password reset link"
+        className="p-1.5 rounded hover:bg-[#F5EFE2] text-[#6E6A60] hover:text-[#4A5F7F] transition-colors disabled:opacity-50"
+      >
+        {copied ? <Check className="w-3.5 h-3.5 text-green-600" /> : <RotateCcw className="w-3.5 h-3.5" />}
       </button>
       {error && <p className="text-[10px] text-red-500 mt-1">{error}</p>}
     </div>
@@ -334,6 +427,7 @@ export function UsersTable({ users, coaches }: UsersTableProps) {
   const [search, setSearch] = React.useState('')
   const [createOpen, setCreateOpen] = React.useState(false)
   const [editUser, setEditUser] = React.useState<User | null>(null)
+  const [setPasswordUser, setSetPasswordUser] = React.useState<User | null>(null)
   const [deleteUser, setDeleteUser] = React.useState<User | null>(null)
 
   const filtered = users.filter((u) => {
@@ -408,6 +502,14 @@ export function UsersTable({ users, coaches }: UsersTableProps) {
                         <Pencil className="w-3.5 h-3.5" />
                       </button>
                       <button
+                        onClick={() => setSetPasswordUser(u)}
+                        title="Set password"
+                        className="p-1.5 rounded hover:bg-[#F5EFE2] text-[#6E6A60] hover:text-[#4A5F7F] transition-colors"
+                      >
+                        <KeyRound className="w-3.5 h-3.5" />
+                      </button>
+                      <ResetLinkButton userId={u.id} />
+                      <button
                         onClick={() => setDeleteUser(u)}
                         title="Delete user"
                         className="p-1.5 rounded hover:bg-red-50 text-[#6E6A60] hover:text-red-600 transition-colors"
@@ -428,6 +530,9 @@ export function UsersTable({ users, coaches }: UsersTableProps) {
       )}
       {editUser && (
         <EditUserDialog user={editUser} coaches={coaches} onClose={() => setEditUser(null)} />
+      )}
+      {setPasswordUser && (
+        <SetPasswordDialog user={setPasswordUser} onClose={() => setSetPasswordUser(null)} />
       )}
       {deleteUser && (
         <DeleteUserDialog user={deleteUser} onClose={() => setDeleteUser(null)} />
