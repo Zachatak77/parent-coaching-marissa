@@ -33,9 +33,11 @@ export async function POST(request: Request) {
       .eq('id', user.id)
       .single()
 
-    return NextResponse.json({
-      redirectTo: profile?.role === 'parent' ? '/portal' : '/dashboard',
-    })
+    const redirectTo =
+      profile?.role === 'parent' ? '/portal'
+      : profile?.role === 'admin' ? '/admin'
+      : '/dashboard'
+    return NextResponse.json({ redirectTo })
   } catch (e) {
     console.error('[signin]', e)
     return NextResponse.json({ error: String(e) })

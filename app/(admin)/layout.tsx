@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { Sidebar } from '@/components/dashboard/sidebar'
+import { AdminSidebar } from '@/components/admin/admin-sidebar'
 
-export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -15,20 +15,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
     .single()
 
   if (profile?.role === 'parent') redirect('/portal')
-  if (profile?.role === 'admin') redirect('/admin')
-
-  const { count: discoveryCount } = await supabase
-    .from('discovery_calls')
-    .select('*', { count: 'exact', head: true })
-    .eq('status', 'new')
+  if (profile?.role === 'coach') redirect('/dashboard')
+  if (profile?.role !== 'admin') redirect('/login')
 
   return (
     <div className="min-h-screen flex bg-[#F5EFE2]">
-      <Sidebar
-        fullName={profile?.full_name ?? null}
-        role={profile?.role ?? null}
-        discoveryCount={discoveryCount ?? 0}
-      />
+      <AdminSidebar fullName={profile.full_name ?? null} />
       <main className="flex-1 overflow-auto md:pt-0 pt-14">
         <div className="max-w-6xl mx-auto px-6 py-8">{children}</div>
       </main>

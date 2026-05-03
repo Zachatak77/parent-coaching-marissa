@@ -32,7 +32,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // ── Dashboard routes: require coach or admin role ─────────────────────────
+  // ── Dashboard routes: require coach role ─────────────────────────────────
   if (pathname.startsWith('/dashboard')) {
     if (!user) {
       return NextResponse.redirect(new URL('/login', request.url))
@@ -46,6 +46,27 @@ export async function middleware(request: NextRequest) {
     if (profile?.role === 'parent') {
       return NextResponse.redirect(new URL('/portal', request.url))
     }
+    if (profile?.role === 'admin') {
+      return NextResponse.redirect(new URL('/admin', request.url))
+    }
+  }
+
+  // ── Admin routes: require admin role ─────────────────────────────────────
+  if (pathname.startsWith('/admin')) {
+    if (!user) {
+      return NextResponse.redirect(new URL('/login', request.url))
+    }
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    if (profile?.role !== 'admin') {
+      return NextResponse.redirect(
+        new URL(profile?.role === 'parent' ? '/portal' : '/dashboard', request.url)
+      )
+    }
   }
 
   // ── Login: redirect authenticated users to their home area ────────────────
@@ -58,6 +79,9 @@ export async function middleware(request: NextRequest) {
 
     if (profile?.role === 'parent') {
       return NextResponse.redirect(new URL('/portal', request.url))
+    }
+    if (profile?.role === 'admin') {
+      return NextResponse.redirect(new URL('/admin', request.url))
     }
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }

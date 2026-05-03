@@ -13,7 +13,8 @@ export default async function PortalLayout({ children }: { children: React.React
     getClientForUser(supabase, user.id),
   ])
 
-  if (profile?.role === 'coach' || profile?.role === 'admin') redirect('/dashboard')
+  if (profile?.role === 'coach') redirect('/dashboard')
+  if (profile?.role === 'admin') redirect('/admin')
 
   const fullName = profile?.full_name ?? user.email ?? 'there'
   const firstName = fullName.split(' ')[0]
