@@ -12,18 +12,12 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         <div style={{ borderTop: '1px solid #D9CFB9', backgroundColor: '#F5EFE2' }} className="py-6">
           <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.72rem', letterSpacing: '.10em', textTransform: 'uppercase', color: '#6E6A60' }} className="mr-2">Portal access</p>
-            {[
-              { href: '/login?role=coach', label: 'Coach Login' },
-              { href: '/login?role=parent', label: 'Parent Login' },
-            ].map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                style={{ fontFamily: 'var(--font-ui)', fontSize: '0.74rem', color: '#3A372F', border: '1px solid #D9CFB9', borderRadius: 6, padding: '6px 14px', textDecoration: 'none' }}
-              >
-                {label}
-              </Link>
-            ))}
+            <Link
+              href="/login"
+              style={{ fontFamily: 'var(--font-ui)', fontSize: '0.74rem', color: '#3A372F', border: '1px solid #D9CFB9', borderRadius: 6, padding: '6px 14px', textDecoration: 'none' }}
+            >
+              Portal Login
+            </Link>
           </div>
         </div>
 
