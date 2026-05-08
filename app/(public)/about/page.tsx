@@ -78,22 +78,19 @@ export default function AboutPage() {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
             <p style={{ fontFamily: B, fontSize: '1.05rem', color: TEXT2, lineHeight: 1.65, margin: 0 }}>
-              I didn&apos;t always have the answers. Like so many parents, I found myself cycling through the same
-              struggles — the power struggles at bedtime, the meltdowns over nothing, the feeling that no matter
-              what I tried, nothing was working. I remember sitting in my car one afternoon, exhausted, wondering
-              if I was just doing it all wrong.
+              As a special education teacher, I spent years supporting neurodivergent children and working closely with families who were doing everything they could to help their child thrive. Over and over again, I saw the same thing: parents understood their child&apos;s needs, but often felt unsure of how to turn strategies into real-life support at home.
             </p>
             <p style={{ fontFamily: B, fontSize: '1.05rem', color: TEXT2, lineHeight: 1.65, margin: 0 }}>
-              What I discovered — slowly, through research, training, and eventually my own coaching journey —
-              is that most parents aren&apos;t failing. They&apos;re just missing a few specific tools. The kind
-              that are actually designed for real life, with real kids, in real families. Not Instagram perfection.
-              Not textbook theories. Real strategies.
+              Then I became a parent myself.
             </p>
             <p style={{ fontFamily: B, fontSize: '1.05rem', color: TEXT2, lineHeight: 1.65, margin: 0 }}>
-              That&apos;s what drew me to parent coaching. I became certified because I wanted to help other families
-              find what I found: a way through the hard days that actually feels sustainable. My approach blends
-              proven coaching methods with genuine compassion — because the best strategy in the world won&apos;t
-              work if you don&apos;t feel understood first.
+              I quickly realized that parenting is hard, emotional, and overwhelming at times—no matter how much experience you have. Parenting truly takes a village, and so many families are carrying the weight of trying to figure it all out alone.
+            </p>
+            <p style={{ fontFamily: B, fontSize: '1.05rem', color: TEXT2, lineHeight: 1.65, margin: 0 }}>
+              That&apos;s why I created Reimagine Parenting.
+            </p>
+            <p style={{ fontFamily: B, fontSize: '1.05rem', color: TEXT2, lineHeight: 1.65, margin: 0 }}>
+              By blending my professional background in special education with my personal experience as a parent, I support families in creating calmer routines, stronger connections, and practical strategies that actually work in everyday life. My goal is to help parents feel more confident, more supported, and less alone in their parenting journey.
             </p>
           </div>
         </div>
