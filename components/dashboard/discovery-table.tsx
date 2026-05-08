@@ -40,11 +40,11 @@ const statusVariants: Record<string, 'blue' | 'yellow' | 'green' | 'darkgreen' |
   new: 'blue',
   contacted: 'yellow',
   booked: 'green',
-  converted: 'darkgreen',
+  onboarded: 'darkgreen',
   closed: 'gray',
 }
 
-const STATUSES = ['new', 'contacted', 'booked', 'converted', 'closed'] as const
+const STATUSES = ['new', 'contacted', 'booked', 'onboarded', 'closed'] as const
 type Status = typeof STATUSES[number]
 
 function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string }) {
@@ -115,7 +115,7 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
                 coachId={coachId}
                 prefill={{ name: call.name, email: call.email }}
                 triggerLabel="Convert"
-                onSuccess={() => handleStatusChange('converted')}
+                onSuccess={() => handleStatusChange('onboarded')}
               />
             )}
             <button
@@ -213,7 +213,7 @@ function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: 
               coachId={coachId}
               prefill={{ name: call.name, email: call.email }}
               triggerLabel="Convert"
-              onSuccess={() => handleStatusChange('converted')}
+              onSuccess={() => handleStatusChange('onboarded')}
             />
           )}
         </div>

@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 
-const VALID_STATUSES = ['new', 'contacted', 'booked', 'converted', 'closed'] as const
+const VALID_STATUSES = ['new', 'contacted', 'booked', 'onboarded', 'closed'] as const
 
 export async function createDiscoveryCallAction(formData: FormData) {
   const supabase = await createClient()
