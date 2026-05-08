@@ -15,8 +15,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { ChevronDown, ChevronUp, Search } from 'lucide-react'
-import { updateDiscoveryStatusAction, updateDiscoveryNotesAction } from '@/app/actions/discovery'
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
+import { ChevronDown, ChevronUp, Search, Plus } from 'lucide-react'
+import { updateDiscoveryStatusAction, updateDiscoveryNotesAction, createDiscoveryCallAction } from '@/app/actions/discovery'
 import { NewClientButton } from '@/components/dashboard/new-client-button'
 
 type DiscoveryCall = {
@@ -231,6 +235,70 @@ function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: 
   )
 }
 
+function AddLeadDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [loading, setLoading] = React.useState(false)
+  const [error, setError] = React.useState<string | null>(null)
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setError(null)
+    setLoading(true)
+    const result = await createDiscoveryCallAction(new FormData(e.currentTarget))
+    setLoading(false)
+    if (result.error) { setError(result.error); return }
+    onClose()
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={(v) => { if (!v) onClose() }}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Add lead</DialogTitle>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {error && (
+            <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{error}</p>
+          )}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="lead-name" className="text-xs font-semibold">Name <span className="text-red-500">*</span></Label>
+              <Input id="lead-name" name="name" placeholder="Jane Smith" required />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="lead-email" className="text-xs font-semibold">Email <span className="text-red-500">*</span></Label>
+              <Input id="lead-email" name="email" type="email" placeholder="jane@example.com" required />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="lead-phone" className="text-xs font-semibold text-muted-foreground">Phone</Label>
+              <Input id="lead-phone" name="phone" placeholder="(555) 000-0000" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="lead-ages" className="text-xs font-semibold text-muted-foreground">Child ages</Label>
+              <Input id="lead-ages" name="child_ages" placeholder="e.g. 5, 8" />
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="lead-concern" className="text-xs font-semibold text-muted-foreground">Main concern</Label>
+            <Textarea id="lead-concern" name="main_concern" placeholder="What are they dealing with?" rows={2} className="resize-none text-sm" />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="lead-source" className="text-xs font-semibold text-muted-foreground">How they heard</Label>
+            <Input id="lead-source" name="how_they_heard" placeholder="e.g. referral, Instagram" />
+          </div>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
+            <Button type="submit" disabled={loading} className="bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full">
+              {loading ? 'Adding…' : 'Add lead'}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 export function DiscoveryTable({
   calls,
   coachId,
@@ -240,6 +308,7 @@ export function DiscoveryTable({
 }) {
   const [search, setSearch] = React.useState('')
   const [statusFilter, setStatusFilter] = React.useState('all')
+  const [addLeadOpen, setAddLeadOpen] = React.useState(false)
 
   const filtered = calls.filter((c) => {
     const matchSearch =
@@ -252,7 +321,7 @@ export function DiscoveryTable({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 items-center">
         <div className="relative flex-1 min-w-[200px] max-w-sm">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -273,7 +342,14 @@ export function DiscoveryTable({
             ))}
           </SelectContent>
         </Select>
+        <Button
+          onClick={() => setAddLeadOpen(true)}
+          className="bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full text-xs gap-1.5 ml-auto"
+        >
+          <Plus className="w-3.5 h-3.5" /> Add Lead
+        </Button>
       </div>
+      {addLeadOpen && <AddLeadDialog open={addLeadOpen} onClose={() => setAddLeadOpen(false)} />}
 
       {filtered.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground text-sm">

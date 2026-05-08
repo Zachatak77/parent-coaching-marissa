@@ -87,7 +87,7 @@ export async function createClientAction(formData: FormData) {
 
   // Send welcome email with set-password link
   try {
-    const setPasswordUrl = linkData?.properties?.action_link ?? `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://parentcoaching.vercel.app'}/login`
+    const setPasswordUrl = linkData?.properties?.action_link ?? `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://reimagineparenting.co'}/login`
     const html = await render(ClientWelcome({
       clientName: parsed.data.full_name,
       setPasswordUrl,
