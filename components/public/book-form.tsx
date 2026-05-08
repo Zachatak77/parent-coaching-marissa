@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from 'react'
-import Script from 'next/script'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -43,6 +42,15 @@ export function BookForm() {
 
   const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL
 
+  React.useEffect(() => {
+    if (!submitted || !calendlyUrl) return
+    const script = document.createElement('script')
+    script.src = 'https://assets.calendly.com/assets/external/widget.js'
+    script.async = true
+    document.body.appendChild(script)
+    return () => { document.body.removeChild(script) }
+  }, [submitted, calendlyUrl])
+
   const onSubmit = async (values: FormValues) => {
     setServerError('')
     const fd = new FormData()
@@ -77,10 +85,6 @@ export function BookForm() {
               className="calendly-inline-widget w-full rounded-xl overflow-hidden"
               data-url={calendlyUrl}
               style={{ minWidth: '320px', height: '630px' }}
-            />
-            <Script
-              src="https://assets.calendly.com/assets/external/widget.js"
-              strategy="lazyOnload"
             />
           </>
         ) : (
