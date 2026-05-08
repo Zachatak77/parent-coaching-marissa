@@ -15,7 +15,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { submitDiscoveryCall } from '@/app/actions/book'
-import { CheckCircle2 } from 'lucide-react'
 
 const schema = z.object({
   name: z.string().min(1, 'Full name is required'),
@@ -29,8 +28,6 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>
 
 export function BookForm() {
-  const [submitted, setSubmitted] = React.useState(false)
-  const [submittedName, setSubmittedName] = React.useState('')
   const [serverError, setServerError] = React.useState('')
 
   const {
@@ -39,17 +36,6 @@ export function BookForm() {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({ resolver: zodResolver(schema) })
-
-  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL
-
-  React.useEffect(() => {
-    if (!submitted || !calendlyUrl) return
-    const script = document.createElement('script')
-    script.src = 'https://assets.calendly.com/assets/external/widget.js'
-    script.async = true
-    document.body.appendChild(script)
-    return () => { document.body.removeChild(script) }
-  }, [submitted, calendlyUrl])
 
   const onSubmit = async (values: FormValues) => {
     setServerError('')
@@ -60,49 +46,7 @@ export function BookForm() {
       setServerError(result.error)
       return
     }
-    setSubmittedName(values.name.split(' ')[0])
-    setSubmitted(true)
-  }
-
-  if (submitted) {
-    return (
-      <div className="space-y-8">
-        <div className="text-center py-8">
-          <div className="flex justify-center mb-4">
-            <CheckCircle2 className="w-16 h-16 text-[#4A5F7F]" />
-          </div>
-          <h2 className="text-2xl font-bold text-[#1F1D1A] mb-2" style={{ fontFamily: 'var(--font-display)' }}>
-            Thanks, {submittedName}!
-          </h2>
-          <p className="text-[#3A372F]">
-            Now pick a time that works for you.
-          </p>
-        </div>
-
-        {calendlyUrl ? (
-          <>
-            <div
-              className="calendly-inline-widget w-full rounded-xl overflow-hidden"
-              data-url={calendlyUrl}
-              style={{ minWidth: '320px', height: '630px' }}
-            />
-          </>
-        ) : (
-          <div className="text-center p-8 rounded-xl border" style={{ background: '#FAF5EA', borderColor: '#D9CFB9' }}>
-            <p className="text-sm mb-3" style={{ color: '#3A372F' }}>
-              Scheduling coming soon. In the meantime, reach out directly:
-            </p>
-            <a
-              href="mailto:parentcoachwithmarissa@gmail.com"
-              className="text-sm font-semibold hover:underline"
-              style={{ color: '#4A5F7F' }}
-            >
-              parentcoachwithmarissa@gmail.com
-            </a>
-          </div>
-        )}
-      </div>
-    )
+    window.location.href = 'https://calendly.com/parentcoachwithmarissa/new-meeting'
   }
 
   return (
