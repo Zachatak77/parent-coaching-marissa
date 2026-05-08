@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
+import { env } from '@/lib/env'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://parentcoaching.vercel.app'
+const SITE_URL = env.siteUrl
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

@@ -6,7 +6,9 @@ import { getResend, FROM } from '@/lib/email/resend'
 import { render } from '@react-email/render'
 import { PlanPublished } from '@/lib/email/templates/plan-published'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://parentcoaching.vercel.app'
+import { env } from '@/lib/env'
+
+const SITE_URL = env.siteUrl
 
 async function sendPlanPublishedEmail(supabase: Awaited<ReturnType<typeof createClient>>, clientId: string, planTitle: string) {
   try {

@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getResend, FROM, COACH_EMAIL } from '@/lib/email/resend'
 import { render } from '@react-email/render'
 import { IntakeSubmittedAlert } from '@/lib/email/templates/intake-submitted-alert'
+import { env } from '@/lib/env'
 
 export async function updateProfileAction(fullName: string) {
   const supabase = await createClient()
@@ -55,8 +56,7 @@ export async function submitIntakeAction(clientId: string, responses: Record<str
 
     const clientName = profile?.full_name ?? 'Your client'
     const clientEmail = profile?.email ?? ''
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://parentcoaching.vercel.app'
-    const dashboardUrl = `${siteUrl}/dashboard/clients/${clientId}`
+    const dashboardUrl = `${env.siteUrl}/dashboard/clients/${clientId}`
 
     const html = await render(IntakeSubmittedAlert({ clientName, clientEmail, dashboardUrl }))
     await getResend().emails.send({

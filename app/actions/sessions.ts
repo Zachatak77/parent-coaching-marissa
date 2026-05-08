@@ -8,7 +8,9 @@ import { render } from '@react-email/render'
 import { SessionShared } from '@/lib/email/templates/session-shared'
 import { format } from 'date-fns'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://parentcoaching.vercel.app'
+import { env } from '@/lib/env'
+
+const SITE_URL = env.siteUrl
 
 const LogSessionSchema = z.object({
   client_id: z.string().uuid(),

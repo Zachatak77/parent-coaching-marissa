@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { env } from '@/lib/env'
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -9,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/dashboard/', '/portal/', '/api/'],
       },
     ],
-    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://parentcoaching.vercel.app'}/sitemap.xml`,
+    sitemap: `${env.siteUrl}/sitemap.xml`,
   }
 }
