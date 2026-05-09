@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { z } from 'zod'
 import { getResend, FROM, COACH_EMAIL } from '@/lib/email/resend'
 import { render } from '@react-email/render'
@@ -29,6 +30,14 @@ export async function submitDiscoveryCall(formData: FormData) {
   const parsed = BookSchema.safeParse(raw)
   if (!parsed.success) return { error: parsed.error.errors[0].message }
 
+  // Look up Marissa's profile ID to auto-assign as default coach
+  const admin = createAdminClient()
+  const { data: marissa } = await admin
+    .from('profiles')
+    .select('id')
+    .eq('email', 'parentcoachingwithmarissa@gmail.com')
+    .single()
+
   const supabase = await createClient()
   const { error } = await supabase.from('discovery_calls').insert({
     name: parsed.data.name,
@@ -38,6 +47,7 @@ export async function submitDiscoveryCall(formData: FormData) {
     main_concern: parsed.data.main_concern,
     how_they_heard: parsed.data.how_they_heard ?? null,
     status: 'new',
+    coach_id: marissa?.id ?? null,
   })
 
   if (error) return { error: error.message }

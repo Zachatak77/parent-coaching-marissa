@@ -3,7 +3,9 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 
-const VALID_STATUSES = ['new', 'contacted', 'booked', 'onboarded', 'closed'] as const
+const VALID_STATUSES = ['new', 'contacted', 'booked', 'converted', 'closed'] as const
+
+type DiscoveryStatus = typeof VALID_STATUSES[number]
 
 export async function createDiscoveryCallAction(formData: FormData) {
   const supabase = await createClient()
@@ -22,13 +24,13 @@ export async function createDiscoveryCallAction(formData: FormData) {
     main_concern: (formData.get('main_concern') as string).trim() || null,
     how_they_heard: (formData.get('how_they_heard') as string).trim() || null,
     status: 'new',
+    coach_id: user.id,
   })
 
   if (error) return { error: error.message }
   revalidatePath('/dashboard/discovery')
   return { success: true }
 }
-type DiscoveryStatus = typeof VALID_STATUSES[number]
 
 export async function updateDiscoveryStatusAction(id: string, status: DiscoveryStatus) {
   const supabase = await createClient()
@@ -38,6 +40,7 @@ export async function updateDiscoveryStatusAction(id: string, status: DiscoveryS
     .eq('id', id)
   if (error) return { error: error.message }
   revalidatePath('/dashboard/discovery')
+  revalidatePath('/admin/discovery')
   return { success: true }
 }
 
@@ -49,5 +52,29 @@ export async function updateDiscoveryNotesAction(id: string, notes: string) {
     .eq('id', id)
   if (error) return { error: error.message }
   revalidatePath('/dashboard/discovery')
+  revalidatePath('/admin/discovery')
+  return { success: true }
+}
+
+export async function assignCoachAction(leadId: string, coachId: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Unauthorized' }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  if (profile?.role !== 'admin') return { error: 'Forbidden' }
+
+  const { error } = await supabase
+    .from('discovery_calls')
+    .update({ coach_id: coachId })
+    .eq('id', leadId)
+
+  if (error) return { error: error.message }
+  revalidatePath('/admin/discovery')
   return { success: true }
 }

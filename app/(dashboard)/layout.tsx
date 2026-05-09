@@ -15,12 +15,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
     .single()
 
   if (profile?.role === 'parent') redirect('/portal')
-  if (profile?.role === 'admin') redirect('/admin')
 
-  const { count: discoveryCount } = await supabase
-    .from('discovery_calls')
-    .select('*', { count: 'exact', head: true })
-    .eq('status', 'new')
+  const isAdmin = profile?.role === 'admin'
+  const { count: discoveryCount } = await (isAdmin
+    ? supabase.from('discovery_calls').select('*', { count: 'exact', head: true }).eq('status', 'new')
+    : supabase.from('discovery_calls').select('*', { count: 'exact', head: true }).eq('status', 'new').eq('coach_id', user.id)
+  )
 
   return (
     <div className="min-h-screen flex bg-[#F5EFE2]">
