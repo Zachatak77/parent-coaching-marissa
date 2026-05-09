@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { PhoneCall } from 'lucide-react'
-import { DiscoveryTable } from '@/components/dashboard/discovery-table'
+import { DiscoveryTable, AddLeadButton } from '@/components/dashboard/discovery-table'
 import { AdminDiscoveryTable } from '@/components/dashboard/admin-discovery-table'
 
 export default async function DiscoveryCallsPage() {
@@ -47,22 +47,28 @@ export default async function DiscoveryCallsPage() {
     .eq('coach_id', user!.id)
     .order('submitted_at', { ascending: false })
 
+  const leadCount = calls?.length ?? 0
+
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-[#1F1D1A]">Discovery Calls</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Leads assigned to you
-        </p>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-2xl font-semibold text-[#1F1D1A]">Discovery Calls</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {leadCount} lead{leadCount !== 1 ? 's' : ''} assigned to you
+          </p>
+        </div>
+        <AddLeadButton />
       </div>
 
       {!calls?.length ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center border border-dashed border-[#1F1D1A]/20 rounded-lg bg-white">
+        <div className="flex flex-col items-center justify-center py-24 text-center border border-dashed border-[#D9CFB9] rounded-lg bg-white">
           <PhoneCall className="w-10 h-10 text-[#1F1D1A]/30 mb-4" />
-          <p className="text-base font-medium text-[#1F1D1A]/60 mb-1">No discovery calls yet</p>
-          <p className="text-sm text-muted-foreground max-w-xs">
+          <p className="text-base font-medium text-[#6E6A60] mb-1">No discovery calls yet</p>
+          <p className="text-sm text-muted-foreground mb-6 max-w-xs">
             Leads assigned to you will appear here. You can also add leads manually.
           </p>
+          <AddLeadButton />
         </div>
       ) : (
         <DiscoveryTable calls={calls} coachId={user!.id} />

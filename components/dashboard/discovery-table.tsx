@@ -16,6 +16,14 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
@@ -77,24 +85,24 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
 
   return (
     <>
-      <tr className="border-b border-border hover:bg-muted/20 transition-colors">
-        <td className="px-4 py-3">
+      <TableRow>
+        <TableCell className="font-medium">
           <p className="text-sm font-medium text-[#1F1D1A]">{call.name}</p>
-        </td>
-        <td className="px-4 py-3 text-sm text-muted-foreground">{call.email}</td>
-        <td className="px-4 py-3 text-sm text-muted-foreground">{call.phone ?? '—'}</td>
-        <td className="px-4 py-3 text-sm text-muted-foreground">{call.child_ages ?? '—'}</td>
-        <td className="px-4 py-3 text-sm text-muted-foreground max-w-[180px]">
+        </TableCell>
+        <TableCell className="text-sm text-muted-foreground">{call.email}</TableCell>
+        <TableCell className="text-sm text-muted-foreground">{call.phone ?? '—'}</TableCell>
+        <TableCell className="text-sm text-muted-foreground">{call.child_ages ?? '—'}</TableCell>
+        <TableCell className="text-sm text-muted-foreground max-w-[180px]">
           <span className="line-clamp-2">{call.main_concern ?? '—'}</span>
-        </td>
-        <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap">
+        </TableCell>
+        <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
           {formatDistanceToNow(new Date(call.submitted_at), { addSuffix: true })}
-        </td>
-        <td className="px-4 py-3">
+        </TableCell>
+        <TableCell>
           <Select value={status} onValueChange={(v) => handleStatusChange(v as Status)}>
-            <SelectTrigger className="w-32 h-7 text-xs">
+            <SelectTrigger className="w-36 h-8 text-xs">
               <SelectValue>
-                <Badge variant={statusVariants[status] ?? 'gray'} className="text-[10px]">
+                <Badge variant={statusVariants[status] ?? 'gray'}>
                   {status}
                 </Badge>
               </SelectValue>
@@ -102,14 +110,14 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
             <SelectContent>
               {STATUSES.map((s) => (
                 <SelectItem key={s} value={s}>
-                  <Badge variant={statusVariants[s]} className="text-[10px]">{s}</Badge>
+                  <Badge variant={statusVariants[s]}>{s}</Badge>
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-        </td>
-        <td className="px-4 py-3">
-          <div className="flex items-center gap-2">
+        </TableCell>
+        <TableCell className="text-right">
+          <div className="flex items-center justify-end gap-2">
             {status === 'booked' && (
               <NewClientButton
                 coachId={coachId}
@@ -120,44 +128,46 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
             )}
             <button
               onClick={() => setExpanded(!expanded)}
-              className="text-muted-foreground hover:text-[#1F1D1A] transition-colors"
+              className="text-muted-foreground hover:text-[#1F1D1A] hover:bg-muted/50 rounded p-1 transition-colors"
               aria-label="Toggle details"
             >
               {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </button>
           </div>
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
       {expanded && (
-        <tr className="border-b border-border bg-muted/10">
-          <td colSpan={8} className="px-4 py-4 space-y-4">
-            <div>
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Main Concern</p>
-              <p className="text-sm">{call.main_concern ?? '—'}</p>
-            </div>
-            {call.how_they_heard && (
+        <TableRow className="bg-muted/10 hover:bg-muted/10">
+          <TableCell colSpan={8} className="px-6 py-5">
+            <div className="space-y-5">
               <div>
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">How They Heard</p>
-                <p className="text-sm">{call.how_they_heard}</p>
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5">Main Concern</p>
+                <p className="text-sm">{call.main_concern ?? '—'}</p>
               </div>
-            )}
-            <div>
-              <div className="flex items-center justify-between mb-1">
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Internal Notes</p>
-                {noteSaving && <span className="text-xs text-muted-foreground">Saving…</span>}
+              {call.how_they_heard && (
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5">How They Heard</p>
+                  <p className="text-sm">{call.how_they_heard}</p>
+                </div>
+              )}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Internal Notes</p>
+                  {noteSaving && <span className="text-xs text-muted-foreground">Saving…</span>}
+                </div>
+                <Textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  onBlur={handleNoteBlur}
+                  placeholder='e.g. "Left voicemail 4/21", "Scheduled for Thursday"'
+                  rows={3}
+                  className="resize-none text-sm"
+                />
               </div>
-              <Textarea
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                onBlur={handleNoteBlur}
-                placeholder='e.g. "Left voicemail 4/21", "Scheduled for Thursday"'
-                rows={3}
-                className="resize-none text-sm"
-              />
             </div>
-          </td>
-        </tr>
+          </TableCell>
+        </TableRow>
       )}
     </>
   )
@@ -182,50 +192,53 @@ function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: 
 
   return (
     <div className="bg-white rounded-xl border border-[#D9CFB9] p-4 space-y-3">
-      <div className="flex items-start justify-between gap-2">
+      <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-[#1F1D1A]">{call.name}</p>
+          <p className="text-sm font-semibold text-[#1F1D1A] truncate">{call.name}</p>
           <p className="text-xs text-muted-foreground truncate">{call.email}</p>
-        </div>
-        <Badge variant={statusVariants[status] ?? 'gray'} className="text-[10px] flex-shrink-0">
-          {status}
-        </Badge>
-      </div>
-      {call.main_concern && (
-        <p className="text-xs text-muted-foreground line-clamp-2">{call.main_concern}</p>
-      )}
-      <div className="flex items-center justify-between gap-2 pt-1">
-        <div className="flex gap-2">
-          <Select value={status} onValueChange={(v) => handleStatusChange(v as Status)}>
-            <SelectTrigger className="h-7 text-xs w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {STATUSES.map((s) => (
-                <SelectItem key={s} value={s}>
-                  <Badge variant={statusVariants[s]} className="text-[10px]">{s}</Badge>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {status === 'booked' && (
-            <NewClientButton
-              coachId={coachId}
-              prefill={{ name: call.name, email: call.email }}
-              triggerLabel="Convert"
-              onSuccess={() => handleStatusChange('converted')}
-            />
+          {call.main_concern && (
+            <p className="text-xs text-muted-foreground line-clamp-2 mt-1.5">{call.main_concern}</p>
           )}
         </div>
         <button
           onClick={() => setExpanded(!expanded)}
-          className="text-xs text-muted-foreground hover:text-[#1F1D1A]"
+          className="flex-shrink-0 text-muted-foreground hover:text-[#1F1D1A] hover:bg-muted/50 rounded p-1 transition-colors"
+          aria-label="Toggle details"
         >
-          {expanded ? 'Less' : 'More'}
+          {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
         </button>
       </div>
+
+      <div className="flex flex-wrap items-center gap-3">
+        <Select value={status} onValueChange={(v) => handleStatusChange(v as Status)}>
+          <SelectTrigger className="h-8 text-xs w-32">
+            <SelectValue>
+              <Badge variant={statusVariants[status] ?? 'gray'}>{status}</Badge>
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            {STATUSES.map((s) => (
+              <SelectItem key={s} value={s}>
+                <Badge variant={statusVariants[s]}>{s}</Badge>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {status === 'booked' && (
+          <NewClientButton
+            coachId={coachId}
+            prefill={{ name: call.name, email: call.email }}
+            triggerLabel="Convert"
+            onSuccess={() => handleStatusChange('converted')}
+          />
+        )}
+        <span className="text-xs text-muted-foreground ml-auto">
+          {formatDistanceToNow(new Date(call.submitted_at), { addSuffix: true })}
+        </span>
+      </div>
+
       {expanded && (
-        <div className="pt-2 border-t space-y-2 text-xs text-muted-foreground">
+        <div className="pt-3 border-t space-y-2 text-xs text-muted-foreground">
           {call.phone && <p><span className="font-medium">Phone:</span> {call.phone}</p>}
           {call.child_ages && <p><span className="font-medium">Child ages:</span> {call.child_ages}</p>}
           {call.how_they_heard && <p><span className="font-medium">How they heard:</span> {call.how_they_heard}</p>}
@@ -299,6 +312,22 @@ function AddLeadDialog({ open, onClose }: { open: boolean; onClose: () => void }
   )
 }
 
+export function AddLeadButton({ size = 'default' }: { size?: 'default' | 'sm' }) {
+  const [open, setOpen] = React.useState(false)
+  return (
+    <>
+      <Button
+        onClick={() => setOpen(true)}
+        size={size}
+        className="bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full gap-1.5"
+      >
+        <Plus className="w-4 h-4" /> Add Lead
+      </Button>
+      {open && <AddLeadDialog open={open} onClose={() => setOpen(false)} />}
+    </>
+  )
+}
+
 export function DiscoveryTable({
   calls,
   coachId,
@@ -308,7 +337,6 @@ export function DiscoveryTable({
 }) {
   const [search, setSearch] = React.useState('')
   const [statusFilter, setStatusFilter] = React.useState('all')
-  const [addLeadOpen, setAddLeadOpen] = React.useState(false)
 
   const filtered = calls.filter((c) => {
     const matchSearch =
@@ -321,7 +349,7 @@ export function DiscoveryTable({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap gap-3 items-center">
+      <div className="flex flex-wrap gap-3">
         <div className="relative flex-1 min-w-[200px] max-w-sm">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -342,14 +370,7 @@ export function DiscoveryTable({
             ))}
           </SelectContent>
         </Select>
-        <Button
-          onClick={() => setAddLeadOpen(true)}
-          className="bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full text-xs gap-1.5 ml-auto"
-        >
-          <Plus className="w-3.5 h-3.5" /> Add Lead
-        </Button>
       </div>
-      {addLeadOpen && <AddLeadDialog open={addLeadOpen} onClose={() => setAddLeadOpen(false)} />}
 
       {filtered.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground text-sm">
@@ -365,23 +386,26 @@ export function DiscoveryTable({
           </div>
 
           {/* Desktop table view */}
-          <div className="hidden lg:block rounded-md border border-[#D9CFB9] bg-white overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-muted/30">
-                <tr>
-                  {['Name', 'Email', 'Phone', 'Child Ages', 'Main Concern', 'Submitted', 'Status', 'Actions'].map((h) => (
-                    <th key={h} className="text-left px-4 py-3 text-xs font-medium text-muted-foreground whitespace-nowrap">
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
+          <div className="hidden lg:block rounded-md border border-[#D9CFB9] bg-white overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/30">
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>Child Ages</TableHead>
+                  <TableHead>Main Concern</TableHead>
+                  <TableHead>Submitted</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {filtered.map((call) => (
                   <DiscoveryRow key={call.id} call={call} coachId={coachId} />
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </>
       )}
