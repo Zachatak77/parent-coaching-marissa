@@ -208,12 +208,8 @@ export default async function DashboardOverviewPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl font-semibold text-[#1F1D1A]">{greeting}, {firstName}</h1>
-          <p className="text-sm text-muted-foreground mt-1">Here&apos;s an overview of your coaching practice.</p>
-        </div>
-        <div className="flex gap-2">
+      <div className="mb-8">
+        <div className="flex justify-end gap-2 mb-4">
           <NewClientButton coachId={user!.id} />
           <Button variant="outline" size="sm" asChild className="rounded-full">
             <Link href="/dashboard/discovery" className="flex items-center gap-1.5">
@@ -226,6 +222,8 @@ export default async function DashboardOverviewPage() {
             </Link>
           </Button>
         </div>
+        <h1 className="text-2xl font-semibold text-[#1F1D1A]">{greeting}, {firstName}</h1>
+        <p className="text-sm text-muted-foreground mt-1">Here&apos;s an overview of your coaching practice.</p>
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
