@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'Reimagine Parenting | More Calm. More Confidence. More Connection.',
@@ -87,6 +88,9 @@ export default function TestPage() {
 
         <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-24">
           <div style={{ maxWidth: 680 }}>
+            <div style={{ marginBottom: 28 }}>
+              <Image src="/logo.png" alt="Reimagine Parenting logo" width={140} height={140} priority />
+            </div>
             <div style={{ marginBottom: 20 }}><Pill>REIMAGINE</Pill></div>
             <h1 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(3.6rem, 9vw, 7rem)', lineHeight: 0.95, color: TEXT, margin: '0 0 14px', letterSpacing: '-0.02em' }}>
               Parenting
