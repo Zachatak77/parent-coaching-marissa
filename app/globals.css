@@ -36,6 +36,51 @@
     --ring: 96 38% 20%;
 
     --radius: 0.5rem;
+
+    /* ── REIMAGINE PARENTING DESIGN SYSTEM ── */
+    --font-display: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+    --font-body:    var(--font-serif-4), 'Source Serif 4', Georgia, serif;
+    --font-ui:      var(--font-inter), system-ui, sans-serif;
+
+    --navy:         #4A5F7F;
+    --navy-2:       #3E5070;
+    --navy-soft:    #6B7E9C;
+    --navy-tint:    #C8D1DF;
+    --char:         #2C2A28;
+    --cream:        #F5EFE2;
+    --linen-ds:     #FAF5EA;
+    --bone:         #F2EBDA;
+    --ds-text:      #1F1D1A;
+    --ds-text-2:    #3A372F;
+    --ds-dim:       #6E6A60;
+    --hairline:     #D9CFB9;
+
+    /* ── BRAND ACCENTS (logo board 2025) ── */
+    --sage:         #93A58F;   /* Soft green accent */
+    --sage-light:   #9EAF98;   /* Lighter sage variant */
+    --peach:        #F8B29A;   /* Warm peach accent */
+    --straw:        #F2CE84;   /* Warm straw yellow accent */
+
+    /* ── SECONDARY / WARMTH ── */
+    --amber:         #D97B2E;   /* Energy, CTAs, playful moments */
+    --marigold:      #F0A84A;   /* Warm highlight, badges, tags */
+    --straw-warm:    #FAE6C0;   /* Warm cream, card backgrounds */
+    --parchment:     #FDF8F0;   /* Warm off-white page background */
+
+    /* ── BLUE ACCENT ── */
+    --slate:         #1B4A6B;   /* Deep trust blue — links, info states */
+    --river:         #2E6FA3;   /* Mid blue — interactive, badges */
+    --sky:           #6AAFD6;   /* Soft blue — hover, icons */
+    --haze:          #D0E8F4;   /* Light tint — info backgrounds */
+    --frost:         #EEF6FB;   /* Near-white blue — subtle fills */
+
+    /* ── NEUTRALS ── */
+    --bark:          #2A2217;   /* Near-black body text */
+    --soil:          #5C4A32;   /* Warm dark brown, subheadings */
+    --clay:          #A08060;   /* Tertiary text, metadata */
+    --sand:          #E8DED0;   /* Border strokes, dividers */
+    --linen:         #F6F2EC;   /* Section fills, neutral cards */
+    --white:         #FFFFFF;
   }
 }
 

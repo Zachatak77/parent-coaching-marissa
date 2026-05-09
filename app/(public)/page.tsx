@@ -17,19 +17,23 @@ const TEXT      = '#1F1D1A'
 const TEXT2     = '#3A372F'
 const DIM       = '#6E6A60'
 const HAIRLINE  = '#D9CFB9'
+const SAGE      = '#93A58F'
+const SAGE_LIGHT = '#9EAF98'
+const PEACH     = '#F8B29A'
+const STRAW     = '#F2CE84'
 
 const D = 'var(--font-display)'
 const B = 'var(--font-body)'
 const U = 'var(--font-ui)'
 
 /* ── Shared components ─────────────────────────────── */
-function Pill({ children, char, cream }: { children: string; char?: boolean; cream?: boolean }) {
+function Pill({ children, char, cream, bg, fg }: { children: string; char?: boolean; cream?: boolean; bg?: string; fg?: string }) {
   return (
     <span style={{
       display: 'inline-flex', alignItems: 'center',
       padding: '7px 22px 8px',
-      background: cream ? LINEN : char ? CHAR : NAVY,
-      color: cream ? TEXT : '#FAF5EA',
+      background: bg ?? (cream ? LINEN : char ? CHAR : NAVY),
+      color: fg ?? (cream ? TEXT : '#FAF5EA'),
       borderRadius: 999,
       fontFamily: U, fontWeight: 600, fontSize: '0.72rem',
       letterSpacing: '.18em', textTransform: 'uppercase' as const,
@@ -52,11 +56,11 @@ function HeartRule({ light, center }: { light?: boolean; center?: boolean }) {
   )
 }
 
-function SecHead({ pill, title, lede }: { pill: string; title: React.ReactNode; lede?: string }) {
+function SecHead({ pill, title, lede, pillBg, pillFg }: { pill: string; title: React.ReactNode; lede?: string; pillBg?: string; pillFg?: string }) {
   return (
     <div style={{ textAlign: 'center', maxWidth: 680, margin: '0 auto 56px' }}>
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
-        <Pill>{pill}</Pill>
+        <Pill bg={pillBg} fg={pillFg}>{pill}</Pill>
       </div>
       <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.05, color: TEXT, letterSpacing: '-0.015em', margin: '0 0 20px' }}>
         {title}
@@ -121,6 +125,7 @@ export default function HomePage() {
       <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: CREAM }}>
         <SecHead
           pill="HOW IT WORKS"
+          pillBg={SAGE}
           title="Getting started is simple."
         />
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-4xl mx-auto">
@@ -128,7 +133,7 @@ export default function HomePage() {
             {
               step: '1',
               title: 'Book a Free Call',
-              body: '20 minutes. No pressure. Just a real conversation about your family and what you\'re navigating.',
+              body: 'A 20-minute conversation about your family. No pressure, just a real conversation about what you\'re navigating.',
             },
             {
               step: '2',
@@ -140,15 +145,23 @@ export default function HomePage() {
               title: 'See the Change',
               body: 'Week by week, you\'ll have the tools, support, and confidence to handle whatever comes up.',
             },
-          ].map(({ step, title, body }) => (
+          ].map(({ step, title, body }, idx) => {
+            const stepColors = [
+              { bg: SAGE,  fg: '#FAF5EA' },
+              { bg: PEACH, fg: TEXT },
+              { bg: STRAW, fg: TEXT },
+            ]
+            const sc = stepColors[idx]
+            return (
             <div key={step} style={{ textAlign: 'center' }}>
-              <div style={{ width: 52, height: 52, borderRadius: '50%', background: NAVY, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
-                <span style={{ fontFamily: U, fontWeight: 700, fontSize: '1rem', color: '#FAF5EA' }}>{step}</span>
+              <div style={{ width: 52, height: 52, borderRadius: '50%', background: sc.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+                <span style={{ fontFamily: U, fontWeight: 700, fontSize: '1rem', color: sc.fg }}>{step}</span>
               </div>
               <h3 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.5rem', lineHeight: 1.1, color: TEXT, margin: '0 0 12px' }}>{title}</h3>
               <p style={{ fontFamily: B, fontSize: '0.98rem', color: TEXT2, lineHeight: 1.6, margin: 0 }}>{body}</p>
             </div>
-          ))}
+            )
+          })}
         </div>
       </section>
 
@@ -193,6 +206,8 @@ export default function HomePage() {
       <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: CREAM }}>
         <SecHead
           pill="PARENT STORIES"
+          pillBg={PEACH}
+          pillFg={TEXT}
           title="Families who said yes."
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
@@ -207,7 +222,7 @@ export default function HomePage() {
             },
           ].map(({ quote, byline }) => (
             <div key={byline} style={{ background: LINEN, borderRadius: 20, padding: '32px 32px', border: `1px solid ${HAIRLINE}` }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill={NAVY_TINT} style={{ marginBottom: 18, display: 'block' }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill={SAGE_LIGHT} style={{ marginBottom: 18, display: 'block' }}>
                 <path d="M12 21s-7.5-4.6-9.5-10.2C1.2 7.4 3.7 4 7.1 4c2 0 3.6 1 4.9 2.6C13.3 5 14.9 4 16.9 4c3.4 0 5.9 3.4 4.6 6.8C19.5 16.4 12 21 12 21z"/>
               </svg>
               <p style={{ fontFamily: B, fontSize: '1.05rem', fontStyle: 'italic', color: TEXT2, lineHeight: 1.65, margin: '0 0 20px' }}>
@@ -279,14 +294,17 @@ export default function HomePage() {
               name: 'A closer bond\nwith your child',
               icon: <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="9" r="3"/><circle cx="16" cy="11" r="2.4"/><path d="M3 19 C3 16 5.5 14 9 14 C12.5 14 15 16 15 19"/><path d="M14 19 C14 17 16 15.5 18.5 15.5"/></svg>,
             },
-          ].map(({ name, icon }) => (
+          ].map(({ name, icon }, idx) => {
+            const outcomeBg = [SAGE_LIGHT, PEACH, STRAW, SAGE][idx]
+            return (
             <div key={name} style={{ textAlign: 'center' }}>
-              <div style={{ width: 80, height: 80, borderRadius: '50%', background: NAVY_TINT, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px', color: TEXT }}>
+              <div style={{ width: 80, height: 80, borderRadius: '50%', background: outcomeBg, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px', color: TEXT }}>
                 {icon}
               </div>
               <p style={{ fontFamily: B, fontSize: '1rem', color: TEXT, lineHeight: 1.4, margin: 0, whiteSpace: 'pre-line' }}>{name}</p>
             </div>
-          ))}
+            )
+          })}
         </div>
       </section>
 
