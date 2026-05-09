@@ -41,6 +41,7 @@ export default async function DashboardOverviewPage() {
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
 
   if (isAdmin) {
+    // Admin overview
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
     const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59).toISOString()
 
@@ -81,6 +82,7 @@ export default async function DashboardOverviewPage() {
           </Button>
         </div>
 
+        {/* Stats */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {[
             { label: 'Active Clients', value: totalClients ?? 0, icon: Users, href: '/dashboard/clients' },
@@ -107,6 +109,7 @@ export default async function DashboardOverviewPage() {
           ))}
         </div>
 
+        {/* Discovery funnel + recent leads */}
         <div className="grid sm:grid-cols-2 gap-6 mb-6">
           <Card className="border-[#D9CFB9]">
             <CardHeader className="pb-3">
@@ -133,7 +136,7 @@ export default async function DashboardOverviewPage() {
               </div>
               <div className="mt-4">
                 <Link href="/dashboard/discovery" className="text-xs font-medium text-[#4A5F7F] hover:underline flex items-center gap-1">
-                  View all leads &amp; assign coaches <ArrowRight className="w-3 h-3" />
+                  View all leads & assign coaches <ArrowRight className="w-3 h-3" />
                 </Link>
               </div>
             </CardContent>
