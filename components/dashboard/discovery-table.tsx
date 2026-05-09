@@ -4,7 +4,6 @@ import * as React from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { formatDistanceToNow } from 'date-fns'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -44,12 +43,20 @@ type DiscoveryCall = {
   notes: string | null
 }
 
-const statusVariants: Record<string, 'blue' | 'yellow' | 'green' | 'darkgreen' | 'gray'> = {
-  new: 'blue',
-  contacted: 'yellow',
-  booked: 'green',
-  converted: 'darkgreen',
-  closed: 'gray',
+const statusColors: Record<string, string> = {
+  new: 'text-[#4A5F7F] font-medium',
+  contacted: 'text-[#8B6914] font-medium',
+  booked: 'text-[#3D6B45] font-medium',
+  converted: 'text-[#1F4D29] font-medium',
+  closed: 'text-[#6E6A60]',
+}
+
+function StatusLabel({ status }: { status: string }) {
+  return (
+    <span className={`text-xs capitalize ${statusColors[status] ?? 'text-[#6E6A60]'}`}>
+      {status}
+    </span>
+  )
 }
 
 const STATUSES = ['new', 'contacted', 'booked', 'converted', 'closed'] as const
@@ -102,15 +109,13 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
           <Select value={status} onValueChange={(v) => handleStatusChange(v as Status)}>
             <SelectTrigger className="w-36 h-8 text-xs">
               <SelectValue>
-                <Badge variant={statusVariants[status] ?? 'gray'}>
-                  {status}
-                </Badge>
+                <StatusLabel status={status} />
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
               {STATUSES.map((s) => (
                 <SelectItem key={s} value={s}>
-                  <Badge variant={statusVariants[s]}>{s}</Badge>
+                  <StatusLabel status={s} />
                 </SelectItem>
               ))}
             </SelectContent>
@@ -213,13 +218,13 @@ function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: 
         <Select value={status} onValueChange={(v) => handleStatusChange(v as Status)}>
           <SelectTrigger className="h-8 text-xs w-32">
             <SelectValue>
-              <Badge variant={statusVariants[status] ?? 'gray'}>{status}</Badge>
+              <StatusLabel status={status} />
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {STATUSES.map((s) => (
               <SelectItem key={s} value={s}>
-                <Badge variant={statusVariants[s]}>{s}</Badge>
+                <StatusLabel status={s} />
               </SelectItem>
             ))}
           </SelectContent>
