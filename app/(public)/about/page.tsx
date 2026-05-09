@@ -7,25 +7,29 @@ export const metadata: Metadata = {
     'Learn about Marissa, her story, her coaching philosophy, and why she became a certified parent coach dedicated to helping families thrive.',
 }
 
-const NAVY      = '#4A5F7F'
-const NAVY_TINT = '#C8D1DF'
-const CREAM     = '#F5EFE2'
-const LINEN     = '#FAF5EA'
-const CHAR      = '#2C2A28'
-const TEXT      = '#1F1D1A'
-const TEXT2     = '#3A372F'
-const HAIRLINE  = '#D9CFB9'
+const NAVY       = '#4A5F7F'
+const NAVY_TINT  = '#C8D1DF'
+const CREAM      = '#F5EFE2'
+const LINEN      = '#FAF5EA'
+const CHAR       = '#2C2A28'
+const TEXT       = '#1F1D1A'
+const TEXT2      = '#3A372F'
+const HAIRLINE   = '#D9CFB9'
+const SAGE       = '#93A58F'
+const SAGE_LIGHT = '#9EAF98'
+const PEACH      = '#F8B29A'
+const STRAW      = '#F2CE84'
 const D = 'var(--font-display)'
 const B = 'var(--font-body)'
 const U = 'var(--font-ui)'
 
-function Pill({ children, char, cream }: { children: string; char?: boolean; cream?: boolean }) {
+function Pill({ children, char, cream, bg, fg }: { children: string; char?: boolean; cream?: boolean; bg?: string; fg?: string }) {
   return (
     <span style={{
       display: 'inline-flex', alignItems: 'center',
       padding: '7px 22px 8px',
-      background: cream ? LINEN : char ? CHAR : NAVY,
-      color: cream ? TEXT : '#FAF5EA',
+      background: bg ?? (cream ? LINEN : char ? CHAR : NAVY),
+      color: fg ?? (cream ? TEXT : '#FAF5EA'),
       borderRadius: 999,
       fontFamily: U, fontWeight: 600, fontSize: '0.72rem',
       letterSpacing: '.18em', textTransform: 'uppercase' as const,
@@ -55,7 +59,7 @@ export default function AboutPage() {
       {/* ── Hero ── */}
       <section className="px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-24" style={{ background: CREAM }}>
         <div style={{ maxWidth: 600 }}>
-          <div style={{ marginBottom: 20 }}><Pill>YOUR COACH</Pill></div>
+          <div style={{ marginBottom: 20 }}><Pill bg={SAGE}>YOUR COACH</Pill></div>
           <h1 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(3rem, 7vw, 5.5rem)', lineHeight: 0.95, color: TEXT, margin: '0 0 20px', letterSpacing: '-0.02em' }}>
             Hi, I&apos;m Marissa.
           </h1>
@@ -70,7 +74,7 @@ export default function AboutPage() {
       <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: LINEN }}>
         <div style={{ maxWidth: 680, margin: '0 auto' }}>
           <div style={{ marginBottom: 32 }}>
-            <div style={{ marginBottom: 16 }}><Pill>MY STORY</Pill></div>
+            <div style={{ marginBottom: 16 }}><Pill bg={PEACH} fg={TEXT}>MY STORY</Pill></div>
             <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 2.8rem)', lineHeight: 1.05, color: TEXT, margin: '0 0 20px', letterSpacing: '-0.015em' }}>
               Why I became a parent coach
             </h2>
@@ -99,7 +103,7 @@ export default function AboutPage() {
       {/* ── Philosophy ── */}
       <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: CREAM }}>
         <div style={{ textAlign: 'center', maxWidth: 680, margin: '0 auto 52px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}><Pill>HOW I WORK</Pill></div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}><Pill bg={STRAW} fg={TEXT}>HOW I WORK</Pill></div>
           <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.05, color: TEXT, margin: '0 0 20px', letterSpacing: '-0.015em' }}>
             My coaching philosophy
           </h2>
@@ -143,7 +147,7 @@ export default function AboutPage() {
               { label: '10+ Years in Special Education', desc: 'Classroom experience working with neurodiverse children ages 3–12' },
               { label: 'Behavior & IEP Expertise', desc: 'Skilled in behavior planning, school communication, and individualized strategies' },
             ].map(({ label, desc }) => (
-              <div key={label} style={{ background: NAVY_TINT, borderRadius: 14, padding: '24px 24px' }}>
+              <div key={label} style={{ background: SAGE_LIGHT, borderRadius: 14, padding: '24px 24px' }}>
                 <p style={{ fontFamily: U, fontWeight: 700, fontSize: '0.78rem', letterSpacing: '.10em', textTransform: 'uppercase', color: TEXT, margin: '0 0 8px' }}>{label}</p>
                 <p style={{ fontFamily: B, fontSize: '0.92rem', color: TEXT2, lineHeight: 1.55, margin: 0 }}>{desc}</p>
               </div>

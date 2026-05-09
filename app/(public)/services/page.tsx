@@ -20,6 +20,7 @@ const LINEN     = '#FAF5EA'
 const TEXT      = '#1F1D1A'
 const TEXT2     = '#3A372F'
 const HAIRLINE  = '#D9CFB9'
+const STRAW     = '#F2CE84'
 const D = 'var(--font-display)'
 const B = 'var(--font-body)'
 const U = 'var(--font-ui)'
@@ -201,7 +202,7 @@ export default function ServicesPage() {
           </p>
           <div className="grid sm:grid-cols-3 gap-4">
             {['Additional Session', 'IEP / School Prep Call', 'Custom Behavior Plan'].map((addon) => (
-              <div key={addon} style={{ background: LINEN, borderRadius: 12, border: `1px solid ${HAIRLINE}`, padding: '18px 22px', display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div key={addon} style={{ background: LINEN, borderRadius: 12, border: `1px solid ${STRAW}`, padding: '18px 22px', display: 'flex', alignItems: 'center', gap: 12 }}>
                 <CheckIcon />
                 <p style={{ fontFamily: U, fontSize: '0.86rem', fontWeight: 600, color: TEXT, margin: 0 }}>{addon}</p>
               </div>

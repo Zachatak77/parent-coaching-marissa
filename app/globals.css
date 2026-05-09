@@ -55,10 +55,16 @@
     --ds-dim:       #6E6A60;
     --hairline:     #D9CFB9;
 
+    /* ── BRAND ACCENTS (logo board 2025) ── */
+    --sage:         #93A58F;   /* Soft green accent */
+    --sage-light:   #9EAF98;   /* Lighter sage variant */
+    --peach:        #F8B29A;   /* Warm peach accent */
+    --straw:        #F2CE84;   /* Warm straw yellow accent */
+
     /* ── SECONDARY / WARMTH ── */
     --amber:         #D97B2E;   /* Energy, CTAs, playful moments */
     --marigold:      #F0A84A;   /* Warm highlight, badges, tags */
-    --straw:         #FAE6C0;   /* Warm cream, card backgrounds */
+    --straw-warm:    #FAE6C0;   /* Warm cream, card backgrounds */
     --parchment:     #FDF8F0;   /* Warm off-white page background */
 
     /* ── BLUE ACCENT ── */

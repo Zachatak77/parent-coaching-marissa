@@ -14,6 +14,7 @@ const LINEN     = '#FAF5EA'
 const TEXT      = '#1F1D1A'
 const TEXT2     = '#3A372F'
 const HAIRLINE  = '#D9CFB9'
+const SAGE_LIGHT = '#9EAF98'
 const D = 'var(--font-display)'
 const B = 'var(--font-body)'
 const U = 'var(--font-ui)'
@@ -115,7 +116,7 @@ export default function BookPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
                 {trustItems.map(({ title, desc, icon }) => (
                   <div key={title} style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                    <div style={{ width: 38, height: 38, borderRadius: '50%', background: NAVY_TINT, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <div style={{ width: 38, height: 38, borderRadius: '50%', background: SAGE_LIGHT, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                       {icon}
                     </div>
                     <div>
