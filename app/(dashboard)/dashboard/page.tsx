@@ -209,7 +209,7 @@ export default async function DashboardOverviewPage() {
   return (
     <div>
       <div className="mb-8">
-        <div className="flex justify-end gap-2 mb-4">
+        <div className="flex gap-2 mb-4">
           <NewClientButton coachId={user!.id} />
           <Button variant="outline" size="sm" asChild className="rounded-full">
             <Link href="/dashboard/discovery" className="flex items-center gap-1.5">
