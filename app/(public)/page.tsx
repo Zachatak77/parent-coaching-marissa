@@ -79,7 +79,7 @@ export default function HomePage() {
     <div style={{ background: CREAM }}>
 
       {/* ── 1. Hero ── */}
-      <section style={{ position: 'relative', overflow: 'hidden', background: CREAM }}>
+      <section style={{ position: 'relative', overflow: 'hidden', background: LINEN }}>
         {/* corner blob */}
         <svg aria-hidden style={{ position: 'absolute', top: 0, right: 0, width: 240, height: 240, pointerEvents: 'none' }} viewBox="0 0 200 200">
           <path fill="#4A5F7F" opacity="0.14" d="M200 0 L200 120 C150 100 110 60 90 0 Z"/>
