@@ -79,7 +79,7 @@ export default function HomePage() {
     <div style={{ background: CREAM }}>
 
       {/* ── 1. Hero ── */}
-      <section style={{ position: 'relative', overflow: 'hidden', background: CREAM }}>
+      <section style={{ position: 'relative', overflow: 'hidden', background: LINEN }}>
         {/* corner blob */}
         <svg aria-hidden style={{ position: 'absolute', top: 0, right: 0, width: 240, height: 240, pointerEvents: 'none' }} viewBox="0 0 200 200">
           <path fill="#4A5F7F" opacity="0.14" d="M200 0 L200 120 C150 100 110 60 90 0 Z"/>
@@ -87,19 +87,14 @@ export default function HomePage() {
 
         <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-24">
           <div style={{ maxWidth: 680 }}>
-            <div style={{ marginBottom: 20 }}><Pill>REIMAGINE</Pill></div>
-            <h1 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(3.6rem, 9vw, 7rem)', lineHeight: 0.95, color: TEXT, margin: '0 0 14px', letterSpacing: '-0.02em' }}>
-              Parenting
+            <h1 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2.6rem, 6vw, 4.4rem)', lineHeight: 1.05, color: TEXT, margin: '0 0 18px', letterSpacing: '-0.02em' }}>
+              Take Charge of Parenting<br />In Your Home
             </h1>
-            <div style={{ margin: '20px 0 22px' }}><HeartRule /></div>
-            {/* Audience specificity */}
-            <p style={{ fontFamily: B, fontSize: '0.96rem', fontStyle: 'italic', color: DIM, margin: '0 0 18px', lineHeight: 1.4 }}>
-              Specialized coaching for parents of neurodiverse children ages 3–12
+            <p style={{ fontFamily: B, fontSize: '1.15rem', fontWeight: 500, color: TEXT2, lineHeight: 1.5, margin: '0 0 14px' }}>
+              Specialized coaching for parents of neurodiverse children.
             </p>
-            <h2 style={{ fontFamily: D, fontWeight: 600, fontSize: '1.15rem', letterSpacing: '.10em', textTransform: 'uppercase', color: TEXT, margin: '0 0 18px', lineHeight: 1.35 }}>
-              Take charge of parenting<br />in your home
-            </h2>
-            <p style={{ fontFamily: B, fontSize: '1.1rem', color: TEXT2, lineHeight: 1.6, maxWidth: 520, margin: '0 0 36px' }}>
+            <div style={{ margin: '18px 0 22px' }}><HeartRule /></div>
+            <p style={{ fontFamily: B, fontSize: '1.05rem', color: TEXT2, lineHeight: 1.6, maxWidth: 520, margin: '0 0 36px' }}>
               You don&apos;t have to do it alone. I&apos;m here to help you feel confident, supported, and in control.
             </p>
             <Link
