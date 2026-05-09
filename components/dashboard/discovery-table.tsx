@@ -53,7 +53,7 @@ const statusColors: Record<string, string> = {
 
 function StatusLabel({ status }: { status: string }) {
   return (
-    <span className={`text-xs capitalize ${statusColors[status] ?? 'text-[#6E6A60]'}`}>
+    <span className={`text-sm capitalize ${statusColors[status] ?? 'text-[#6E6A60]'}`}>
       {status}
     </span>
   )
@@ -107,7 +107,7 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
         </TableCell>
         <TableCell>
           <Select value={status} onValueChange={(v) => handleStatusChange(v as Status)}>
-            <SelectTrigger className="w-36 h-8 text-xs">
+            <SelectTrigger className="w-36 h-9">
               <SelectValue>
                 <StatusLabel status={status} />
               </SelectValue>
@@ -216,7 +216,7 @@ function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: 
 
       <div className="flex flex-wrap items-center gap-3">
         <Select value={status} onValueChange={(v) => handleStatusChange(v as Status)}>
-          <SelectTrigger className="h-8 text-xs w-32">
+          <SelectTrigger className="h-9 w-32">
             <SelectValue>
               <StatusLabel status={status} />
             </SelectValue>
