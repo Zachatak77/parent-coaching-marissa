@@ -74,12 +74,12 @@ export default async function PortalDashboardPage() {
           {
             icon: CheckCircle2,
             label: 'Plan Status',
-            value: plan ? 'Published' : 'Not yet available',
+            value: plan ? 'Active' : 'Pending',
             green: !!plan,
             accentBg: STRAW,
           },
         ].map(({ icon: Icon, label, value, green, accentBg }) => (
-          <div key={label} className="bg-white rounded-2xl border border-[#D9CFB9] p-5 shadow-sm col-span-1 last:col-span-2 sm:last:col-span-1">
+          <div key={label} className="bg-white rounded-2xl border border-[#D9CFB9] p-5 shadow-sm">
             <div className="w-9 h-9 rounded-full flex items-center justify-center mb-3" style={{ background: accentBg }}>
               <Icon className="w-4 h-4 text-[#1F1D1A]" />
             </div>
