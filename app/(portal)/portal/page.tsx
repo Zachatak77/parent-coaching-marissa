@@ -62,7 +62,7 @@ export default async function PortalDashboardPage() {
         <h1 className="text-2xl font-semibold text-[#1F1D1A] mb-1">Welcome back, {firstName}.</h1>
         <p className="text-sm text-[#3A372F]">
           You&rsquo;re on the <strong>{pkg.label}</strong>
-          {pkg.detail && <> · {pkg.detail}</>}
+          {pkg.detail && <> &middot; {pkg.detail}</>}
         </p>
       </div>
 
@@ -83,10 +83,10 @@ export default async function PortalDashboardPage() {
             <div className="w-9 h-9 rounded-full flex items-center justify-center mb-3" style={{ background: accentBg }}>
               <Icon className="w-4 h-4 text-[#1F1D1A]" />
             </div>
-            <p className="text-2xl font-bold text-[#1F1D1A]">{value}</p>
+            {typeof value === 'number' && <p className="text-2xl font-bold text-[#1F1D1A]">{value}</p>}
             <p className="text-xs text-[#6E6A60] mt-0.5">{label}</p>
             {typeof green === 'boolean' && (
-              <span className={`inline-flex items-center mt-2 px-2 py-0.5 rounded-full text-[10px] font-semibold ${green ? 'bg-[#C8D1DF]/40 text-[#1F1D1A]' : 'bg-gray-100 text-gray-500'}`}>
+              <span className={`inline-flex items-center mt-2 px-2 py-0.5 rounded-full text-[10px] font-semibold ${green ? 'bg-[#9EAF98]/30 text-[#1F1D1A]' : 'bg-[#F5EFE2] text-[#6E6A60]'}`}>
                 {green ? 'Active' : 'Pending'}
               </span>
             )}

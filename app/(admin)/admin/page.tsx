@@ -1,6 +1,8 @@
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Users, UserCheck, PhoneCall, CalendarDays, Package } from 'lucide-react'
 
 function formatRelative(dateStr: string) {
@@ -96,11 +98,16 @@ export default async function AdminOverviewPage() {
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-[#1F1D1A]">{greeting}, {firstName}</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          {now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-        </p>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-2xl font-semibold text-[#1F1D1A]">{greeting}, {firstName}</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+          </p>
+        </div>
+        <Button asChild className="bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full text-sm">
+          <Link href="/dashboard/discovery">Manage Leads</Link>
+        </Button>
       </div>
 
       {/* User counts */}
@@ -145,7 +152,7 @@ export default async function AdminOverviewPage() {
               { label: 'Closed', count: discoveryClosed ?? 0, status: 'closed' },
             ].map(({ label, count, status }) => (
               <div key={status} className="flex items-center gap-2 bg-[#F5EFE2] rounded-lg px-3 py-2">
-                <Badge variant={statusColors[status] ?? 'gray'} className="text-[10px]">{label}</Badge>
+                <Badge variant={statusColors[status] ?? 'gray'}>{label}</Badge>
                 <span className="text-sm font-semibold text-[#1F1D1A]">{count}</span>
               </div>
             ))}
@@ -203,7 +210,10 @@ export default async function AdminOverviewPage() {
       <div className="grid sm:grid-cols-2 gap-6">
         <Card className="border-[#D9CFB9]">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-[#1F1D1A]">Recent Discovery Calls</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm font-medium text-[#1F1D1A]">Recent Discovery Calls</CardTitle>
+              <Link href="/dashboard/discovery" className="text-xs text-[#6E6A60] hover:text-[#1F1D1A]">Manage all</Link>
+            </div>
           </CardHeader>
           <CardContent>
             {!recentDiscovery?.length ? (
@@ -216,7 +226,7 @@ export default async function AdminOverviewPage() {
                       <p className="text-sm font-medium text-[#1F1D1A] truncate">{call.name}</p>
                       <p className="text-xs text-muted-foreground">{call.email} · {formatRelative(call.submitted_at)}</p>
                     </div>
-                    <Badge variant={statusColors[call.status] ?? 'gray'} className="flex-shrink-0 text-[10px]">
+                    <Badge variant={statusColors[call.status] ?? 'gray'} className="flex-shrink-0">
                       {call.status}
                     </Badge>
                   </li>
@@ -228,7 +238,10 @@ export default async function AdminOverviewPage() {
 
         <Card className="border-[#D9CFB9]">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-[#1F1D1A]">Recent Sessions</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm font-medium text-[#1F1D1A]">Recent Sessions</CardTitle>
+              <Link href="/dashboard/clients" className="text-xs text-[#6E6A60] hover:text-[#1F1D1A]">View clients</Link>
+            </div>
           </CardHeader>
           <CardContent>
             {!recentSessions?.length ? (

@@ -72,7 +72,7 @@ export default async function DashboardOverviewPage() {
 
     return (
       <div>
-        <div className="flex items-start justify-between mb-8">
+        <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-2xl font-semibold text-[#1F1D1A]">{greeting}, {firstName}</h1>
             <p className="text-sm text-muted-foreground mt-1">Admin overview</p>
@@ -130,7 +130,7 @@ export default async function DashboardOverviewPage() {
                   { label: 'Closed', status: 'closed' },
                 ].map(({ label, status }) => (
                   <div key={status} className="flex items-center gap-1.5 bg-[#F5EFE2] rounded-lg px-3 py-2">
-                    <Badge variant={statusColors[status] ?? 'gray'} className="text-[10px]">{label}</Badge>
+                    <Badge variant={statusColors[status] ?? 'gray'}>{label}</Badge>
                   </div>
                 ))}
               </div>
@@ -162,7 +162,7 @@ export default async function DashboardOverviewPage() {
                         <p className="text-sm font-medium text-[#1F1D1A] truncate">{call.name}</p>
                         <p className="text-xs text-muted-foreground">{formatRelative(call.submitted_at)}</p>
                       </div>
-                      <Badge variant={statusColors[call.status] ?? 'gray'} className="flex-shrink-0 text-[10px]">
+                      <Badge variant={statusColors[call.status] ?? 'gray'} className="flex-shrink-0">
                         {call.status}
                       </Badge>
                     </li>
@@ -208,18 +208,18 @@ export default async function DashboardOverviewPage() {
 
   return (
     <div>
-      <div className="flex items-start justify-between mb-8">
+      <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-semibold text-[#1F1D1A]">{greeting}, {firstName}</h1>
           <p className="text-sm text-muted-foreground mt-1">Here&apos;s an overview of your coaching practice.</p>
         </div>
         <div className="flex gap-2">
           <NewClientButton coachId={user!.id} />
-          <Button variant="outline" size="sm" asChild>
+          <Button variant="outline" size="sm" asChild className="rounded-full">
             <Link href="/dashboard/discovery" className="flex items-center gap-1.5">
               Discovery Queue
               {(newDiscovery ?? 0) > 0 && (
-                <span className="flex items-center justify-center w-4 h-4 rounded-full bg-blue-500 text-white text-[9px] font-bold">
+                <span className="flex items-center justify-center w-4 h-4 rounded-full bg-[#4A5F7F] text-white text-[9px] font-bold">
                   {newDiscovery}
                 </span>
               )}
@@ -273,7 +273,7 @@ export default async function DashboardOverviewPage() {
                       <p className="text-sm font-medium text-[#1F1D1A] truncate">{call.name}</p>
                       <p className="text-xs text-muted-foreground">{formatRelative(call.submitted_at)}</p>
                     </div>
-                    <Badge variant={statusColors[call.status] ?? 'gray'} className="flex-shrink-0 text-[10px]">{call.status}</Badge>
+                    <Badge variant={statusColors[call.status] ?? 'gray'} className="flex-shrink-0">{call.status}</Badge>
                   </li>
                 ))}
               </ul>
@@ -301,7 +301,7 @@ export default async function DashboardOverviewPage() {
                         <p className="text-sm font-medium text-[#1F1D1A] truncate">{clientName}</p>
                         <p className="text-xs text-muted-foreground">{new Date(session.session_date).toLocaleDateString()}</p>
                       </div>
-                      <Badge variant={session.shared_with_parent ? 'green' : 'gray'} className="flex-shrink-0 text-[10px]">
+                      <Badge variant={session.shared_with_parent ? 'green' : 'gray'} className="flex-shrink-0">
                         {session.shared_with_parent ? 'Shared' : 'Private'}
                       </Badge>
                     </li>
