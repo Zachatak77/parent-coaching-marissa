@@ -11,9 +11,10 @@ import { cn } from '@/lib/utils'
 interface PortalSidebarProps {
   firstName: string
   initials: string
+  intakeSubmitted: boolean
 }
 
-const navItems = [
+const allNavItems = [
   { href: '/portal', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/portal/plan', label: 'My Plan', icon: BookOpen },
   { href: '/portal/sessions', label: 'Sessions', icon: CalendarDays },
@@ -31,10 +32,28 @@ const pageTitles: Record<string, string> = {
   '/portal/profile': 'Profile',
 }
 
-export function PortalSidebar({ firstName, initials }: PortalSidebarProps) {
+export function PortalDesktopHeader({ initials }: { initials: string }) {
+  const pathname = usePathname()
+  const pageTitle = pageTitles[pathname] ?? 'Portal'
+
+  return (
+    <header className="hidden lg:flex items-center justify-between px-8 py-4 bg-[#FAF5EA] border-b border-[#D9CFB9]">
+      <span className="text-sm font-semibold text-[#1F1D1A]">{pageTitle}</span>
+      <div className="w-9 h-9 rounded-full bg-[#4A5F7F] flex items-center justify-center text-xs font-bold text-white">
+        {initials}
+      </div>
+    </header>
+  )
+}
+
+export function PortalSidebar({ firstName, initials, intakeSubmitted }: PortalSidebarProps) {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = React.useState(false)
   const pageTitle = pageTitles[pathname] ?? 'Portal'
+
+  const navItems = allNavItems.filter(
+    (item) => item.href !== '/portal/intake' || !intakeSubmitted
+  )
 
   const isActive = (href: string) =>
     href === '/portal' ? pathname === '/portal' : pathname.startsWith(href)
@@ -105,12 +124,9 @@ export function PortalSidebar({ firstName, initials }: PortalSidebarProps) {
         {sidebarContent}
       </aside>
 
-      {/* Mobile top bar */}
+      {/* Mobile top bar — single bar showing page title */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-40 text-[#FAF5EA] flex items-center justify-between px-4 h-14" style={{ background: '#2C2A28' }}>
-        <div className="flex items-center gap-2.5">
-          <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: '0.56rem', letterSpacing: '.22em', textTransform: 'uppercase', color: '#C8D1DF' }}>Reimagine</span>
-          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.05rem', color: '#FAF5EA' }}>Parenting</span>
-        </div>
+        <span className="text-sm font-semibold">{pageTitle}</span>
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-[#4A5F7F] flex items-center justify-center text-xs font-bold text-[#FAF5EA]">
             {initials}
@@ -136,25 +152,28 @@ export function PortalSidebar({ firstName, initials }: PortalSidebarProps) {
           </div>
         </div>
       )}
-
-      {/* Mobile page title bar */}
-      <div className="lg:hidden fixed top-14 left-0 right-0 z-30 bg-[#F5EFE2] border-b border-[#D9CFB9] px-4 py-3">
-        <h1 className="text-sm font-semibold text-[#1F1D1A]">{pageTitle}</h1>
-      </div>
     </>
   )
 }
 
-export function PortalMobileTabs() {
+export function PortalMobileTabs({ intakeSubmitted }: { intakeSubmitted: boolean }) {
   const pathname = usePathname()
 
-  const tabs = [
-    { href: '/portal', label: 'Home', icon: LayoutDashboard },
-    { href: '/portal/plan', label: 'Plan', icon: BookOpen },
-    { href: '/portal/sessions', label: 'Sessions', icon: CalendarDays },
-    { href: '/portal/resources', label: 'Resources', icon: Library },
-    { href: '/portal/profile', label: 'Profile', icon: User },
-  ]
+  const tabs = intakeSubmitted
+    ? [
+        { href: '/portal', label: 'Home', icon: LayoutDashboard },
+        { href: '/portal/plan', label: 'Plan', icon: BookOpen },
+        { href: '/portal/sessions', label: 'Sessions', icon: CalendarDays },
+        { href: '/portal/resources', label: 'Resources', icon: Library },
+        { href: '/portal/profile', label: 'Profile', icon: User },
+      ]
+    : [
+        { href: '/portal', label: 'Home', icon: LayoutDashboard },
+        { href: '/portal/plan', label: 'Plan', icon: BookOpen },
+        { href: '/portal/sessions', label: 'Sessions', icon: CalendarDays },
+        { href: '/portal/intake', label: 'Intake', icon: ClipboardList },
+        { href: '/portal/profile', label: 'Profile', icon: User },
+      ]
 
   const isActive = (href: string) =>
     href === '/portal' ? pathname === '/portal' : pathname.startsWith(href)

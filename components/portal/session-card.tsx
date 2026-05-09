@@ -11,7 +11,21 @@ interface SessionCardProps {
 }
 
 export function SessionCard({ sessionDate, sessionNotes, actionItems }: SessionCardProps) {
+  const storageKey = `action-items-${sessionDate}`
   const [checked, setChecked] = React.useState<Record<number, boolean>>({})
+
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem(storageKey)
+      if (saved) setChecked(JSON.parse(saved))
+    } catch { /* localStorage unavailable */ }
+  }, [storageKey])
+
+  function toggle(index: number, value: boolean) {
+    const next = { ...checked, [index]: value }
+    setChecked(next)
+    try { localStorage.setItem(storageKey, JSON.stringify(next)) } catch { /* ignore */ }
+  }
 
   const items = actionItems?.filter((i) => i.trim()) ?? []
 
@@ -31,18 +45,17 @@ export function SessionCard({ sessionDate, sessionNotes, actionItems }: SessionC
       {items.length > 0 && (
         <div>
           <p className="text-xs font-semibold text-[#1F1D1A] mb-2">Your Action Steps</p>
-          <p className="text-xs text-[#6E6A60] mb-3">Use these as a personal checklist during the week. Resets on page reload.</p>
           <ul className="space-y-2">
             {items.map((item, i) => (
               <li key={i} className="flex items-start gap-3">
                 <Checkbox
-                  id={`item-${i}`}
+                  id={`${storageKey}-${i}`}
                   checked={!!checked[i]}
-                  onCheckedChange={(v) => setChecked((c) => ({ ...c, [i]: !!v }))}
+                  onCheckedChange={(v) => toggle(i, !!v)}
                   className="mt-0.5 border-[#D9CFB9] data-[state=checked]:bg-[#4A5F7F] data-[state=checked]:border-[#4A5F7F]"
                 />
                 <label
-                  htmlFor={`item-${i}`}
+                  htmlFor={`${storageKey}-${i}`}
                   className={`text-sm cursor-pointer transition-colors ${checked[i] ? 'line-through text-[#6E6A60]' : 'text-[#3A372F]'}`}
                 >
                   {item}

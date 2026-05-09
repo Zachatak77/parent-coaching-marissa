@@ -76,8 +76,8 @@ export default async function ResourcesPage() {
 
       {resourcesWithUrls.length === 0 ? (
         <div className="bg-white rounded-2xl border border-[#D9CFB9] p-10 shadow-sm text-center space-y-3">
-          <div className="flex items-center justify-center w-14 h-14 rounded-full bg-[#C8D1DF]/40 mx-auto">
-            <Library className="w-7 h-7 text-[#6E6A60]" />
+          <div className="flex items-center justify-center w-14 h-14 rounded-full mx-auto" style={{ background: '#F8B29A' }}>
+            <Library className="w-7 h-7 text-[#1F1D1A]" />
           </div>
           <p className="text-sm text-[#6E6A60] max-w-sm mx-auto leading-relaxed">
             Your coach will share helpful resources here throughout your program. Check back after your sessions.
@@ -111,7 +111,7 @@ export default async function ResourcesPage() {
                       </span>
                     ))}
                     {r.is_public && (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 text-gray-500">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#C8D1DF]/30 text-[#1F1D1A]">
                         Public
                       </span>
                     )}

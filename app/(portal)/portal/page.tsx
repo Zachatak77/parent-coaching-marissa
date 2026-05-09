@@ -13,6 +13,10 @@ const packageInfo: Record<string, { label: string; detail: string }> = {
   ongoing: { label: 'Ongoing Support Plan', detail: '' },
 }
 
+const SAGE_LIGHT = '#9EAF98'
+const PEACH      = '#F8B29A'
+const STRAW      = '#F2CE84'
+
 export default async function PortalDashboardPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -60,25 +64,25 @@ export default async function PortalDashboardPage() {
           You&rsquo;re on the <strong>{pkg.label}</strong>
           {pkg.detail && <> · {pkg.detail}</>}
         </p>
-        <span className="inline-flex items-center mt-3 px-3 py-1 rounded-full text-xs font-semibold bg-[#C8D1DF]/40 text-[#1F1D1A]">
-          {pkg.label}
-        </span>
       </div>
 
-      {/* Stats row */}
-      <div className="grid grid-cols-3 gap-4">
+      {/* Stats row — 2 cols on mobile, 3 on sm+ */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {[
-          { icon: CalendarDays, label: 'Sessions Completed', value: sessionsCount ?? 0 },
-          { icon: Library, label: 'Resources Shared', value: resourcesCount ?? 0 },
+          { icon: CalendarDays, label: 'Sessions Completed', value: sessionsCount ?? 0, accentBg: SAGE_LIGHT },
+          { icon: Library, label: 'Resources Shared', value: resourcesCount ?? 0, accentBg: PEACH },
           {
             icon: CheckCircle2,
             label: 'Plan Status',
             value: plan ? 'Published' : 'Not yet available',
             green: !!plan,
+            accentBg: STRAW,
           },
-        ].map(({ icon: Icon, label, value, green }) => (
-          <div key={label} className="bg-white rounded-2xl border border-[#D9CFB9] p-5 shadow-sm">
-            <Icon className="w-5 h-5 text-[#6E6A60] mb-3" />
+        ].map(({ icon: Icon, label, value, green, accentBg }) => (
+          <div key={label} className="bg-white rounded-2xl border border-[#D9CFB9] p-5 shadow-sm col-span-1 last:col-span-2 sm:last:col-span-1">
+            <div className="w-9 h-9 rounded-full flex items-center justify-center mb-3" style={{ background: accentBg }}>
+              <Icon className="w-4 h-4 text-[#1F1D1A]" />
+            </div>
             <p className="text-2xl font-bold text-[#1F1D1A]">{value}</p>
             <p className="text-xs text-[#6E6A60] mt-0.5">{label}</p>
             {typeof green === 'boolean' && (

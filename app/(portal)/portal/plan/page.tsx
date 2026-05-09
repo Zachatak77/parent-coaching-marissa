@@ -38,8 +38,8 @@ export default async function PlanPage() {
       <div className="space-y-6">
         <h1 className="text-2xl font-semibold text-[#1F1D1A]">My Plan</h1>
         <div className="bg-white rounded-2xl border border-[#D9CFB9] p-10 shadow-sm text-center space-y-4">
-          <div className="flex items-center justify-center w-16 h-16 rounded-full bg-[#C8D1DF]/40 mx-auto">
-            <BookOpen className="w-8 h-8 text-[#6E6A60]" />
+          <div className="flex items-center justify-center w-16 h-16 rounded-full mx-auto" style={{ background: '#F2CE84' }}>
+            <BookOpen className="w-8 h-8 text-[#1F1D1A]" />
           </div>
           <h2 className="text-lg font-semibold text-[#1F1D1A]">Your plan is on its way.</h2>
           <p className="text-sm text-[#6E6A60] max-w-sm mx-auto leading-relaxed">

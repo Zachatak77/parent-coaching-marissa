@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getClientForUser } from '@/lib/supabase/queries'
-import { PortalSidebar, PortalMobileTabs } from '@/components/portal/portal-sidebar'
+import { PortalSidebar, PortalMobileTabs, PortalDesktopHeader } from '@/components/portal/portal-sidebar'
 
 export default async function PortalLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -56,31 +56,30 @@ export default async function PortalLayout({ children }: { children: React.React
     )
   }
 
+  const { data: intake } = await supabase
+    .from('intake_forms')
+    .select('client_id')
+    .eq('client_id', client.id)
+    .maybeSingle()
+  const intakeSubmitted = !!intake
+
   return (
     <div className="min-h-screen bg-[#F5EFE2] lg:flex">
-      <PortalSidebar firstName={firstName} initials={initials} />
+      <PortalSidebar firstName={firstName} initials={initials} intakeSubmitted={intakeSubmitted} />
 
       {/* Main content */}
       <div className="flex-1 min-w-0 flex flex-col">
-        {/* Desktop top bar */}
-        <header className="hidden lg:flex items-center justify-between px-8 py-4 bg-[#FAF5EA] border-b border-[#D9CFB9]">
-          <span />
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-[#4A5F7F] flex items-center justify-center text-xs font-bold text-white">
-              {initials}
-            </div>
-          </div>
-        </header>
+        <PortalDesktopHeader initials={initials} />
 
-        {/* Page content */}
-        <main className="flex-1 px-4 py-6 pt-28 lg:pt-6 lg:px-8 pb-28 lg:pb-10 overflow-auto">
+        {/* Page content — pt-16 on mobile accounts for the single fixed top bar (h-14) */}
+        <main className="flex-1 px-4 py-6 pt-16 lg:pt-6 lg:px-8 pb-28 lg:pb-10 overflow-auto">
           <div className="max-w-4xl mx-auto">
             {children}
           </div>
         </main>
       </div>
 
-      <PortalMobileTabs />
+      <PortalMobileTabs intakeSubmitted={intakeSubmitted} />
     </div>
   )
 }

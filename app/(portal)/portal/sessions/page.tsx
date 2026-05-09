@@ -30,8 +30,8 @@ export default async function SessionsPage() {
 
       {!sessions || sessions.length === 0 ? (
         <div className="bg-white rounded-2xl border border-[#D9CFB9] p-10 shadow-sm text-center space-y-3">
-          <div className="flex items-center justify-center w-14 h-14 rounded-full bg-[#C8D1DF]/40 mx-auto">
-            <CalendarDays className="w-7 h-7 text-[#6E6A60]" />
+          <div className="flex items-center justify-center w-14 h-14 rounded-full mx-auto" style={{ background: '#9EAF98' }}>
+            <CalendarDays className="w-7 h-7 text-[#1F1D1A]" />
           </div>
           <p className="text-sm text-[#6E6A60] max-w-sm mx-auto leading-relaxed">
             Your coach will share session recaps here after each session. They&rsquo;ll include key takeaways and your action steps for the week.
