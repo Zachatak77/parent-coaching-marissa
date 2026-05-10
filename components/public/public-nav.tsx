@@ -82,7 +82,7 @@ export function PublicNav() {
             onMouseEnter={e => (e.currentTarget.style.opacity = '0.88')}
             onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
           >
-            Book a Call
+            Book a Consult
           </Link>
         </div>
 
@@ -135,7 +135,7 @@ export function PublicNav() {
               marginTop: 4,
             }}
           >
-            Book a Call
+            Book a Consult
           </Link>
         </div>
       </div>

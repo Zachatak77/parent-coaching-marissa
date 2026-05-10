@@ -140,9 +140,6 @@ export default function ServicesPage() {
           <p style={{ fontFamily: B, fontSize: '1.1rem', color: TEXT2, lineHeight: 1.6, margin: '0 0 18px' }}>
             Every family is different. Choose the level of support that fits where you are right now.
           </p>
-          <span style={{ fontFamily: U, fontSize: '0.76rem', fontWeight: 500, color: TEXT2, letterSpacing: '.04em', background: NAVY_TINT, display: 'inline-block', padding: '8px 18px', borderRadius: 999 }}>
-            Pricing is shared during your free discovery call
-          </span>
         </div>
       </section>
 
@@ -185,7 +182,7 @@ export default function ServicesPage() {
                   href="/book"
                   style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', padding: '13px 20px', background: NAVY, color: '#FAF5EA', borderRadius: 999, fontFamily: U, fontWeight: 600, fontSize: '0.72rem', letterSpacing: '.14em', textTransform: 'uppercase' as const, textDecoration: 'none' }}
                 >
-                  Book a Free Call
+                  BOOK A CONSULT
                 </Link>
               </div>
             </div>

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     'Parent coaching for families navigating challenging behavior. Work with Marissa — a special-education teacher specializing in neurodiverse children ages 3–12.',
 }
 
-/* ── Design tokens ─────────────────────────────────── */
+/* ── Design tokens ──────────────────────────────────────────── */
 const NAVY      = '#4A5F7F'
 const NAVY_TINT = '#C8D1DF'
 const CREAM     = '#F5EFE2'
@@ -118,7 +118,7 @@ export default function HomePage() {
         <SecHead pill="HOW IT WORKS" pillBg={SAGE} title="Getting started is simple." />
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-4xl mx-auto">
           {[
-            { step: '1', title: 'Book a Free Call', body: "A 20-minute conversation about your family. No pressure, just a real conversation about what you're navigating." },
+            { step: '1', title: 'Book a Consult', body: "A 20-minute conversation about your family. No pressure, just a real conversation about what you're navigating." },
             { step: '2', title: 'Get Your Plan', body: "Marissa builds a personalized strategy plan around your child's specific needs and your family's goals." },
             { step: '3', title: 'See the Change', body: "Week by week, you'll have the tools, support, and confidence to handle whatever comes up." },
           ].map(({ step, title, body }, idx) => {
