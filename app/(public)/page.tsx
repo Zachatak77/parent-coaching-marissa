@@ -98,7 +98,7 @@ export default function HomePage() {
               href="/book"
               style={{ display: 'inline-flex', alignItems: 'center', gap: 12, padding: '15px 32px', background: NAVY, color: '#FAF5EA', borderRadius: 999, fontFamily: U, fontWeight: 600, fontSize: '0.84rem', letterSpacing: '.16em', textTransform: 'uppercase', textDecoration: 'none' }}
             >
-              BOOK YOUR FREE CALL →
+              BOOK A CONSULT →
             </Link>
           </div>
         </div>
@@ -233,7 +233,7 @@ export default function HomePage() {
         <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2.2rem, 5vw, 3.4rem)', lineHeight: 1.05, color: '#FAF5EA', margin: '0 0 20px', letterSpacing: '-0.015em' }}>You&apos;re not doing<br />it wrong.</h2>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 22 }}><HeartRule light center /></div>
         <p style={{ fontFamily: B, fontSize: '1.1rem', color: '#E0D9C7', lineHeight: 1.55, maxWidth: 520, margin: '0 auto 36px' }}>You just need the right tools, support, and strategies that actually work for your child and your family.</p>
-        <Link href="/book" style={{ display: 'inline-flex', alignItems: 'center', padding: '15px 36px', background: '#FAF5EA', color: TEXT, borderRadius: 999, fontFamily: U, fontWeight: 600, fontSize: '0.84rem', letterSpacing: '.16em', textTransform: 'uppercase', textDecoration: 'none' }}>BOOK YOUR FREE CALL →</Link>
+        <Link href="/book" style={{ display: 'inline-flex', alignItems: 'center', padding: '15px 36px', background: '#FAF5EA', color: TEXT, borderRadius: 999, fontFamily: U, fontWeight: 600, fontSize: '0.84rem', letterSpacing: '.16em', textTransform: 'uppercase', textDecoration: 'none' }}>BOOK A CONSULT →</Link>
       </section>
 
     </div>

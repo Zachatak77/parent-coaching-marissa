@@ -174,7 +174,7 @@ export default function AboutPage() {
           href="/book"
           style={{ display: 'inline-flex', alignItems: 'center', padding: '15px 36px', background: LINEN, color: TEXT, borderRadius: 999, fontFamily: U, fontWeight: 600, fontSize: '0.84rem', letterSpacing: '.16em', textTransform: 'uppercase', textDecoration: 'none' }}
         >
-          BOOK YOUR FREE CALL →
+          BOOK A CONSULT →
         </Link>
       </section>
 
