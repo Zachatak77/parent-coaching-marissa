@@ -109,9 +109,7 @@ function AdminDiscoveryRow({ call, coaches }: { call: DiscoveryCall; coaches: Co
           <Select value={status} onValueChange={(v) => handleStatusChange(v as Status)}>
             <SelectTrigger className="w-32 h-7 text-xs">
               <SelectValue>
-                <Badge variant={statusVariants[status] ?? 'gray'} className="text-[10px]">
-                  {status}
-                </Badge>
+                <Badge variant={statusVariants[status] ?? 'gray'} className="text-[10px]">{status}</Badge>
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
@@ -140,11 +138,7 @@ function AdminDiscoveryRow({ call, coaches }: { call: DiscoveryCall; coaches: Co
           </Select>
         </td>
         <td className="px-4 py-3">
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="text-muted-foreground hover:text-[#1F1D1A] transition-colors"
-            aria-label="Toggle details"
-          >
+          <button onClick={() => setExpanded(!expanded)} className="text-muted-foreground hover:text-[#1F1D1A] transition-colors" aria-label="Toggle details">
             {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
         </td>
@@ -176,14 +170,7 @@ function AdminDiscoveryRow({ call, coaches }: { call: DiscoveryCall; coaches: Co
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Internal Notes</p>
                 {noteSaving && <span className="text-xs text-muted-foreground">Saving…</span>}
               </div>
-              <Textarea
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                onBlur={handleNoteBlur}
-                placeholder='e.g. "Left voicemail 4/21", "Scheduled for Thursday"'
-                rows={3}
-                className="resize-none text-sm"
-              />
+              <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} onBlur={handleNoteBlur} placeholder='e.g. "Left voicemail 4/21"' rows={3} className="resize-none text-sm" />
             </div>
           </td>
         </tr>
@@ -201,25 +188,15 @@ function MobileAdminCard({ call, coaches }: { call: DiscoveryCall; coaches: Coac
   const handleStatusChange = async (newStatus: Status) => {
     setStatus(newStatus)
     const result = await updateDiscoveryStatusAction(call.id, newStatus)
-    if (result.error) {
-      toast.error(result.error)
-      setStatus(call.status as Status)
-    } else {
-      toast.success('Status updated')
-      router.refresh()
-    }
+    if (result.error) { toast.error(result.error); setStatus(call.status as Status) }
+    else { toast.success('Status updated'); router.refresh() }
   }
 
   const handleCoachChange = async (newCoachId: string) => {
     setCoachId(newCoachId)
     const result = await assignCoachAction(call.id, newCoachId)
-    if (result.error) {
-      toast.error(result.error)
-      setCoachId(call.coach_id ?? '')
-    } else {
-      toast.success('Coach assigned')
-      router.refresh()
-    }
+    if (result.error) { toast.error(result.error); setCoachId(call.coach_id ?? '') }
+    else { toast.success('Coach assigned'); router.refresh() }
   }
 
   const assignedCoach = coaches.find((c) => c.id === coachId)
@@ -231,44 +208,29 @@ function MobileAdminCard({ call, coaches }: { call: DiscoveryCall; coaches: Coac
           <p className="text-sm font-semibold text-[#1F1D1A]">{call.name}</p>
           <p className="text-xs text-muted-foreground truncate">{call.email}</p>
         </div>
-        <Badge variant={statusVariants[status] ?? 'gray'} className="text-[10px] flex-shrink-0">
-          {status}
-        </Badge>
+        <Badge variant={statusVariants[status] ?? 'gray'} className="text-[10px] flex-shrink-0">{status}</Badge>
       </div>
-      {call.main_concern && (
-        <p className="text-xs text-muted-foreground line-clamp-2">{call.main_concern}</p>
-      )}
+      {call.main_concern && <p className="text-xs text-muted-foreground line-clamp-2">{call.main_concern}</p>}
       <div className="flex flex-wrap items-center gap-2 pt-1">
         <Select value={status} onValueChange={(v) => handleStatusChange(v as Status)}>
-          <SelectTrigger className="h-7 text-xs w-32">
-            <SelectValue />
-          </SelectTrigger>
+          <SelectTrigger className="h-7 text-xs w-32"><SelectValue /></SelectTrigger>
           <SelectContent>
             {STATUSES.map((s) => (
-              <SelectItem key={s} value={s}>
-                <Badge variant={statusVariants[s]} className="text-[10px]">{s}</Badge>
-              </SelectItem>
+              <SelectItem key={s} value={s}><Badge variant={statusVariants[s]} className="text-[10px]">{s}</Badge></SelectItem>
             ))}
           </SelectContent>
         </Select>
         <Select value={coachId} onValueChange={handleCoachChange}>
           <SelectTrigger className="h-7 text-xs w-36">
-            <SelectValue placeholder="Unassigned">
-              {assignedCoach ? (assignedCoach.full_name ?? assignedCoach.email) : 'Unassigned'}
-            </SelectValue>
+            <SelectValue placeholder="Unassigned">{assignedCoach ? (assignedCoach.full_name ?? assignedCoach.email) : 'Unassigned'}</SelectValue>
           </SelectTrigger>
           <SelectContent>
             {coaches.map((c) => (
-              <SelectItem key={c.id} value={c.id} className="text-xs">
-                {c.full_name ?? c.email}
-              </SelectItem>
+              <SelectItem key={c.id} value={c.id} className="text-xs">{c.full_name ?? c.email}</SelectItem>
             ))}
           </SelectContent>
         </Select>
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="text-xs text-muted-foreground hover:text-[#1F1D1A] ml-auto"
-        >
+        <button onClick={() => setExpanded(!expanded)} className="text-xs text-muted-foreground hover:text-[#1F1D1A] ml-auto">
           {expanded ? 'Less' : 'More'}
         </button>
       </div>
@@ -283,21 +245,12 @@ function MobileAdminCard({ call, coaches }: { call: DiscoveryCall; coaches: Coac
   )
 }
 
-export function AdminDiscoveryTable({
-  calls,
-  coaches,
-}: {
-  calls: DiscoveryCall[]
-  coaches: Coach[]
-}) {
+export function AdminDiscoveryTable({ calls, coaches }: { calls: DiscoveryCall[]; coaches: Coach[] }) {
   const [search, setSearch] = React.useState('')
   const [statusFilter, setStatusFilter] = React.useState('all')
 
   const filtered = calls.filter((c) => {
-    const matchSearch =
-      !search ||
-      c.name.toLowerCase().includes(search.toLowerCase()) ||
-      c.email.toLowerCase().includes(search.toLowerCase())
+    const matchSearch = !search || c.name.toLowerCase().includes(search.toLowerCase()) || c.email.toLowerCase().includes(search.toLowerCase())
     const matchStatus = statusFilter === 'all' || c.status === statusFilter
     return matchSearch && matchStatus
   })
@@ -307,55 +260,35 @@ export function AdminDiscoveryTable({
       <div className="flex flex-wrap gap-3 items-center">
         <div className="relative flex-1 min-w-[200px] max-w-sm">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search by name or email..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-8"
-          />
+          <Input placeholder="Search by name or email..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8" />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-40">
-            <SelectValue placeholder="All statuses" />
-          </SelectTrigger>
+          <SelectTrigger className="w-40"><SelectValue placeholder="All statuses" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Statuses</SelectItem>
-            {STATUSES.map((s) => (
-              <SelectItem key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</SelectItem>
-            ))}
+            {STATUSES.map((s) => <SelectItem key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</SelectItem>)}
           </SelectContent>
         </Select>
       </div>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-12 text-muted-foreground text-sm">
-          No discovery calls found.
-        </div>
+        <div className="text-center py-12 text-muted-foreground text-sm">No discovery calls found.</div>
       ) : (
         <>
-          {/* Mobile card view */}
           <div className="lg:hidden space-y-3">
-            {filtered.map((call) => (
-              <MobileAdminCard key={call.id} call={call} coaches={coaches} />
-            ))}
+            {filtered.map((call) => <MobileAdminCard key={call.id} call={call} coaches={coaches} />)}
           </div>
-
-          {/* Desktop table view */}
           <div className="hidden lg:block rounded-md border border-[#D9CFB9] bg-white overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-muted/30">
                 <tr>
                   {['Name / Email', 'Child Ages', 'Main Concern', 'Submitted', 'Status', 'Assigned Coach', ''].map((h) => (
-                    <th key={h} className="text-left px-4 py-3 text-xs font-medium text-muted-foreground whitespace-nowrap">
-                      {h}
-                    </th>
+                    <th key={h} className="text-left px-4 py-3 text-xs font-medium text-muted-foreground whitespace-nowrap">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((call) => (
-                  <AdminDiscoveryRow key={call.id} call={call} coaches={coaches} />
-                ))}
+                {filtered.map((call) => <AdminDiscoveryRow key={call.id} call={call} coaches={coaches} />)}
               </tbody>
             </table>
           </div>

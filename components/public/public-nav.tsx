@@ -39,8 +39,8 @@ export function PublicNav() {
         {/* Logo */}
         <Link href="/" className="flex items-center flex-shrink-0">
           <div>
-            <span style={{ display: 'block', fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: '0.62rem', letterSpacing: '.20em', textTransform: 'uppercase', color: NAVY, lineHeight: 1, marginBottom: 2 }}>Reimagine</span>
-            <span style={{ display: 'block', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.2rem', color: '#1F1D1A', lineHeight: 1, paddingLeft: 12 }}>Parenting</span>
+            <span style={{ display: 'block', fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.85rem', letterSpacing: '.22em', textTransform: 'uppercase', color: NAVY, lineHeight: 1, marginBottom: 1 }}>Reimagine</span>
+            <span style={{ display: 'block', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.25rem', color: '#1F1D1A', lineHeight: 1 }}>Parenting</span>
           </div>
         </Link>
 

@@ -4,7 +4,6 @@
 
 @layer base {
   :root {
-    /* Warm cream background: #F5F0E8 → hsl(37, 40%, 94%) */
     --background: 37 40% 94%;
     --foreground: 30 10% 15%;
 
@@ -14,7 +13,6 @@
     --popover: 0 0% 100%;
     --popover-foreground: 30 10% 15%;
 
-    /* Dark forest green: #2D5016 → hsl(96, 38%, 20%) */
     --primary: 96 38% 20%;
     --primary-foreground: 37 40% 94%;
 
@@ -24,7 +22,6 @@
     --muted: 37 20% 88%;
     --muted-foreground: 30 10% 45%;
 
-    /* Accent: mid-range forest green */
     --accent: 96 30% 35%;
     --accent-foreground: 37 40% 94%;
 
@@ -56,30 +53,30 @@
     --hairline:     #D9CFB9;
 
     /* ── BRAND ACCENTS (logo board 2025) ── */
-    --sage:         #93A58F;   /* Soft green accent */
-    --sage-light:   #9EAF98;   /* Lighter sage variant */
-    --peach:        #F8B29A;   /* Warm peach accent */
-    --straw:        #F2CE84;   /* Warm straw yellow accent */
+    --sage:         #93A58F;
+    --sage-light:   #9EAF98;
+    --peach:        #F8B29A;
+    --straw:        #F2CE84;
 
     /* ── SECONDARY / WARMTH ── */
-    --amber:         #D97B2E;   /* Energy, CTAs, playful moments */
-    --marigold:      #F0A84A;   /* Warm highlight, badges, tags */
-    --straw-warm:    #FAE6C0;   /* Warm cream, card backgrounds */
-    --parchment:     #FDF8F0;   /* Warm off-white page background */
+    --amber:         #D97B2E;
+    --marigold:      #F0A84A;
+    --straw-warm:    #FAE6C0;
+    --parchment:     #FDF8F0;
 
     /* ── BLUE ACCENT ── */
-    --slate:         #1B4A6B;   /* Deep trust blue — links, info states */
-    --river:         #2E6FA3;   /* Mid blue — interactive, badges */
-    --sky:           #6AAFD6;   /* Soft blue — hover, icons */
-    --haze:          #D0E8F4;   /* Light tint — info backgrounds */
-    --frost:         #EEF6FB;   /* Near-white blue — subtle fills */
+    --slate:         #1B4A6B;
+    --river:         #2E6FA3;
+    --sky:           #6AAFD6;
+    --haze:          #D0E8F4;
+    --frost:         #EEF6FB;
 
     /* ── NEUTRALS ── */
-    --bark:          #2A2217;   /* Near-black body text */
-    --soil:          #5C4A32;   /* Warm dark brown, subheadings */
-    --clay:          #A08060;   /* Tertiary text, metadata */
-    --sand:          #E8DED0;   /* Border strokes, dividers */
-    --linen:         #F6F2EC;   /* Section fills, neutral cards */
+    --bark:          #2A2217;
+    --soil:          #5C4A32;
+    --clay:          #A08060;
+    --sand:          #E8DED0;
+    --linen:         #F6F2EC;
     --white:         #FFFFFF;
   }
 }
@@ -94,7 +91,6 @@
 }
 
 @media print {
-  /* Hide portal nav when printing /portal/plan */
   aside,
   header,
   nav,

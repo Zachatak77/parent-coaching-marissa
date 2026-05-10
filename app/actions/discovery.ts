@@ -4,7 +4,6 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 
 const VALID_STATUSES = ['new', 'contacted', 'booked', 'converted', 'closed'] as const
-
 type DiscoveryStatus = typeof VALID_STATUSES[number]
 
 export async function createDiscoveryCallAction(formData: FormData) {
