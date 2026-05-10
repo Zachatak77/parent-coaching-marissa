@@ -111,13 +111,9 @@ export default function TestPage() {
         </div>
       </section>
 
-      {/* ── 2. Tagline ribbon ── */}
-      <div style={{ background: GREEN, color: '#FAF5EA', padding: '20px 24px', textAlign: 'center', fontFamily: U, fontWeight: 600, fontSize: '0.78rem', letterSpacing: '.22em', textTransform: 'uppercase' }}>
-        NEURODIVERSE FAMILIES{' '}
-        <span style={{ color: GREEN_TINT, margin: '0 14px', fontSize: '1rem', verticalAlign: '-1px' }}>•</span>
-        {' '}AGES 3–12{' '}
-        <span style={{ color: GREEN_TINT, margin: '0 14px', fontSize: '1rem', verticalAlign: '-1px' }}>•</span>
-        {' '}REAL STRATEGIES
+      {/* ── 2. Logo ribbon ── */}
+      <div style={{ background: LINEN, padding: '28px 24px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderTop: `1px solid ${HAIRLINE}`, borderBottom: `1px solid ${HAIRLINE}` }}>
+        <Image src="/logo.png" alt="Reimagine Parenting" width={320} height={80} style={{ height: 'auto' }} />
       </div>
 
       {/* ── 3. How It Works ── */}
