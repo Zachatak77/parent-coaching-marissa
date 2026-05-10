@@ -87,10 +87,9 @@ export default function TestPage() {
             <div style={{ marginBottom: 28 }}>
               <Image src="/logo.png" alt="Reimagine Parenting logo" width={140} height={140} priority />
             </div>
-            <div style={{ marginBottom: 20 }}><Pill>REIMAGINE</Pill></div>
-            <h1 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(3.6rem, 9vw, 7rem)', lineHeight: 0.95, color: TEXT, margin: '0 0 14px', letterSpacing: '-0.02em' }}>
-              Parenting
-            </h1>
+            <div style={{ marginBottom: 20 }}>
+              <Image src="/brand_name.png" alt="Reimagine Parenting" width={500} height={500} style={{ width: 'clamp(180px, 38vw, 260px)', height: 'auto' }} />
+            </div>
             <div style={{ margin: '20px 0 22px' }}><HeartRule /></div>
             <p style={{ fontFamily: B, fontSize: '0.96rem', fontStyle: 'italic', color: DIM, margin: '0 0 18px', lineHeight: 1.4 }}>
               Specialized coaching for parents of neurodiverse children ages 3–12
