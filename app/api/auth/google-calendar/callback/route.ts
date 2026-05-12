@@ -4,7 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { exchangeCode, registerWatch } from '@/lib/google-calendar'
 import { google } from 'googleapis'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000').replace(/\/$/, '')
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
@@ -30,12 +30,15 @@ export async function GET(req: NextRequest) {
   }
 
   // Fetch the email of the connected Google account
-  const authClient = new google.auth.OAuth2()
+  const authClient = new google.auth.OAuth2(
+    process.env.GOOGLE_OAUTH_CLIENT_ID,
+    process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+  )
   authClient.setCredentials({ access_token: tokens.access_token })
-  const calRes = await google.calendar({ version: 'v3', auth: authClient })
-    .calendars.get({ calendarId: 'primary' })
+  const userRes = await google.oauth2({ version: 'v2', auth: authClient })
+    .userinfo.get()
     .catch(() => null)
-  const calendarEmail = calRes?.data.id ?? null
+  const calendarEmail = userRes?.data.email ?? null
 
   const admin = createAdminClient()
   await admin.from('profiles').update({

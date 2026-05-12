@@ -16,7 +16,10 @@ export function getAuthUrl(state: string): string {
   return oauthClient().generateAuthUrl({
     access_type: 'offline',
     prompt: 'consent',
-    scope: ['https://www.googleapis.com/auth/calendar.readonly'],
+    scope: [
+      'https://www.googleapis.com/auth/calendar.readonly',
+      'https://www.googleapis.com/auth/userinfo.email',
+    ],
     state,
   })
 }

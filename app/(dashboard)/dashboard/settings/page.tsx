@@ -9,7 +9,7 @@ export default async function SettingsPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, email, role, google_calendar_email')
+    .select('full_name, email, role, google_calendar_email, google_refresh_token')
     .eq('id', user!.id)
     .single()
 
@@ -88,7 +88,10 @@ export default async function SettingsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <CalendarIntegration connectedEmail={profile?.google_calendar_email ?? null} />
+            <CalendarIntegration
+              connectedEmail={profile?.google_calendar_email ?? null}
+              isConnected={!!profile?.google_refresh_token}
+            />
           </CardContent>
         </Card>
       </div>

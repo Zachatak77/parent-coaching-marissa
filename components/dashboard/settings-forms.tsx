@@ -108,7 +108,7 @@ export function PasswordForm() {
   )
 }
 
-export function CalendarIntegration({ connectedEmail }: { connectedEmail: string | null }) {
+export function CalendarIntegration({ connectedEmail, isConnected }: { connectedEmail: string | null; isConnected: boolean }) {
   const [disconnecting, setDisconnecting] = React.useState(false)
   const router = useRouter()
 
@@ -119,14 +119,14 @@ export function CalendarIntegration({ connectedEmail }: { connectedEmail: string
     setDisconnecting(false)
   }
 
-  if (connectedEmail) {
+  if (isConnected) {
     return (
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <span className="inline-block w-2 h-2 rounded-full bg-green-500" />
           <span className="text-sm font-medium">Connected</span>
         </div>
-        <p className="text-sm text-muted-foreground">{connectedEmail}</p>
+        <p className="text-sm text-muted-foreground">{connectedEmail ?? 'parentcoachwithmarissa@gmail.com'}</p>
         <Button
           variant="outline"
           size="sm"
