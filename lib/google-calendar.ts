@@ -1,7 +1,7 @@
 import { google } from 'googleapis'
 import { createAdminClient } from '@/lib/supabase/admin'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000').replace(/\/$/, '')
 const CHANNEL_SECRET = process.env.GOOGLE_CALENDAR_CHANNEL_SECRET ?? ''
 
 function oauthClient() {
