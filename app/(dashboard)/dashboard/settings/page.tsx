@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { ProfileForm, PasswordForm, NotificationPreferences } from '@/components/dashboard/settings-forms'
-import { User, Lock, Bell } from 'lucide-react'
+import { ProfileForm, PasswordForm, NotificationPreferences, CalendarIntegration } from '@/components/dashboard/settings-forms'
+import { User, Lock, Bell, Calendar } from 'lucide-react'
 
 export default async function SettingsPage() {
   const supabase = await createClient()
@@ -9,7 +9,7 @@ export default async function SettingsPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, email, role')
+    .select('full_name, email, role, google_calendar_email')
     .eq('id', user!.id)
     .single()
 
@@ -73,6 +73,22 @@ export default async function SettingsPage() {
           </CardHeader>
           <CardContent>
             <NotificationPreferences />
+          </CardContent>
+        </Card>
+
+        {/* Google Calendar */}
+        <Card className="border-[#D9CFB9]">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-[#1F1D1A]" />
+              <CardTitle className="text-base font-semibold text-[#1F1D1A]">Google Calendar</CardTitle>
+            </div>
+            <CardDescription>
+              Auto-create leads when consults are booked directly in your Google Calendar.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <CalendarIntegration connectedEmail={profile?.google_calendar_email ?? null} />
           </CardContent>
         </Card>
       </div>
