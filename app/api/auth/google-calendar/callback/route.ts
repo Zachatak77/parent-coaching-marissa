@@ -1,0 +1,68 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { exchangeCode, registerWatch } from '@/lib/google-calendar'
+import { google } from 'googleapis'
+
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000').replace(/\/$/, '')
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url)
+  const code = searchParams.get('code')
+  const state = searchParams.get('state')
+
+  const cookieStore = await cookies()
+  const stored = cookieStore.get('gcal_oauth_state')?.value
+  cookieStore.delete('gcal_oauth_state')
+
+  if (!code || !state || !stored) {
+    return NextResponse.redirect(`${SITE_URL}/dashboard/settings?error=gcal_auth_failed`)
+  }
+
+  const [storedState, coachId] = stored.split(':')
+  if (state !== storedState || !coachId) {
+    return NextResponse.redirect(`${SITE_URL}/dashboard/settings?error=gcal_auth_failed`)
+  }
+
+  const tokens = await exchangeCode(code).catch(() => null)
+  if (!tokens?.refresh_token) {
+    return NextResponse.redirect(`${SITE_URL}/dashboard/settings?error=gcal_no_refresh_token`)
+  }
+
+  // Fetch the email of the connected Google account
+  const authClient = new google.auth.OAuth2(
+    process.env.GOOGLE_OAUTH_CLIENT_ID,
+    process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+  )
+  authClient.setCredentials({ access_token: tokens.access_token })
+  const userRes = await google.oauth2({ version: 'v2', auth: authClient })
+    .userinfo.get()
+    .catch(() => null)
+  const calendarEmail = userRes?.data.email ?? null
+
+  const admin = createAdminClient()
+  await admin.from('profiles').update({
+    google_refresh_token: tokens.refresh_token,
+    google_access_token: tokens.access_token ?? null,
+    google_token_expires_at: tokens.expiry_date
+      ? new Date(tokens.expiry_date).toISOString()
+      : null,
+    google_calendar_email: calendarEmail,
+  }).eq('id', coachId)
+
+  // Register the calendar watch channel — surface error in redirect for debugging
+  let watchError: string | null = null
+  try {
+    await registerWatch(coachId)
+  } catch (err: unknown) {
+    const e = err as { message?: string; status?: number; code?: string; errors?: Array<{ message?: string }> }
+    watchError = encodeURIComponent(
+      e?.errors?.[0]?.message ?? e?.message ?? e?.code ?? 'unknown'
+    )
+  }
+
+  if (watchError) {
+    return NextResponse.redirect(`${SITE_URL}/dashboard/settings?connected=true&watch_error=${watchError}`)
+  }
+  return NextResponse.redirect(`${SITE_URL}/dashboard/settings?connected=true`)
+}

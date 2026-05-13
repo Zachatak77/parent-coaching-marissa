@@ -43,7 +43,7 @@ export function ProfileForm({ initialName }: { initialName: string }) {
       <Button
         type="submit"
         disabled={saving || name === initialName}
-        className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white"
+        className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
       >
         {saving ? 'Saving…' : 'Save Changes'}
       </Button>
@@ -100,11 +100,56 @@ export function PasswordForm() {
       <Button
         type="submit"
         disabled={saving || !password || !confirm}
-        className="bg-[#2D5016] hover:bg-[#2D5016]/90 text-white"
+        className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
       >
         {saving ? 'Updating…' : 'Update Password'}
       </Button>
     </form>
+  )
+}
+
+export function CalendarIntegration({ connectedEmail, isConnected }: { connectedEmail: string | null; isConnected: boolean }) {
+  const [disconnecting, setDisconnecting] = React.useState(false)
+  const router = useRouter()
+
+  const handleDisconnect = async () => {
+    setDisconnecting(true)
+    await fetch('/api/auth/google-calendar/disconnect', { method: 'POST' })
+    router.refresh()
+    setDisconnecting(false)
+  }
+
+  if (isConnected) {
+    return (
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <span className="inline-block w-2 h-2 rounded-full bg-green-500" />
+          <span className="text-sm font-medium">Connected</span>
+        </div>
+        <p className="text-sm text-muted-foreground">{connectedEmail ?? 'parentcoachwithmarissa@gmail.com'}</p>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleDisconnect}
+          disabled={disconnecting}
+          className="border-[#D9CFB9] text-[#1F1D1A]"
+        >
+          {disconnecting ? 'Disconnecting…' : 'Disconnect'}
+        </Button>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-2">
+        <span className="inline-block w-2 h-2 rounded-full bg-muted-foreground/40" />
+        <span className="text-sm text-muted-foreground">Not connected</span>
+      </div>
+      <Button asChild size="sm" className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white">
+        <a href="/api/auth/google-calendar">Connect Google Calendar</a>
+      </Button>
+    </div>
   )
 }
 
