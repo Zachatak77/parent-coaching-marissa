@@ -110,6 +110,7 @@ export function PasswordForm() {
 
 export function CalendarIntegration({ connectedEmail, isConnected }: { connectedEmail: string | null; isConnected: boolean }) {
   const [disconnecting, setDisconnecting] = React.useState(false)
+  const [syncing, setSyncing] = React.useState(false)
   const router = useRouter()
 
   const handleDisconnect = async () => {
@@ -117,6 +118,25 @@ export function CalendarIntegration({ connectedEmail, isConnected }: { connected
     await fetch('/api/auth/google-calendar/disconnect', { method: 'POST' })
     router.refresh()
     setDisconnecting(false)
+  }
+
+  const handleSync = async () => {
+    setSyncing(true)
+    try {
+      const res = await fetch('/api/auth/google-calendar/sync', { method: 'POST' })
+      const data = await res.json()
+      if (!res.ok) {
+        toast.error(data.error ?? 'Sync failed')
+      } else if (data.created === 0) {
+        toast.success('No new leads found')
+      } else {
+        toast.success(`${data.created} new lead${data.created === 1 ? '' : 's'} imported`)
+        router.refresh()
+      }
+    } catch {
+      toast.error('Sync failed')
+    }
+    setSyncing(false)
   }
 
   if (isConnected) {
@@ -127,15 +147,25 @@ export function CalendarIntegration({ connectedEmail, isConnected }: { connected
           <span className="text-sm font-medium">Connected</span>
         </div>
         <p className="text-sm text-muted-foreground">{connectedEmail ?? 'parentcoachwithmarissa@gmail.com'}</p>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleDisconnect}
-          disabled={disconnecting}
-          className="border-[#D9CFB9] text-[#1F1D1A]"
-        >
-          {disconnecting ? 'Disconnecting…' : 'Disconnect'}
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            onClick={handleSync}
+            disabled={syncing || disconnecting}
+            className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
+          >
+            {syncing ? 'Pulling…' : 'Pull from Calendar'}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleDisconnect}
+            disabled={disconnecting || syncing}
+            className="border-[#D9CFB9] text-[#1F1D1A]"
+          >
+            {disconnecting ? 'Disconnecting…' : 'Disconnect'}
+          </Button>
+        </div>
       </div>
     )
   }
