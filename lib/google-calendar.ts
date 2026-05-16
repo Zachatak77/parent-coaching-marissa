@@ -114,6 +114,13 @@ export async function registerWatch(coachId: string): Promise<void> {
   }, { onConflict: 'coach_id' })
 }
 
+/** Extracts the lead's name from the event title ("Jane Smith and Marissa Schattner"). */
+export function extractNameFromTitle(summary: string | null | undefined): string | null {
+  if (!summary) return null
+  const match = summary.match(/^(.+?)\s+and\s+Marissa Schattner/i)
+  return match ? match[1].trim() : null
+}
+
 /** Extracts main_concern from the Google Appointment Scheduling description format. */
 export function extractMainConcern(description: string | null | undefined): string | null {
   if (!description) return null

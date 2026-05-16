@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { getAccessToken, extractMainConcern, extractPhone } from '@/lib/google-calendar'
+import { getAccessToken, extractMainConcern, extractPhone, extractNameFromTitle } from '@/lib/google-calendar'
 import { google } from 'googleapis'
 import { getResend, FROM, COACH_EMAIL } from '@/lib/email/resend'
 import { render } from '@react-email/render'
@@ -61,7 +61,7 @@ export async function POST() {
     const attendee = (event.attendees ?? []).find((a) => !a.organizer && a.email)
     if (!attendee?.email) continue
 
-    const name = attendee.displayName ?? attendee.email.split('@')[0]
+    const name = extractNameFromTitle(event.summary) ?? attendee.displayName ?? attendee.email.split('@')[0]
     const email = attendee.email
     const phone = extractPhone(description)
     const mainConcern = extractMainConcern(description)
