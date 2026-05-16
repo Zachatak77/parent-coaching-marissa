@@ -24,7 +24,7 @@ export default async function SessionsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-[#1F1D1A]">Session Recaps</h1>
+        <h1 className="font-cormorant text-2xl font-semibold text-[#1F1D1A]">Session Recaps</h1>
         <p className="text-sm text-[#6E6A60] mt-1">Notes and action steps from your coaching sessions.</p>
       </div>
 

@@ -36,12 +36,12 @@ export default async function PlanPage() {
   if (!plan || !plan.is_published) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-semibold text-[#1F1D1A]">My Plan</h1>
+        <h1 className="font-cormorant text-2xl font-semibold text-[#1F1D1A]">My Plan</h1>
         <div className="bg-white rounded-2xl border border-[#D9CFB9] p-10 shadow-sm text-center space-y-4">
           <div className="flex items-center justify-center w-16 h-16 rounded-full mx-auto" style={{ background: '#EFB63F' }}>
             <BookOpen className="w-8 h-8 text-[#1F1D1A]" />
           </div>
-          <h2 className="text-lg font-semibold text-[#1F1D1A]">Your plan is on its way.</h2>
+          <h2 className="font-cormorant text-lg font-semibold text-[#1F1D1A]">Your plan is on its way.</h2>
           <p className="text-sm text-[#6E6A60] max-w-sm mx-auto leading-relaxed">
             Your coach is putting together a personalized plan based on your family&rsquo;s goals. It will appear here after your first session.
           </p>
@@ -66,7 +66,7 @@ export default async function PlanPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-[#1F1D1A]">{plan.title}</h1>
+          <h1 className="font-cormorant text-2xl font-semibold text-[#1F1D1A]">{plan.title}</h1>
           <p className="text-sm text-[#6E6A60] mt-1">
             Created by Marissa · Published {format(new Date(publishedDate), 'MMMM d, yyyy')}
           </p>

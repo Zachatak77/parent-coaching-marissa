@@ -73,7 +73,7 @@ export default async function DashboardOverviewPage() {
       <div>
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-semibold text-[#1F1D1A]">{greeting}, {firstName}</h1>
+            <h1 className="font-cormorant text-2xl font-semibold text-[#1F1D1A]">{greeting}, {firstName}</h1>
             <p className="text-sm text-muted-foreground mt-1">Admin overview</p>
           </div>
           <Button asChild className="bg-[#5F728D] hover:bg-[#54647C] text-white rounded-full text-sm">

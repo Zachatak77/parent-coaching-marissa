@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { HeartRule } from '@/components/public/heart-rule'
+import { Pill } from '@/components/public/pill'
 
 export const metadata: Metadata = {
   title: 'About Marissa | Reimagine Parenting',
@@ -8,49 +10,17 @@ export const metadata: Metadata = {
 }
 
 const NAVY       = '#5F728D'
-const NAVY_TINT  = '#C8D1DF'
 const CREAM      = '#F7F7F5'
 const LINEN      = '#FFFFFF'
-const CHAR       = '#2C2A28'
 const TEXT       = '#1F1D1A'
 const TEXT2      = '#3A372F'
 const HAIRLINE   = '#D9CFB9'
-const SAGE       = '#9BB39B'
 const SAGE_LIGHT = '#9BB39B'
 const PEACH      = '#E98773'
 const STRAW      = '#EFB63F'
 const D = 'var(--font-display)'
 const B = 'var(--font-body)'
 const U = 'var(--font-ui)'
-
-function Pill({ children, char, cream, bg, fg }: { children: string; char?: boolean; cream?: boolean; bg?: string; fg?: string }) {
-  return (
-    <span style={{
-      display: 'inline-flex', alignItems: 'center',
-      padding: '7px 22px 8px',
-      background: bg ?? (cream ? LINEN : char ? CHAR : NAVY),
-      color: fg ?? (cream ? TEXT : '#FFFFFF'),
-      borderRadius: 999,
-      fontFamily: U, fontWeight: 600, fontSize: '0.72rem',
-      letterSpacing: '.18em', textTransform: 'uppercase' as const,
-    }}>
-      {children}
-    </span>
-  )
-}
-
-function HeartRule({ light, center }: { light?: boolean; center?: boolean }) {
-  const c = light ? '#FFFFFF' : TEXT
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: center ? 'center' : 'flex-start', gap: 14, color: c }}>
-      <div style={{ height: 1, width: 80, background: c, flexShrink: 0 }} />
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
-        <path d="M12 21s-7.5-4.6-9.5-10.2C1.2 7.4 3.7 4 7.1 4c2 0 3.6 1 4.9 2.6C13.3 5 14.9 4 16.9 4c3.4 0 5.9 3.4 4.6 6.8C19.5 16.4 12 21 12 21z"/>
-      </svg>
-      <div style={{ height: 1, width: 80, background: c, flexShrink: 0 }} />
-    </div>
-  )
-}
 
 export default function AboutPage() {
   return (
@@ -60,7 +30,7 @@ export default function AboutPage() {
       <section className="px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-24" style={{ background: CREAM }}>
         <div style={{ maxWidth: 600 }}>
           <div style={{ marginBottom: 20 }}><Pill bg={SAGE}>YOUR COACH</Pill></div>
-          <h1 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(3rem, 7vw, 5.5rem)', lineHeight: 0.95, color: TEXT, margin: '0 0 20px', letterSpacing: '-0.02em' }}>
+          <h1 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(3rem, 7vw, 5.5rem)', lineHeight: 1.05, color: TEXT, margin: '0 0 20px', letterSpacing: '-0.02em' }}>
             Hi, I&apos;m Marissa.
           </h1>
           <div style={{ margin: '0 0 28px' }}><HeartRule /></div>
@@ -124,7 +94,7 @@ export default function AboutPage() {
               body: "Small, consistent wins matter more than getting it right every time. We celebrate the moments that are better — not just the ones that are perfect.",
             },
           ].map(({ title, body }) => (
-            <div key={title} style={{ background: LINEN, borderRadius: 16, padding: '36px 32px', border: `1px solid ${HAIRLINE}` }}>
+            <div key={title} style={{ background: LINEN, borderRadius: 20, padding: '36px 32px', border: `1px solid ${HAIRLINE}` }}>
               <h3 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.5rem', lineHeight: 1.15, color: TEXT, margin: '0 0 14px' }}>{title}</h3>
               <p style={{ fontFamily: B, fontSize: '0.98rem', color: TEXT2, lineHeight: 1.6, margin: 0 }}>{body}</p>
             </div>
@@ -135,7 +105,7 @@ export default function AboutPage() {
       {/* ── Credentials ── */}
       <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: LINEN }}>
         <div style={{ maxWidth: 620, margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}><Pill>CREDENTIALS</Pill></div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}><Pill char>CREDENTIALS</Pill></div>
           <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 2.6rem)', lineHeight: 1.05, color: TEXT, margin: '0 0 20px', letterSpacing: '-0.015em' }}>
             Trained. Certified. Committed.
           </h2>
@@ -147,7 +117,7 @@ export default function AboutPage() {
               { label: '10+ Years in Special Education', desc: 'Classroom experience working with neurodiverse children ages 3–12' },
               { label: 'Behavior & IEP Expertise', desc: 'Skilled in behavior planning, school communication, and individualized strategies' },
             ].map(({ label, desc }) => (
-              <div key={label} style={{ background: SAGE_LIGHT, borderRadius: 14, padding: '24px 24px' }}>
+              <div key={label} style={{ background: SAGE_LIGHT, borderRadius: 20, padding: '24px 24px' }}>
                 <p style={{ fontFamily: U, fontWeight: 700, fontSize: '0.78rem', letterSpacing: '.10em', textTransform: 'uppercase', color: TEXT, margin: '0 0 8px' }}>{label}</p>
                 <p style={{ fontFamily: B, fontSize: '0.92rem', color: TEXT2, lineHeight: 1.55, margin: 0 }}>{desc}</p>
               </div>
@@ -167,7 +137,7 @@ export default function AboutPage() {
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 22 }}>
           <HeartRule light center />
         </div>
-        <p style={{ fontFamily: B, fontSize: '1.05rem', color: '#E0D9C7', lineHeight: 1.55, maxWidth: 480, margin: '0 auto 32px' }}>
+        <p style={{ fontFamily: B, fontSize: '1.05rem', color: 'rgba(255,255,255,0.75)', lineHeight: 1.55, maxWidth: 480, margin: '0 auto 32px' }}>
           Book a free discovery call and let&apos;s talk about your family.
         </p>
         <Link

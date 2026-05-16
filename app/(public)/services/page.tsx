@@ -6,6 +6,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import { HeartRule } from '@/components/public/heart-rule'
+import { Pill } from '@/components/public/pill'
 
 export const metadata: Metadata = {
   title: 'Coaching Programs | Reimagine Parenting',
@@ -24,35 +26,6 @@ const STRAW     = '#EFB63F'
 const D = 'var(--font-display)'
 const B = 'var(--font-body)'
 const U = 'var(--font-ui)'
-
-function Pill({ children, cream }: { children: string; cream?: boolean }) {
-  return (
-    <span style={{
-      display: 'inline-flex', alignItems: 'center',
-      padding: '7px 22px 8px',
-      background: cream ? LINEN : NAVY,
-      color: cream ? TEXT : '#FFFFFF',
-      borderRadius: 999,
-      fontFamily: U, fontWeight: 600, fontSize: '0.72rem',
-      letterSpacing: '.18em', textTransform: 'uppercase' as const,
-    }}>
-      {children}
-    </span>
-  )
-}
-
-function HeartRule({ light, center }: { light?: boolean; center?: boolean }) {
-  const c = light ? '#FFFFFF' : TEXT
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: center ? 'center' : 'flex-start', gap: 14, color: c }}>
-      <div style={{ height: 1, width: 80, background: c, flexShrink: 0 }} />
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
-        <path d="M12 21s-7.5-4.6-9.5-10.2C1.2 7.4 3.7 4 7.1 4c2 0 3.6 1 4.9 2.6C13.3 5 14.9 4 16.9 4c3.4 0 5.9 3.4 4.6 6.8C19.5 16.4 12 21 12 21z"/>
-      </svg>
-      <div style={{ height: 1, width: 80, background: c, flexShrink: 0 }} />
-    </div>
-  )
-}
 
 const packages = [
   {
@@ -120,7 +93,7 @@ const faqs = [
 function CheckIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 3 }}>
-      <path d="M3 8 L6.5 11.5 L13 5" stroke={NAVY} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M3 8 L6.5 11.5 L13 5" stroke="var(--ds-dim)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   )
 }
@@ -133,7 +106,7 @@ export default function ServicesPage() {
       <section className="px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-24" style={{ background: CREAM }}>
         <div style={{ maxWidth: 600 }}>
           <div style={{ marginBottom: 20 }}><Pill>COACHING PROGRAMS</Pill></div>
-          <h1 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2.8rem, 6vw, 5rem)', lineHeight: 0.97, color: TEXT, margin: '0 0 20px', letterSpacing: '-0.02em' }}>
+          <h1 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2.8rem, 6vw, 5rem)', lineHeight: 1.05, color: TEXT, margin: '0 0 20px', letterSpacing: '-0.02em' }}>
             Programs built around your family
           </h1>
           <div style={{ margin: '0 0 24px' }}><HeartRule /></div>
@@ -150,12 +123,12 @@ export default function ServicesPage() {
             <div
               key={name}
               style={{
-                borderRadius: 18,
+                borderRadius: 20,
                 border: `1px solid ${featured ? NAVY : HAIRLINE}`,
                 display: 'flex',
                 flexDirection: 'column' as const,
                 overflow: 'hidden',
-                ...(featured ? { boxShadow: '0 4px 28px rgba(95,114,141,0.18)' } : {}),
+                ...(featured ? { boxShadow: '0 4px 12px rgba(0,0,0,0.10)' } : {}),
               }}
             >
               <div style={{ padding: '28px 28px 22px', background: featured ? NAVY : CREAM }}>
@@ -191,7 +164,7 @@ export default function ServicesPage() {
       </section>
 
       {/* ── Add-ons ── */}
-      <section className="px-6 sm:px-10 lg:px-16 py-16 sm:py-20" style={{ background: CREAM }}>
+      <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: CREAM }}>
         <div style={{ maxWidth: 680, margin: '0 auto' }}>
           <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.8rem', lineHeight: 1.1, color: TEXT, margin: '0 0 8px', letterSpacing: '-0.01em' }}>Add-ons</h2>
           <p style={{ fontFamily: B, fontSize: '0.94rem', color: TEXT2, margin: '0 0 24px', lineHeight: 1.5 }}>
@@ -243,7 +216,7 @@ export default function ServicesPage() {
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 22 }}>
           <HeartRule light center />
         </div>
-        <p style={{ fontFamily: B, fontSize: '1.05rem', color: '#E0D9C7', lineHeight: 1.55, maxWidth: 480, margin: '0 auto 32px' }}>
+        <p style={{ fontFamily: B, fontSize: '1.05rem', color: 'rgba(255,255,255,0.75)', lineHeight: 1.55, maxWidth: 480, margin: '0 auto 32px' }}>
           Let&apos;s talk. The discovery call is free and there&apos;s no pressure.
         </p>
         <Link

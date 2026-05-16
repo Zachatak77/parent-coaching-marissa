@@ -59,7 +59,7 @@ export default async function PortalDashboardPage() {
     <div className="space-y-8">
       {/* Welcome banner */}
       <div className="bg-white rounded-2xl border border-[#D9CFB9] p-6 shadow-sm">
-        <h1 className="text-2xl font-semibold text-[#1F1D1A] mb-1">Welcome back, {firstName}.</h1>
+        <h1 className="font-cormorant text-2xl font-semibold text-[#1F1D1A] mb-1">Welcome back, {firstName}.</h1>
         <p className="text-sm text-[#3A372F]">
           You&rsquo;re on the <strong>{pkg.label}</strong>
           {pkg.detail && <> &middot; {pkg.detail}</>}
@@ -97,7 +97,7 @@ export default async function PortalDashboardPage() {
       {/* Plan preview */}
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-semibold text-[#1F1D1A] flex items-center gap-2">
+          <h2 className="font-cormorant text-base font-semibold text-[#1F1D1A] flex items-center gap-2">
             <BookOpen className="w-4 h-4" /> My Coaching Plan
           </h2>
           {plan && (
@@ -125,7 +125,7 @@ export default async function PortalDashboardPage() {
       {/* Recent sessions */}
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-semibold text-[#1F1D1A] flex items-center gap-2">
+          <h2 className="font-cormorant text-base font-semibold text-[#1F1D1A] flex items-center gap-2">
             <CalendarDays className="w-4 h-4" /> Recent Sessions
           </h2>
           {(recentSessions?.length ?? 0) > 0 && (
@@ -160,7 +160,7 @@ export default async function PortalDashboardPage() {
       {/* Recent resources */}
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-semibold text-[#1F1D1A] flex items-center gap-2">
+          <h2 className="font-cormorant text-base font-semibold text-[#1F1D1A] flex items-center gap-2">
             <Library className="w-4 h-4" /> Recent Resources
           </h2>
           {(clientResources?.length ?? 0) > 0 && (
