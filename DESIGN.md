@@ -32,10 +32,10 @@ colors:
   ds-dim:      "#6E6A60"   # captions, italicised metadata, placeholders
 
   # ── Brand accents (updated 2025)
-  sage:        "#9BB39B"   # Sage Green — step-1 circle, "HOW IT WORKS" pill, outcome circles
+  sage:        "#9BB39B"   # Structure & Expertise — coaching methodology, credentials, "how it works"
   sage-light:  "#9BB39B"   # Sage Green (alias merged — same value as sage)
-  peach:       "#E98773"   # Coral Clay — step-2 circle, "PARENT STORIES" pill, "HI I'M MARISSA" pill
-  straw:       "#EFB63F"   # Sunshine Yellow — step-3 circle, outcome-3 icon
+  peach:       "#E98773"   # Story & Connection — personal narrative, testimonials, relational content
+  straw:       "#EFB63F"   # Action & Outcomes — next steps, results, add-ons, philosophy-in-practice
 
   # ── Extended warmth palette
   amber:       "#D97B2E"   # bold accent; use sparingly for emphasis
@@ -460,7 +460,13 @@ Reimagine Parenting is Marissa's parent-coaching practice serving neurodiverse f
 
 **Cream** (`#F7F7F5`) and **Linen** (`#FFFFFF`) are the **background surfaces**. They alternate section by section on the public site to create rhythm without visual clutter. Cream is the base; Linen is the alt. Never use both on the same section.
 
-**Sage** (`#9BB39B`), **Peach** (`#E98773`), and **Straw** (`#EFB63F`) are **brand accents**. They appear in step circles, section pill badges, outcome icon circles, and quote icons. They add playfulness and warmth without competing with navy for action priority. Never use them as button backgrounds for primary CTAs.
+**Sage** (`#9BB39B`), **Peach** (`#E98773`), and **Straw** (`#EFB63F`) are **brand accents**. Each carries a distinct semantic meaning — match the color to the *type* of content, not a visual sequence:
+
+- **Sage — Structure & Expertise.** Use for content about the coaching process, methodology, credentials, and professional background. It signals "here is the framework" or "here is why you can trust this." Always pair with `ds-text` (#1F1D1A) for accessible contrast.
+- **Peach — Story & Connection.** Use for personal narrative, client testimonials, empathetic/relational sections, and introductions to Marissa as a person. It signals "here is the human side." Always pair with `ds-text` (#1F1D1A).
+- **Straw — Action & Outcomes.** Use for results-oriented content, next steps, coaching deliverables, and add-ons. It signals "here is what you'll get" or "here is what to do next." Always pair with `ds-text` (#1F1D1A).
+
+All three add playfulness and warmth without competing with navy for action priority. Never use them as button backgrounds for primary CTAs, and never use them as border colors (hairline only).
 
 **Hairline** (`#D9CFB9`) is the **only border color**. All 1px dividers, card outlines, and column separators use this value. Do not use any other color for borders.
 

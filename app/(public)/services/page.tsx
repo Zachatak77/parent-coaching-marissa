@@ -23,7 +23,6 @@ const TEXT      = '#1F1D1A'
 const TEXT2     = '#3A372F'
 const HAIRLINE  = '#D9CFB9'
 const SAGE      = '#9BB39B'
-const PEACH     = '#E98773'
 const STRAW     = '#EFB63F'
 const D = 'var(--font-display)'
 const B = 'var(--font-body)'
@@ -33,7 +32,6 @@ const packages = [
   {
     name: 'Confident Parent Program',
     duration: '2 Weeks',
-    accent: SAGE,
     outcome: 'Clear plan. Less overwhelm. Strategies you can use right away.',
     includes: [
       '2 private coaching sessions (45–60 min)',
@@ -60,7 +58,6 @@ const packages = [
   {
     name: 'Ongoing Support',
     duration: 'Monthly',
-    accent: PEACH,
     outcome: 'Ongoing clarity, accountability, and support.',
     includes: [
       '1 monthly check-in call (30 min)',
@@ -123,7 +120,7 @@ export default function ServicesPage() {
       {/* ── Packages ── */}
       <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: LINEN }}>
         <div className="grid sm:grid-cols-3 gap-x-7 max-w-5xl mx-auto" style={{ gridTemplateRows: 'auto 1fr auto auto', rowGap: 0 }}>
-          {packages.map(({ name, duration, outcome, includes, featured, accent }) => (
+          {packages.map(({ name, duration, outcome, includes, featured }) => (
             <div
               key={name}
               className="mb-5 last:mb-0 sm:mb-0"
@@ -183,7 +180,7 @@ export default function ServicesPage() {
           </p>
           <div className="grid sm:grid-cols-3 gap-4">
             {['Additional Session', 'IEP / School Prep Call', 'Custom Behavior Plan'].map((addon) => (
-              <div key={addon} style={{ background: LINEN, borderRadius: 12, border: `1px solid ${STRAW}`, padding: '18px 22px', display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div key={addon} style={{ background: LINEN, borderRadius: 12, border: `1px solid ${HAIRLINE}`, padding: '18px 22px', display: 'flex', alignItems: 'center', gap: 12 }}>
                 <CheckIcon />
                 <p style={{ fontFamily: U, fontSize: '0.86rem', fontWeight: 600, color: TEXT, margin: 0 }}>{addon}</p>
               </div>
