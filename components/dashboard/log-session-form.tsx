@@ -121,7 +121,7 @@ function LogForm({ clientId, onDone }: { clientId: string; onDone: () => void })
 
       <div className="flex justify-end gap-2 pt-2">
         <Button type="button" variant="outline" size="sm" onClick={onDone}>Cancel</Button>
-        <Button type="submit" size="sm" className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white" disabled={loading}>
+        <Button type="submit" size="sm" className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white" disabled={loading}>
           {loading ? 'Saving…' : 'Save Session'}
         </Button>
       </div>
@@ -201,7 +201,7 @@ function SessionCard({ session, clientId }: { session: Session; clientId: string
                 className="resize-none"
               />
               <div className="flex gap-2">
-                <Button size="sm" onClick={saveChanges} disabled={saving} className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white">
+                <Button size="sm" onClick={saveChanges} disabled={saving} className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white">
                   {saving ? 'Saving…' : 'Save'}
                 </Button>
                 <Button size="sm" variant="outline" onClick={() => setEditing(false)}>Cancel</Button>
@@ -218,7 +218,7 @@ function SessionCard({ session, clientId }: { session: Session; clientId: string
                   <ul className="space-y-1">
                     {actionItems.map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm">
-                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#4A5F7F] flex-shrink-0" />
+                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#5F728D] flex-shrink-0" />
                         {item}
                       </li>
                     ))}
@@ -244,7 +244,7 @@ export function SessionsList({ clientId, sessions }: { clientId: string; session
       <div className="flex justify-end">
         <Button
           size="sm"
-          className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
+          className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white"
           onClick={() => setShowForm(true)}
         >
           <Plus className="w-4 h-4 mr-1.5" /> Log Session

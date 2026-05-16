@@ -76,7 +76,7 @@ export default async function ResourcesPage() {
 
       {resourcesWithUrls.length === 0 ? (
         <div className="bg-white rounded-2xl border border-[#D9CFB9] p-10 shadow-sm text-center space-y-3">
-          <div className="flex items-center justify-center w-14 h-14 rounded-full mx-auto" style={{ background: '#F8B29A' }}>
+          <div className="flex items-center justify-center w-14 h-14 rounded-full mx-auto" style={{ background: '#E98773' }}>
             <Library className="w-7 h-7 text-[#1F1D1A]" />
           </div>
           <p className="text-sm text-[#6E6A60] max-w-sm mx-auto leading-relaxed">
@@ -125,7 +125,7 @@ export default async function ResourcesPage() {
                     target={pdf ? '_blank' : undefined}
                     rel={pdf ? 'noopener noreferrer' : undefined}
                     download={!pdf}
-                    className="inline-flex items-center gap-2 self-start px-4 py-2 rounded-lg bg-[#4A5F7F] text-white text-xs font-semibold hover:bg-[#3E5070] transition-colors"
+                    className="inline-flex items-center gap-2 self-start px-4 py-2 rounded-lg bg-[#5F728D] text-white text-xs font-semibold hover:bg-[#54647C] transition-colors"
                   >
                     {pdf ? <ExternalLink className="w-3.5 h-3.5" /> : <Download className="w-3.5 h-3.5" />}
                     {pdf ? 'View' : 'Download'}

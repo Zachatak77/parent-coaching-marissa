@@ -165,7 +165,7 @@ export function ResourceLibrary({
         </div>
         <Button
           size="sm"
-          className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
+          className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white"
           onClick={() => setUploadOpen(true)}
         >
           <Plus className="w-4 h-4 mr-1.5" /> Upload Resource
@@ -255,7 +255,7 @@ export function ResourceLibrary({
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setUploadOpen(false)}>Cancel</Button>
-              <Button type="submit" disabled={uploading} className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white">
+              <Button type="submit" disabled={uploading} className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white">
                 {uploading ? 'Uploading…' : 'Upload'}
               </Button>
             </DialogFooter>
@@ -292,7 +292,7 @@ export function ResourceLibrary({
               </div>
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={() => setEditResource(null)}>Cancel</Button>
-                <Button type="submit" disabled={saving} className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white">
+                <Button type="submit" disabled={saving} className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white">
                   {saving ? 'Saving…' : 'Save Changes'}
                 </Button>
               </DialogFooter>
@@ -326,7 +326,7 @@ export function ResourceLibrary({
                     <p className="text-sm font-medium">{c.profiles?.full_name ?? '—'}</p>
                     <Button
                       size="sm"
-                      className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
+                      className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white"
                       disabled={assigning === c.id}
                       onClick={() => handleAssign(assignResource.id, c.id)}
                     >

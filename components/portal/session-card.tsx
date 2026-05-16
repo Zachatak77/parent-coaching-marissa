@@ -52,7 +52,7 @@ export function SessionCard({ sessionDate, sessionNotes, actionItems }: SessionC
                   id={`${storageKey}-${i}`}
                   checked={!!checked[i]}
                   onCheckedChange={(v) => toggle(i, !!v)}
-                  className="mt-0.5 border-[#D9CFB9] data-[state=checked]:bg-[#4A5F7F] data-[state=checked]:border-[#4A5F7F]"
+                  className="mt-0.5 border-[#D9CFB9] data-[state=checked]:bg-[#5F728D] data-[state=checked]:border-[#5F728D]"
                 />
                 <label
                   htmlFor={`${storageKey}-${i}`}

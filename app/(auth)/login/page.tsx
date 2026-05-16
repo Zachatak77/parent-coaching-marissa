@@ -7,8 +7,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import Link from 'next/link'
 
-const NAVY     = '#4A5F7F'
-const CREAM    = '#F5EFE2'
+const NAVY     = '#5F728D'
+const CREAM    = '#F7F7F5'
 const TEXT     = '#1F1D1A'
 const TEXT2    = '#3A372F'
 const DIM      = '#6E6A60'
@@ -138,7 +138,7 @@ function LoginForm() {
                   required
                   autoComplete="email"
                   style={{ marginTop: 6, borderColor: HAIRLINE }}
-                  className="focus-visible:ring-[#4A5F7F]"
+                  className="focus-visible:ring-[#5F728D]"
                 />
               </div>
 
@@ -162,7 +162,7 @@ function LoginForm() {
                     required
                     autoComplete="current-password"
                     style={{ borderColor: HAIRLINE }}
-                    className="focus-visible:ring-[#4A5F7F]"
+                    className="focus-visible:ring-[#5F728D]"
                   />
                 </div>
               )}
@@ -171,7 +171,7 @@ function LoginForm() {
                 type="submit"
                 disabled={loading}
                 style={{
-                  width: '100%', padding: '13px 24px', background: NAVY, color: '#FAF5EA',
+                  width: '100%', padding: '13px 24px', background: NAVY, color: '#FFFFFF',
                   borderRadius: 999, border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
                   fontFamily: U, fontWeight: 600, fontSize: '0.82rem', letterSpacing: '.14em',
                   textTransform: 'uppercase', opacity: loading ? 0.65 : 1, transition: 'opacity .15s',
@@ -207,7 +207,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div style={{ minHeight: '100vh', background: '#F5EFE2' }} />}>
+    <Suspense fallback={<div style={{ minHeight: '100vh', background: '#F7F7F5' }} />}>
       <LoginForm />
     </Suspense>
   )

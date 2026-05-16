@@ -73,10 +73,10 @@ export default async function DashboardOverviewPage() {
       <div>
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-semibold text-[#1F1D1A]">{greeting}, {firstName}</h1>
+            <h1 className="font-cormorant text-2xl font-semibold text-[#1F1D1A]">{greeting}, {firstName}</h1>
             <p className="text-sm text-muted-foreground mt-1">Admin overview</p>
           </div>
-          <Button asChild className="bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full text-sm">
+          <Button asChild className="bg-[#5F728D] hover:bg-[#54647C] text-white rounded-full text-sm">
             <Link href="/dashboard/discovery">Manage All Leads</Link>
           </Button>
         </div>
@@ -126,13 +126,13 @@ export default async function DashboardOverviewPage() {
                   { label: 'Converted', status: 'converted' },
                   { label: 'Closed', status: 'closed' },
                 ].map(({ label, status }) => (
-                  <div key={status} className="flex items-center gap-1.5 bg-[#F5EFE2] rounded-lg px-3 py-2">
+                  <div key={status} className="flex items-center gap-1.5 bg-[#F7F7F5] rounded-lg px-3 py-2">
                     <Badge variant={statusColors[status] ?? 'gray'}>{label}</Badge>
                   </div>
                 ))}
               </div>
               <div className="mt-4">
-                <Link href="/dashboard/discovery" className="text-xs font-medium text-[#4A5F7F] hover:underline flex items-center gap-1">
+                <Link href="/dashboard/discovery" className="text-xs font-medium text-[#5F728D] hover:underline flex items-center gap-1">
                   View all leads & assign coaches <ArrowRight className="w-3 h-3" />
                 </Link>
               </div>
@@ -211,7 +211,7 @@ export default async function DashboardOverviewPage() {
             <Link href="/dashboard/discovery" className="flex items-center gap-1.5">
               Discovery Queue
               {(newDiscovery ?? 0) > 0 && (
-                <span className="flex items-center justify-center w-4 h-4 rounded-full bg-[#4A5F7F] text-white text-[9px] font-bold">
+                <span className="flex items-center justify-center w-4 h-4 rounded-full bg-[#5F728D] text-white text-[9px] font-bold">
                   {newDiscovery}
                 </span>
               )}

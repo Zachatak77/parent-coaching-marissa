@@ -36,12 +36,12 @@ export default async function PlanPage() {
   if (!plan || !plan.is_published) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-semibold text-[#1F1D1A]">My Plan</h1>
+        <h1 className="font-cormorant text-2xl font-semibold text-[#1F1D1A]">My Plan</h1>
         <div className="bg-white rounded-2xl border border-[#D9CFB9] p-10 shadow-sm text-center space-y-4">
-          <div className="flex items-center justify-center w-16 h-16 rounded-full mx-auto" style={{ background: '#F2CE84' }}>
+          <div className="flex items-center justify-center w-16 h-16 rounded-full mx-auto" style={{ background: '#EFB63F' }}>
             <BookOpen className="w-8 h-8 text-[#1F1D1A]" />
           </div>
-          <h2 className="text-lg font-semibold text-[#1F1D1A]">Your plan is on its way.</h2>
+          <h2 className="font-cormorant text-lg font-semibold text-[#1F1D1A]">Your plan is on its way.</h2>
           <p className="text-sm text-[#6E6A60] max-w-sm mx-auto leading-relaxed">
             Your coach is putting together a personalized plan based on your family&rsquo;s goals. It will appear here after your first session.
           </p>
@@ -66,7 +66,7 @@ export default async function PlanPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-[#1F1D1A]">{plan.title}</h1>
+          <h1 className="font-cormorant text-2xl font-semibold text-[#1F1D1A]">{plan.title}</h1>
           <p className="text-sm text-[#6E6A60] mt-1">
             Created by Marissa · Published {format(new Date(publishedDate), 'MMMM d, yyyy')}
           </p>
@@ -90,7 +90,7 @@ export default async function PlanPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-[#4A5F7F] text-white">
+                <tr className="bg-[#5F728D] text-white">
                   {['Objective', 'Action Steps', 'Timeline', 'Success Indicators'].map((h) => (
                     <th key={h} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wide">{h}</th>
                   ))}
@@ -98,7 +98,7 @@ export default async function PlanPage() {
               </thead>
               <tbody>
                 {objectives.map((obj, i) => (
-                  <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-[#F5EFE2]/50'}>
+                  <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-[#F7F7F5]/50'}>
                     <td className="px-4 py-3 text-[#1F1D1A] font-medium align-top">{obj.objective}</td>
                     <td className="px-4 py-3 text-[#3A372F] align-top">{obj.actionSteps}</td>
                     <td className="px-4 py-3 text-[#3A372F] align-top whitespace-nowrap">{obj.timeline}</td>

@@ -110,8 +110,8 @@ export function BookForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full inline-flex items-center justify-center rounded-full text-[#FAF5EA] font-semibold px-6 py-4 text-sm tracking-widest uppercase transition-opacity disabled:opacity-60 disabled:cursor-not-allowed hover:opacity-90"
-        style={{ background: '#4A5F7F', letterSpacing: '.14em' }}
+        className="w-full inline-flex items-center justify-center rounded-full text-[#FFFFFF] font-semibold px-6 py-4 text-sm tracking-widest uppercase transition-opacity disabled:opacity-60 disabled:cursor-not-allowed hover:opacity-90"
+        style={{ background: '#5F728D', letterSpacing: '.14em' }}
       >
         {isSubmitting ? 'Sending…' : 'Send My Request'}
       </button>

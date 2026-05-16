@@ -15,15 +15,29 @@ export default function GlobalError({
 
   return (
     <html>
-      <body style={{ backgroundColor: '#F5F0E8', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', margin: 0, fontFamily: 'Inter, sans-serif' }}>
+      <body style={{ backgroundColor: 'var(--cream)', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', margin: 0 }}>
         <div style={{ textAlign: 'center', padding: '40px 24px', maxWidth: '400px' }}>
-          <h1 style={{ color: '#2D5016', fontSize: '22px', fontWeight: '700', marginBottom: '12px' }}>Something went wrong.</h1>
-          <p style={{ color: '#2D5016', opacity: 0.6, fontSize: '15px', marginBottom: '24px' }}>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.5rem', color: 'var(--ds-text)', marginBottom: 12 }}>
+            Something went wrong.
+          </h1>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', color: 'var(--ds-text-2)', lineHeight: 1.6, marginBottom: 28 }}>
             An unexpected error occurred. Please try again.
           </p>
           <button
             onClick={reset}
-            style={{ backgroundColor: '#2D5016', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer' }}
+            style={{
+              backgroundColor: 'var(--navy)',
+              color: '#FFFFFF',
+              border: 'none',
+              borderRadius: 999,
+              padding: '13px 28px',
+              fontFamily: 'var(--font-ui)',
+              fontSize: '0.78rem',
+              fontWeight: 600,
+              letterSpacing: '.14em',
+              textTransform: 'uppercase',
+              cursor: 'pointer',
+            }}
           >
             Try again
           </button>

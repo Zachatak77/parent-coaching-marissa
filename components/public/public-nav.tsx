@@ -11,8 +11,8 @@ const links = [
   { href: '/services', label: 'Services' },
 ]
 
-const NAVY = '#4A5F7F'
-const CREAM = '#F5EFE2'
+const NAVY = '#5F728D'
+const CREAM = '#F7F7F5'
 const TEXT2 = '#3A372F'
 const HAIRLINE = '#D9CFB9'
 
@@ -69,7 +69,7 @@ export function PublicNav() {
               alignItems: 'center',
               padding: '10px 22px',
               background: NAVY,
-              color: '#FAF5EA',
+              color: '#FFFFFF',
               borderRadius: '999px',
               fontFamily: 'var(--font-ui)',
               fontWeight: 600,
@@ -124,7 +124,7 @@ export function PublicNav() {
               justifyContent: 'center',
               padding: '11px 22px',
               background: NAVY,
-              color: '#FAF5EA',
+              color: '#FFFFFF',
               borderRadius: '999px',
               fontFamily: 'var(--font-ui)',
               fontWeight: 600,

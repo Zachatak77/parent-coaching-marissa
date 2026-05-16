@@ -24,13 +24,13 @@ export default async function SessionsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-[#1F1D1A]">Session Recaps</h1>
+        <h1 className="font-cormorant text-2xl font-semibold text-[#1F1D1A]">Session Recaps</h1>
         <p className="text-sm text-[#6E6A60] mt-1">Notes and action steps from your coaching sessions.</p>
       </div>
 
       {!sessions || sessions.length === 0 ? (
         <div className="bg-white rounded-2xl border border-[#D9CFB9] p-10 shadow-sm text-center space-y-3">
-          <div className="flex items-center justify-center w-14 h-14 rounded-full mx-auto" style={{ background: '#9EAF98' }}>
+          <div className="flex items-center justify-center w-14 h-14 rounded-full mx-auto" style={{ background: '#9BB39B' }}>
             <CalendarDays className="w-7 h-7 text-[#1F1D1A]" />
           </div>
           <p className="text-sm text-[#6E6A60] max-w-sm mx-auto leading-relaxed">

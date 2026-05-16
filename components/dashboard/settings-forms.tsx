@@ -43,7 +43,7 @@ export function ProfileForm({ initialName }: { initialName: string }) {
       <Button
         type="submit"
         disabled={saving || name === initialName}
-        className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
+        className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white"
       >
         {saving ? 'Saving…' : 'Save Changes'}
       </Button>
@@ -100,7 +100,7 @@ export function PasswordForm() {
       <Button
         type="submit"
         disabled={saving || !password || !confirm}
-        className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
+        className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white"
       >
         {saving ? 'Updating…' : 'Update Password'}
       </Button>
@@ -152,7 +152,7 @@ export function CalendarIntegration({ connectedEmail, isConnected }: { connected
             size="sm"
             onClick={handleSync}
             disabled={syncing || disconnecting}
-            className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
+            className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white"
           >
             {syncing ? 'Pulling…' : 'Pull from Calendar'}
           </Button>
@@ -176,7 +176,7 @@ export function CalendarIntegration({ connectedEmail, isConnected }: { connected
         <span className="inline-block w-2 h-2 rounded-full bg-muted-foreground/40" />
         <span className="text-sm text-muted-foreground">Not connected</span>
       </div>
-      <Button asChild size="sm" className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white">
+      <Button asChild size="sm" className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white">
         <a href="/api/auth/google-calendar">Connect Google Calendar</a>
       </Button>
     </div>

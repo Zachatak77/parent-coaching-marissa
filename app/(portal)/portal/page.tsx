@@ -13,9 +13,9 @@ const packageInfo: Record<string, { label: string; detail: string }> = {
   ongoing: { label: 'Ongoing Support Plan', detail: '' },
 }
 
-const SAGE_LIGHT = '#9EAF98'
-const PEACH      = '#F8B29A'
-const STRAW      = '#F2CE84'
+const SAGE_LIGHT = '#9BB39B'
+const PEACH      = '#E98773'
+const STRAW      = '#EFB63F'
 
 export default async function PortalDashboardPage() {
   const supabase = await createClient()
@@ -59,7 +59,7 @@ export default async function PortalDashboardPage() {
     <div className="space-y-8">
       {/* Welcome banner */}
       <div className="bg-white rounded-2xl border border-[#D9CFB9] p-6 shadow-sm">
-        <h1 className="text-2xl font-semibold text-[#1F1D1A] mb-1">Welcome back, {firstName}.</h1>
+        <h1 className="font-cormorant text-2xl font-semibold text-[#1F1D1A] mb-1">Welcome back, {firstName}.</h1>
         <p className="text-sm text-[#3A372F]">
           You&rsquo;re on the <strong>{pkg.label}</strong>
           {pkg.detail && <> &middot; {pkg.detail}</>}
@@ -86,7 +86,7 @@ export default async function PortalDashboardPage() {
             {typeof value === 'number' && <p className="text-2xl font-bold text-[#1F1D1A]">{value}</p>}
             <p className="text-xs text-[#6E6A60] mt-0.5">{label}</p>
             {typeof green === 'boolean' && (
-              <span className={`inline-flex items-center mt-2 px-2 py-0.5 rounded-full text-[10px] font-semibold ${green ? 'bg-[#9EAF98]/30 text-[#1F1D1A]' : 'bg-[#F5EFE2] text-[#6E6A60]'}`}>
+              <span className={`inline-flex items-center mt-2 px-2 py-0.5 rounded-full text-[10px] font-semibold ${green ? 'bg-[#9BB39B]/30 text-[#1F1D1A]' : 'bg-[#F7F7F5] text-[#6E6A60]'}`}>
                 {green ? 'Active' : 'Pending'}
               </span>
             )}
@@ -97,7 +97,7 @@ export default async function PortalDashboardPage() {
       {/* Plan preview */}
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-semibold text-[#1F1D1A] flex items-center gap-2">
+          <h2 className="font-cormorant text-base font-semibold text-[#1F1D1A] flex items-center gap-2">
             <BookOpen className="w-4 h-4" /> My Coaching Plan
           </h2>
           {plan && (
@@ -125,7 +125,7 @@ export default async function PortalDashboardPage() {
       {/* Recent sessions */}
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-semibold text-[#1F1D1A] flex items-center gap-2">
+          <h2 className="font-cormorant text-base font-semibold text-[#1F1D1A] flex items-center gap-2">
             <CalendarDays className="w-4 h-4" /> Recent Sessions
           </h2>
           {(recentSessions?.length ?? 0) > 0 && (
@@ -160,7 +160,7 @@ export default async function PortalDashboardPage() {
       {/* Recent resources */}
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-semibold text-[#1F1D1A] flex items-center gap-2">
+          <h2 className="font-cormorant text-base font-semibold text-[#1F1D1A] flex items-center gap-2">
             <Library className="w-4 h-4" /> Recent Resources
           </h2>
           {(clientResources?.length ?? 0) > 0 && (

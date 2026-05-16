@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 37 40% 94%;
+    --background: 60 5% 97%;
     --foreground: 30 10% 15%;
 
     --card: 0 0% 100%;
@@ -13,24 +13,24 @@
     --popover: 0 0% 100%;
     --popover-foreground: 30 10% 15%;
 
-    --primary: 96 38% 20%;
-    --primary-foreground: 37 40% 94%;
+    --primary: 213 20% 46%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 96 20% 90%;
-    --secondary-foreground: 96 38% 20%;
+    --secondary: 130 14% 90%;
+    --secondary-foreground: 213 20% 46%;
 
     --muted: 37 20% 88%;
     --muted-foreground: 30 10% 45%;
 
-    --accent: 96 30% 35%;
-    --accent-foreground: 37 40% 94%;
+    --accent: 130 14% 64%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 37 20% 82%;
     --input: 37 20% 82%;
-    --ring: 96 38% 20%;
+    --ring: 213 20% 46%;
 
     --radius: 0.5rem;
 
@@ -39,13 +39,13 @@
     --font-body:    var(--font-serif-4), 'Source Serif 4', Georgia, serif;
     --font-ui:      var(--font-inter), system-ui, sans-serif;
 
-    --navy:         #4A5F7F;
-    --navy-2:       #3E5070;
+    --navy:         #5F728D;
+    --navy-2:       #54647C;
     --navy-soft:    #6B7E9C;
     --navy-tint:    #C8D1DF;
     --char:         #2C2A28;
-    --cream:        #F5EFE2;
-    --linen-ds:     #FAF5EA;
+    --cream:        #F7F7F5;
+    --linen-ds:     #FFFFFF;
     --bone:         #F2EBDA;
     --ds-text:      #1F1D1A;
     --ds-text-2:    #3A372F;
@@ -53,10 +53,10 @@
     --hairline:     #D9CFB9;
 
     /* ── BRAND ACCENTS (logo board 2025) ── */
-    --sage:         #93A58F;
-    --sage-light:   #9EAF98;
-    --peach:        #F8B29A;
-    --straw:        #F2CE84;
+    --sage:         #9BB39B;
+    --sage-light:   #9BB39B;
+    --peach:        #E98773;
+    --straw:        #EFB63F;
 
     /* ── SECONDARY / WARMTH ── */
     --amber:         #D97B2E;

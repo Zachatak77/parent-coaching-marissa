@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { HeartRule } from '@/components/public/heart-rule'
+import { Pill } from '@/components/public/pill'
+import { SecHead } from '@/components/public/sec-head'
 
 export const metadata: Metadata = {
   title: 'Reimagine Parenting | More Calm. More Confidence. More Connection.',
@@ -7,70 +10,23 @@ export const metadata: Metadata = {
     'Parent coaching for families navigating challenging behavior. Work with Marissa — a special-education teacher specializing in neurodiverse children ages 3–12.',
 }
 
-/* ── Design tokens ──────────────────────────────────────────── */
-const NAVY      = '#4A5F7F'
+const NAVY      = '#5F728D'
 const NAVY_TINT = '#C8D1DF'
-const CREAM     = '#F5EFE2'
-const LINEN     = '#FAF5EA'
+const CREAM     = '#F7F7F5'
+const LINEN     = '#FFFFFF'
 const CHAR      = '#2C2A28'
 const TEXT      = '#1F1D1A'
 const TEXT2     = '#3A372F'
 const DIM       = '#6E6A60'
 const HAIRLINE  = '#D9CFB9'
-const SAGE      = '#93A58F'
-const SAGE_LIGHT = '#9EAF98'
-const PEACH     = '#F8B29A'
-const STRAW     = '#F2CE84'
+const SAGE      = '#9BB39B'
+const SAGE_LIGHT = '#9BB39B'
+const PEACH     = '#E98773'
+const STRAW     = '#EFB63F'
 
 const D = 'var(--font-display)'
 const B = 'var(--font-body)'
 const U = 'var(--font-ui)'
-
-function Pill({ children, char, cream, bg, fg }: { children: string; char?: boolean; cream?: boolean; bg?: string; fg?: string }) {
-  return (
-    <span style={{
-      display: 'inline-flex', alignItems: 'center',
-      padding: '7px 22px 8px',
-      background: bg ?? (cream ? LINEN : char ? CHAR : NAVY),
-      color: fg ?? (cream ? TEXT : '#FAF5EA'),
-      borderRadius: 999,
-      fontFamily: U, fontWeight: 600, fontSize: '0.72rem',
-      letterSpacing: '.18em', textTransform: 'uppercase' as const,
-    }}>
-      {children}
-    </span>
-  )
-}
-
-function HeartRule({ light, center }: { light?: boolean; center?: boolean }) {
-  const c = light ? '#FAF5EA' : TEXT
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: center ? 'center' : 'flex-start', gap: 14, color: c }}>
-      <div style={{ height: 1, width: 80, background: c, flexShrink: 0 }} />
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
-        <path d="M12 21s-7.5-4.6-9.5-10.2C1.2 7.4 3.7 4 7.1 4c2 0 3.6 1 4.9 2.6C13.3 5 14.9 4 16.9 4c3.4 0 5.9 3.4 4.6 6.8C19.5 16.4 12 21 12 21z"/>
-      </svg>
-      <div style={{ height: 1, width: 80, background: c, flexShrink: 0 }} />
-    </div>
-  )
-}
-
-function SecHead({ pill, title, lede, pillBg, pillFg }: { pill: string; title: React.ReactNode; lede?: string; pillBg?: string; pillFg?: string }) {
-  return (
-    <div style={{ textAlign: 'center', maxWidth: 680, margin: '0 auto 56px' }}>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
-        <Pill bg={pillBg} fg={pillFg}>{pill}</Pill>
-      </div>
-      <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.05, color: TEXT, letterSpacing: '-0.015em', margin: '0 0 20px' }}>
-        {title}
-      </h2>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: lede ? 20 : 0 }}>
-        <HeartRule center />
-      </div>
-      {lede && <p style={{ fontFamily: B, fontSize: '1.1rem', color: TEXT2, lineHeight: 1.55, margin: 0 }}>{lede}</p>}
-    </div>
-  )
-}
 
 export default function HomePage() {
   return (
@@ -79,7 +35,7 @@ export default function HomePage() {
       {/* ── 1. Hero ── */}
       <section style={{ position: 'relative', overflow: 'hidden', background: LINEN }}>
         <svg aria-hidden style={{ position: 'absolute', top: 0, right: 0, width: 240, height: 240, pointerEvents: 'none' }} viewBox="0 0 200 200">
-          <path fill="#4A5F7F" opacity="0.14" d="M200 0 L200 120 C150 100 110 60 90 0 Z"/>
+          <path fill="#5F728D" opacity="0.14" d="M200 0 L200 120 C150 100 110 60 90 0 Z"/>
         </svg>
 
         <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-24">
@@ -96,7 +52,7 @@ export default function HomePage() {
             </p>
             <Link
               href="/book"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 12, padding: '15px 32px', background: NAVY, color: '#FAF5EA', borderRadius: 999, fontFamily: U, fontWeight: 600, fontSize: '0.84rem', letterSpacing: '.16em', textTransform: 'uppercase', textDecoration: 'none' }}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 12, padding: '15px 32px', background: NAVY, color: '#FFFFFF', borderRadius: 999, fontFamily: U, fontWeight: 600, fontSize: '0.84rem', letterSpacing: '.16em', textTransform: 'uppercase', textDecoration: 'none' }}
             >
               BOOK A CONSULT →
             </Link>
@@ -105,7 +61,7 @@ export default function HomePage() {
       </section>
 
       {/* ── 2. Tagline ribbon ── */}
-      <div style={{ background: NAVY, color: '#FAF5EA', padding: '20px 24px', textAlign: 'center', fontFamily: U, fontWeight: 600, fontSize: '0.78rem', letterSpacing: '.22em', textTransform: 'uppercase' }}>
+      <div style={{ background: NAVY, color: '#FFFFFF', padding: '20px 24px', textAlign: 'center', fontFamily: U, fontWeight: 600, fontSize: '0.78rem', letterSpacing: '.22em', textTransform: 'uppercase' }}>
         NEURODIVERSE FAMILIES{' '}
         <span style={{ color: NAVY_TINT, margin: '0 14px', fontSize: '1rem', verticalAlign: '-1px' }}>•</span>
         {' '}AGES 3–12{' '}
@@ -122,7 +78,7 @@ export default function HomePage() {
             { step: '2', title: 'Get Your Plan', body: "Marissa builds a personalized strategy plan around your child's specific needs and your family's goals." },
             { step: '3', title: 'See the Change', body: "Week by week, you'll have the tools, support, and confidence to handle whatever comes up." },
           ].map(({ step, title, body }, idx) => {
-            const stepColors = [{ bg: SAGE, fg: '#FAF5EA' }, { bg: PEACH, fg: TEXT }, { bg: STRAW, fg: TEXT }]
+            const stepColors = [{ bg: SAGE, fg: TEXT }, { bg: PEACH, fg: TEXT }, { bg: STRAW, fg: TEXT }]
             const sc = stepColors[idx]
             return (
               <div key={step} style={{ textAlign: 'center' }}>
@@ -180,14 +136,14 @@ export default function HomePage() {
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start', marginBottom: 24 }}>
             <Pill>REIMAGINE</Pill>
-            <Pill char>HI, I&apos;M MARISSA</Pill>
+            <Pill bg={PEACH} fg={TEXT}>HI, I&apos;M MARISSA</Pill>
           </div>
           <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.4rem)', lineHeight: 1.1, color: TEXT, margin: '0 0 22px', letterSpacing: '-0.01em' }}>
             I help parents feel more calm, confident, and in control.
           </h2>
           <div style={{ background: NAVY_TINT, borderRadius: 22, padding: '18px 20px', display: 'flex', gap: 14, alignItems: 'center', marginBottom: 24 }}>
             <div style={{ width: 48, height: 48, borderRadius: '50%', background: CHAR, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <svg viewBox="0 0 100 100" width="26" height="26" fill="none" stroke="#FAF5EA" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <svg viewBox="0 0 100 100" width="26" height="26" fill="none" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="50" cy="38" r="13"/>
                 <path d="M22 80 C22 64 34 56 50 56 C66 56 78 64 78 80"/>
               </svg>
@@ -228,12 +184,12 @@ export default function HomePage() {
       </section>
 
       {/* ── 8. Final CTA ── */}
-      <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24 lg:py-28" style={{ background: NAVY, textAlign: 'center', color: '#FAF5EA' }}>
+      <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24 lg:py-28" style={{ background: NAVY, textAlign: 'center', color: '#FFFFFF' }}>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}><Pill cream>REIMAGINE</Pill></div>
-        <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2.2rem, 5vw, 3.4rem)', lineHeight: 1.05, color: '#FAF5EA', margin: '0 0 20px', letterSpacing: '-0.015em' }}>You&apos;re not doing<br />it wrong.</h2>
+        <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2.2rem, 5vw, 3.4rem)', lineHeight: 1.05, color: '#FFFFFF', margin: '0 0 20px', letterSpacing: '-0.015em' }}>You&apos;re not doing<br />it wrong.</h2>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 22 }}><HeartRule light center /></div>
-        <p style={{ fontFamily: B, fontSize: '1.1rem', color: '#E0D9C7', lineHeight: 1.55, maxWidth: 520, margin: '0 auto 36px' }}>You just need the right tools, support, and strategies that actually work for your child and your family.</p>
-        <Link href="/book" style={{ display: 'inline-flex', alignItems: 'center', padding: '15px 36px', background: '#FAF5EA', color: TEXT, borderRadius: 999, fontFamily: U, fontWeight: 600, fontSize: '0.84rem', letterSpacing: '.16em', textTransform: 'uppercase', textDecoration: 'none' }}>BOOK A CONSULT →</Link>
+        <p style={{ fontFamily: B, fontSize: '1.1rem', color: 'rgba(255,255,255,0.75)', lineHeight: 1.55, maxWidth: 520, margin: '0 auto 36px' }}>You just need the right tools, support, and strategies that actually work for your child and your family.</p>
+        <Link href="/book" style={{ display: 'inline-flex', alignItems: 'center', padding: '15px 36px', background: '#FFFFFF', color: TEXT, borderRadius: 999, fontFamily: U, fontWeight: 600, fontSize: '0.84rem', letterSpacing: '.16em', textTransform: 'uppercase', textDecoration: 'none' }}>BOOK A CONSULT →</Link>
       </section>
 
     </div>
