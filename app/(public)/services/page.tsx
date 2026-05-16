@@ -22,6 +22,8 @@ const LINEN     = '#FFFFFF'
 const TEXT      = '#1F1D1A'
 const TEXT2     = '#3A372F'
 const HAIRLINE  = '#D9CFB9'
+const SAGE      = '#9BB39B'
+const PEACH     = '#E98773'
 const STRAW     = '#EFB63F'
 const D = 'var(--font-display)'
 const B = 'var(--font-body)'
@@ -31,6 +33,7 @@ const packages = [
   {
     name: 'Confident Parent Program',
     duration: '2 Weeks',
+    accent: SAGE,
     outcome: 'Clear plan. Less overwhelm. Strategies you can use right away.',
     includes: [
       '2 private coaching sessions (45–60 min)',
@@ -57,6 +60,7 @@ const packages = [
   {
     name: 'Ongoing Support',
     duration: 'Monthly',
+    accent: PEACH,
     outcome: 'Ongoing clarity, accountability, and support.',
     includes: [
       '1 monthly check-in call (30 min)',
@@ -105,7 +109,7 @@ export default function ServicesPage() {
       {/* ── Header ── */}
       <section className="px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-24" style={{ background: CREAM }}>
         <div style={{ maxWidth: 600 }}>
-          <div style={{ marginBottom: 20 }}><Pill>COACHING PROGRAMS</Pill></div>
+          <div style={{ marginBottom: 20 }}><Pill bg={SAGE} fg={TEXT}>COACHING PROGRAMS</Pill></div>
           <h1 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2.8rem, 6vw, 5rem)', lineHeight: 1.05, color: TEXT, margin: '0 0 20px', letterSpacing: '-0.02em' }}>
             Programs built around your family
           </h1>
@@ -118,42 +122,47 @@ export default function ServicesPage() {
 
       {/* ── Packages ── */}
       <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: LINEN }}>
-        <div className="grid sm:grid-cols-3 gap-7 max-w-5xl mx-auto">
-          {packages.map(({ name, duration, outcome, includes, featured }) => (
+        <div className="grid sm:grid-cols-3 gap-x-7 max-w-5xl mx-auto" style={{ gridTemplateRows: 'auto 1fr auto auto', rowGap: 0 }}>
+          {packages.map(({ name, duration, outcome, includes, featured, accent }) => (
             <div
               key={name}
               style={{
+                gridRow: 'span 4',
+                display: 'grid',
+                gridTemplateRows: 'subgrid',
                 borderRadius: 20,
                 border: `1px solid ${featured ? NAVY : HAIRLINE}`,
-                display: 'flex',
-                flexDirection: 'column' as const,
                 overflow: 'hidden',
                 ...(featured ? { boxShadow: '0 4px 12px rgba(0,0,0,0.10)' } : {}),
               }}
             >
-              <div style={{ padding: '28px 28px 22px', background: featured ? NAVY : CREAM }}>
+              {/* Header */}
+              <div style={{ padding: '28px 28px 22px', background: featured ? NAVY : (accent ?? CREAM) }}>
                 {featured && (
                   <p style={{ fontFamily: U, fontSize: '0.64rem', fontWeight: 700, letterSpacing: '.20em', textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.5)', margin: '0 0 8px' }}>Most Popular</p>
                 )}
                 <p style={{ fontFamily: U, fontSize: '0.68rem', fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase' as const, color: featured ? 'rgba(255,255,255,0.45)' : '#6E6A60', margin: '0 0 6px' }}>{duration}</p>
                 <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.55rem', lineHeight: 1.1, color: featured ? '#FFFFFF' : TEXT, margin: 0 }}>{name}</h2>
               </div>
-              <div style={{ padding: '22px 28px', background: LINEN, display: 'flex', flexDirection: 'column' as const, flex: 1, gap: 20 }}>
-                <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column' as const, gap: 12 }}>
-                  {includes.map((item) => (
-                    <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-                      <CheckIcon />
-                      <span style={{ fontFamily: B, fontSize: '0.94rem', color: TEXT2, lineHeight: 1.5 }}>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div style={{ borderTop: `1px solid ${HAIRLINE}`, paddingTop: 18 }}>
-                  <p style={{ fontFamily: U, fontSize: '0.64rem', fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase' as const, color: '#6E6A60', margin: '0 0 6px' }}>Outcome</p>
-                  <p style={{ fontFamily: B, fontSize: '0.92rem', fontStyle: 'italic', color: TEXT, lineHeight: 1.45, margin: 0 }}>{outcome}</p>
-                </div>
+              {/* Checklist */}
+              <ul style={{ listStyle: 'none', margin: 0, padding: '22px 28px 20px', background: LINEN, display: 'flex', flexDirection: 'column' as const, gap: 12 }}>
+                {includes.map((item) => (
+                  <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                    <CheckIcon />
+                    <span style={{ fontFamily: B, fontSize: '0.94rem', color: TEXT2, lineHeight: 1.5 }}>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              {/* Outcome */}
+              <div style={{ padding: '18px 28px 0', background: LINEN, borderTop: `1px solid ${HAIRLINE}` }}>
+                <p style={{ fontFamily: U, fontSize: '0.64rem', fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase' as const, color: '#6E6A60', margin: '0 0 6px' }}>Outcome</p>
+                <p style={{ fontFamily: B, fontSize: '0.92rem', fontStyle: 'italic', color: TEXT, lineHeight: 1.45, margin: 0 }}>{outcome}</p>
+              </div>
+              {/* Button */}
+              <div style={{ padding: '20px 28px 22px', background: LINEN }}>
                 <Link
                   href="/book"
-                  style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', padding: '13px 20px', background: NAVY, color: '#FFFFFF', borderRadius: 999, fontFamily: U, fontWeight: 600, fontSize: '0.72rem', letterSpacing: '.14em', textTransform: 'uppercase' as const, textDecoration: 'none' }}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '13px 20px', background: NAVY, color: '#FFFFFF', borderRadius: 999, fontFamily: U, fontWeight: 600, fontSize: '0.72rem', letterSpacing: '.14em', textTransform: 'uppercase' as const, textDecoration: 'none' }}
                 >
                   BOOK A CONSULT
                 </Link>
@@ -166,6 +175,7 @@ export default function ServicesPage() {
       {/* ── Add-ons ── */}
       <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: CREAM }}>
         <div style={{ maxWidth: 680, margin: '0 auto' }}>
+          <div style={{ marginBottom: 12 }}><Pill bg={STRAW} fg={TEXT}>ADD-ONS</Pill></div>
           <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.8rem', lineHeight: 1.1, color: TEXT, margin: '0 0 8px', letterSpacing: '-0.01em' }}>Add-ons</h2>
           <p style={{ fontFamily: B, fontSize: '0.94rem', color: TEXT2, margin: '0 0 24px', lineHeight: 1.5 }}>
             Pricing for all packages and add-ons is discussed during your discovery call.
