@@ -77,7 +77,10 @@ export async function POST(req: NextRequest) {
     )
     if (!attendee?.email) continue
 
-    const name = extractNameFromTitle(event.summary) ?? attendee.displayName ?? attendee.email.split('@')[0]
+    const rawSummary = event.summary ?? ''
+    const isCanceled = rawSummary.toLowerCase().startsWith('canceled:')
+    const summary = isCanceled ? rawSummary.slice('Canceled:'.length).trim() : rawSummary
+    const name = extractNameFromTitle(summary) ?? attendee.displayName ?? attendee.email.split('@')[0]
     const email = attendee.email
     const phone = extractPhone(description)
     const mainConcern = extractMainConcern(description)
@@ -91,32 +94,38 @@ export async function POST(req: NextRequest) {
       scheduled_at: scheduledAt,
       gcal_event_id: event.id,
       source: 'google_calendar',
-      status: 'booked',
+      status: isCanceled ? 'closed' : 'booked',
       coach_id: coachId,
     })
 
-    // error.code 23505 = unique violation (duplicate event) — skip silently
-    if (error && !error.code?.includes('23505')) continue
+    if (error?.code === '23505') {
+      const updates: Record<string, string> = { name }
+      if (isCanceled) updates.status = 'closed'
+      await admin.from('discovery_calls').update(updates).eq('gcal_event_id', event.id!)
+      continue
+    }
     if (error) continue
 
-    // Fire coach alert email (fire-and-forget)
-    try {
-      const html = await render(DiscoveryCallAlert({
-        name,
-        email,
-        phone: phone ?? undefined,
-        childAges: '—',
-        mainConcern: mainConcern ?? '—',
-        howTheyHeard: 'Google Calendar',
-      }))
-      getResend().emails.send({
-        from: FROM,
-        to: COACH_EMAIL,
-        subject: `New consult booked: ${name}`,
-        html,
-      })
-    } catch {
-      // Email failure is non-fatal
+    if (!isCanceled) {
+      // Fire coach alert email (fire-and-forget)
+      try {
+        const html = await render(DiscoveryCallAlert({
+          name,
+          email,
+          phone: phone ?? undefined,
+          childAges: '—',
+          mainConcern: mainConcern ?? '—',
+          howTheyHeard: 'Google Calendar',
+        }))
+        getResend().emails.send({
+          from: FROM,
+          to: COACH_EMAIL,
+          subject: `New consult booked: ${name}`,
+          html,
+        })
+      } catch {
+        // Email failure is non-fatal
+      }
     }
   }
 
