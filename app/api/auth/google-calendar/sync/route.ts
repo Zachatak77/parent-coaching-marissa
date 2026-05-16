@@ -80,6 +80,7 @@ export async function POST() {
     })
 
     if (error?.code === '23505') {
+      await admin.from('discovery_calls').update({ name }).eq('gcal_event_id', event.id!)
       skipped++
       continue
     }
