@@ -48,7 +48,7 @@ export async function createClientAction(formData: FormData) {
   const { data: newUser, error: authError } = await admin.auth.admin.createUser({
     email: parsed.data.email,
     email_confirm: true,
-    user_metadata: { full_name: parsed.data.full_name, role: 'parent' },
+    user_metadata: { full_name: parsed.data.full_name, role: 'parent', coach_id: user.id },
   })
   if (authError) return { error: authError.message }
 
@@ -57,18 +57,6 @@ export async function createClientAction(formData: FormData) {
     type: 'recovery',
     email: parsed.data.email,
   })
-
-  // Use admin client for profile upsert — the coach's session lacks RLS permission
-  // to write another user's profile row
-  await admin
-    .from('profiles')
-    .upsert({
-      id: newUser.user.id,
-      full_name: parsed.data.full_name,
-      email: parsed.data.email,
-      role: 'parent',
-      coach_id: user.id,
-    })
 
   const { data: client, error: clientError } = await supabase
     .from('clients')
