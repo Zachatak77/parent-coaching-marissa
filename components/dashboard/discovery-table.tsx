@@ -198,6 +198,8 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
 function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: string }) {
   const [expanded, setExpanded] = React.useState(false)
   const [status, setStatus] = React.useState(call.status as Status)
+  const [notes, setNotes] = React.useState(call.notes ?? '')
+  const [noteSaving, setNoteSaving] = React.useState(false)
   const router = useRouter()
 
   const handleStatusChange = async (newStatus: Status) => {
@@ -210,6 +212,15 @@ function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: 
       toast.success('Status updated')
       router.refresh()
     }
+  }
+
+  const handleNoteBlur = async () => {
+    if (notes === (call.notes ?? '')) return
+    setNoteSaving(true)
+    const result = await updateDiscoveryNotesAction(call.id, notes)
+    setNoteSaving(false)
+    if (result.error) toast.error(result.error)
+    else toast.success('Notes saved')
   }
 
   const now = new Date()
@@ -278,8 +289,31 @@ function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: 
       </div>
 
       {expanded && (
-        <div className="pt-3 border-t space-y-2 text-xs text-muted-foreground">
-          {call.how_they_heard && <p><span className="font-medium">How they heard:</span> {call.how_they_heard}</p>}
+        <div className="pt-3 border-t space-y-5">
+          <div>
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5">Main Concern</p>
+            <p className="text-sm">{call.main_concern ?? '—'}</p>
+          </div>
+          {call.how_they_heard && (
+            <div>
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5">How They Heard</p>
+              <p className="text-sm">{call.how_they_heard}</p>
+            </div>
+          )}
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Internal Notes</p>
+              {noteSaving && <span className="text-xs text-muted-foreground">Saving…</span>}
+            </div>
+            <Textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              onBlur={handleNoteBlur}
+              placeholder='e.g. "Left voicemail 4/21", "Scheduled for Thursday"'
+              rows={3}
+              className="resize-none text-sm"
+            />
+          </div>
         </div>
       )}
     </div>
