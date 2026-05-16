@@ -410,14 +410,21 @@ export function DiscoveryTable({
   const [search, setSearch] = React.useState('')
   const [statusFilter, setStatusFilter] = React.useState('all')
 
-  const filtered = calls.filter((c) => {
-    const matchSearch =
-      !search ||
-      c.name.toLowerCase().includes(search.toLowerCase()) ||
-      c.email.toLowerCase().includes(search.toLowerCase())
-    const matchStatus = statusFilter === 'all' || c.status === statusFilter
-    return matchSearch && matchStatus
-  })
+  const filtered = calls
+    .filter((c) => {
+      const matchSearch =
+        !search ||
+        c.name.toLowerCase().includes(search.toLowerCase()) ||
+        c.email.toLowerCase().includes(search.toLowerCase())
+      const matchStatus = statusFilter === 'all' || c.status === statusFilter
+      return matchSearch && matchStatus
+    })
+    .sort((a, b) => {
+      if (!a.scheduled_at && !b.scheduled_at) return 0
+      if (!a.scheduled_at) return 1
+      if (!b.scheduled_at) return -1
+      return new Date(a.scheduled_at).getTime() - new Date(b.scheduled_at).getTime()
+    })
 
   return (
     <div className="space-y-4">
