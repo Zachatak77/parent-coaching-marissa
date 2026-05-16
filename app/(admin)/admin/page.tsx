@@ -105,7 +105,7 @@ export default async function AdminOverviewPage() {
             {now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
         </div>
-        <Button asChild className="bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full text-sm">
+        <Button asChild className="bg-[#5F728D] hover:bg-[#54647C] text-white rounded-full text-sm">
           <Link href="/dashboard/discovery">Manage Leads</Link>
         </Button>
       </div>
@@ -151,7 +151,7 @@ export default async function AdminOverviewPage() {
               { label: 'Converted', count: discoveryConverted ?? 0, status: 'converted' },
               { label: 'Closed', count: discoveryClosed ?? 0, status: 'closed' },
             ].map(({ label, count, status }) => (
-              <div key={status} className="flex items-center gap-2 bg-[#F5EFE2] rounded-lg px-3 py-2">
+              <div key={status} className="flex items-center gap-2 bg-[#F7F7F5] rounded-lg px-3 py-2">
                 <Badge variant={statusColors[status] ?? 'gray'}>{label}</Badge>
                 <span className="text-sm font-semibold text-[#1F1D1A]">{count}</span>
               </div>

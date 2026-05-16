@@ -7,18 +7,18 @@ export const metadata: Metadata = {
     'Learn about Marissa, her story, her coaching philosophy, and why she became a certified parent coach dedicated to helping families thrive.',
 }
 
-const NAVY       = '#4A5F7F'
+const NAVY       = '#5F728D'
 const NAVY_TINT  = '#C8D1DF'
-const CREAM      = '#F5EFE2'
-const LINEN      = '#FAF5EA'
+const CREAM      = '#F7F7F5'
+const LINEN      = '#FFFFFF'
 const CHAR       = '#2C2A28'
 const TEXT       = '#1F1D1A'
 const TEXT2      = '#3A372F'
 const HAIRLINE   = '#D9CFB9'
-const SAGE       = '#93A58F'
-const SAGE_LIGHT = '#9EAF98'
-const PEACH      = '#F8B29A'
-const STRAW      = '#F2CE84'
+const SAGE       = '#9BB39B'
+const SAGE_LIGHT = '#9BB39B'
+const PEACH      = '#E98773'
+const STRAW      = '#EFB63F'
 const D = 'var(--font-display)'
 const B = 'var(--font-body)'
 const U = 'var(--font-ui)'
@@ -29,7 +29,7 @@ function Pill({ children, char, cream, bg, fg }: { children: string; char?: bool
       display: 'inline-flex', alignItems: 'center',
       padding: '7px 22px 8px',
       background: bg ?? (cream ? LINEN : char ? CHAR : NAVY),
-      color: fg ?? (cream ? TEXT : '#FAF5EA'),
+      color: fg ?? (cream ? TEXT : '#FFFFFF'),
       borderRadius: 999,
       fontFamily: U, fontWeight: 600, fontSize: '0.72rem',
       letterSpacing: '.18em', textTransform: 'uppercase' as const,
@@ -40,7 +40,7 @@ function Pill({ children, char, cream, bg, fg }: { children: string; char?: bool
 }
 
 function HeartRule({ light, center }: { light?: boolean; center?: boolean }) {
-  const c = light ? '#FAF5EA' : TEXT
+  const c = light ? '#FFFFFF' : TEXT
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: center ? 'center' : 'flex-start', gap: 14, color: c }}>
       <div style={{ height: 1, width: 80, background: c, flexShrink: 0 }} />
@@ -161,7 +161,7 @@ export default function AboutPage() {
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
           <Pill cream>REIMAGINE</Pill>
         </div>
-        <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.05, color: '#FAF5EA', margin: '0 0 20px', letterSpacing: '-0.015em' }}>
+        <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.05, color: '#FFFFFF', margin: '0 0 20px', letterSpacing: '-0.015em' }}>
           Ready to get started?
         </h2>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 22 }}>

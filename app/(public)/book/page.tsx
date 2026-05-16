@@ -7,14 +7,14 @@ export const metadata: Metadata = {
     "Book a free, no-pressure discovery call with Marissa. Share what's going on at home and find out if coaching is the right fit for your family.",
 }
 
-const NAVY      = '#4A5F7F'
+const NAVY      = '#5F728D'
 const NAVY_TINT = '#C8D1DF'
-const CREAM     = '#F5EFE2'
-const LINEN     = '#FAF5EA'
+const CREAM     = '#F7F7F5'
+const LINEN     = '#FFFFFF'
 const TEXT      = '#1F1D1A'
 const TEXT2     = '#3A372F'
 const HAIRLINE  = '#D9CFB9'
-const SAGE_LIGHT = '#9EAF98'
+const SAGE_LIGHT = '#9BB39B'
 const D = 'var(--font-display)'
 const B = 'var(--font-body)'
 const U = 'var(--font-ui)'
@@ -24,7 +24,7 @@ function Pill({ children }: { children: string }) {
     <span style={{
       display: 'inline-flex', alignItems: 'center',
       padding: '7px 22px 8px',
-      background: NAVY, color: '#FAF5EA',
+      background: NAVY, color: '#FFFFFF',
       borderRadius: 999,
       fontFamily: U, fontWeight: 600, fontSize: '0.72rem',
       letterSpacing: '.18em', textTransform: 'uppercase' as const,
@@ -130,10 +130,10 @@ export default function BookPage() {
 
             {/* Quote */}
             <div style={{ background: NAVY, borderRadius: 18, padding: '28px 24px' }}>
-              <p style={{ fontFamily: B, fontSize: '0.96rem', fontStyle: 'italic', color: 'rgba(250,245,234,0.88)', lineHeight: 1.65, margin: '0 0 16px' }}>
+              <p style={{ fontFamily: B, fontSize: '0.96rem', fontStyle: 'italic', color: 'rgba(255,255,255,0.88)', lineHeight: 1.65, margin: '0 0 16px' }}>
                 &ldquo;I was nervous to reach out, but Marissa made me feel so at ease on our first call. I knew within five minutes it was exactly what I needed.&rdquo;
               </p>
-              <p style={{ fontFamily: U, fontSize: '0.7rem', fontWeight: 600, letterSpacing: '.10em', textTransform: 'uppercase', color: 'rgba(250,245,234,0.4)', margin: 0 }}>— Parent, Montclair NJ</p>
+              <p style={{ fontFamily: U, fontSize: '0.7rem', fontWeight: 600, letterSpacing: '.10em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', margin: 0 }}>— Parent, Montclair NJ</p>
             </div>
 
             {/* Email */}

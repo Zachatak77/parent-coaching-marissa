@@ -67,8 +67,8 @@ function RoleFilterTabs({ current }: { current: string }) {
           }}
           className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors capitalize ${
             current === f
-              ? 'bg-[#4A5F7F] text-white'
-              : 'bg-[#F5EFE2] text-[#6E6A60] hover:bg-[#D9CFB9]'
+              ? 'bg-[#5F728D] text-white'
+              : 'bg-[#F7F7F5] text-[#6E6A60] hover:bg-[#D9CFB9]'
           }`}
         >
           {f === 'all' ? 'All' : f.charAt(0).toUpperCase() + f.slice(1) + 's'}
@@ -97,7 +97,7 @@ function MagicLinkButton({ userId }: { userId: string }) {
         onClick={handleClick}
         disabled={loading}
         title="View portal as this user"
-        className="p-1.5 rounded hover:bg-[#F5EFE2] text-[#6E6A60] hover:text-[#4A5F7F] transition-colors disabled:opacity-50"
+        className="p-1.5 rounded hover:bg-[#F7F7F5] text-[#6E6A60] hover:text-[#5F728D] transition-colors disabled:opacity-50"
       >
         <ExternalLink className="w-3.5 h-3.5" />
       </button>
@@ -125,14 +125,14 @@ function SetPasswordDialog({ user, onClose }: { user: User; onClose: () => void 
 
   return (
     <Dialog open onOpenChange={(v) => { if (!v) onClose() }}>
-      <DialogContent className="sm:max-w-sm bg-[#FAF5EA] border-[#D9CFB9]">
+      <DialogContent className="sm:max-w-sm bg-[#FFFFFF] border-[#D9CFB9]">
         <DialogHeader>
           <DialogTitle className="text-[#1F1D1A]">Set password</DialogTitle>
         </DialogHeader>
         {done ? (
           <div className="space-y-4">
             <p className="text-sm text-[#3A372F]">Password updated for <strong>{user.full_name ?? user.email}</strong>.</p>
-            <Button onClick={onClose} className="w-full bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full">Done</Button>
+            <Button onClick={onClose} className="w-full bg-[#5F728D] hover:bg-[#54647C] text-white rounded-full">Done</Button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -147,13 +147,13 @@ function SetPasswordDialog({ user, onClose }: { user: User; onClose: () => void 
                 required
                 minLength={6}
                 autoComplete="new-password"
-                className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]"
+                className="border-[#D9CFB9] focus-visible:ring-[#5F728D]"
               />
               <p className="text-xs text-[#6E6A60]">Minimum 6 characters.</p>
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={onClose} className="border-[#D9CFB9]">Cancel</Button>
-              <Button type="submit" disabled={loading} className="bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full">
+              <Button type="submit" disabled={loading} className="bg-[#5F728D] hover:bg-[#54647C] text-white rounded-full">
                 {loading ? 'Saving…' : 'Set password'}
               </Button>
             </DialogFooter>
@@ -188,7 +188,7 @@ function ResetLinkButton({ userId }: { userId: string }) {
         onClick={handleClick}
         disabled={loading}
         title="Copy password reset link"
-        className="p-1.5 rounded hover:bg-[#F5EFE2] text-[#6E6A60] hover:text-[#4A5F7F] transition-colors disabled:opacity-50"
+        className="p-1.5 rounded hover:bg-[#F7F7F5] text-[#6E6A60] hover:text-[#5F728D] transition-colors disabled:opacity-50"
       >
         {copied ? <Check className="w-3.5 h-3.5 text-green-600" /> : <RotateCcw className="w-3.5 h-3.5" />}
       </button>
@@ -232,7 +232,7 @@ function CreateUserDialog({ coaches, open, onClose }: { coaches: Coach[]; open: 
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) handleClose() }}>
-      <DialogContent className="sm:max-w-md bg-[#FAF5EA] border-[#D9CFB9]">
+      <DialogContent className="sm:max-w-md bg-[#FFFFFF] border-[#D9CFB9]">
         <DialogHeader>
           <DialogTitle className="text-[#1F1D1A]">
             {magicLink ? 'User created' : 'Create new user'}
@@ -255,7 +255,7 @@ function CreateUserDialog({ coaches, open, onClose }: { coaches: Coach[]; open: 
               </Button>
             </div>
             <p className="text-xs text-[#6E6A60]">This link logs the user in directly. It expires after one use.</p>
-            <Button onClick={handleClose} className="w-full bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full">
+            <Button onClick={handleClose} className="w-full bg-[#5F728D] hover:bg-[#54647C] text-white rounded-full">
               Done
             </Button>
           </div>
@@ -266,16 +266,16 @@ function CreateUserDialog({ coaches, open, onClose }: { coaches: Coach[]; open: 
             )}
             <div className="space-y-1.5">
               <Label className="text-xs font-semibold text-[#1F1D1A]">Full Name</Label>
-              <Input name="full_name" placeholder="Jane Smith" required className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
+              <Input name="full_name" placeholder="Jane Smith" required className="border-[#D9CFB9] focus-visible:ring-[#5F728D]" />
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs font-semibold text-[#1F1D1A]">Email</Label>
-              <Input name="email" type="email" placeholder="jane@example.com" required className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
+              <Input name="email" type="email" placeholder="jane@example.com" required className="border-[#D9CFB9] focus-visible:ring-[#5F728D]" />
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs font-semibold text-[#1F1D1A]">Role</Label>
               <Select name="role" value={role} onValueChange={(v) => setRole(v as Role)}>
-                <SelectTrigger className="border-[#D9CFB9] focus:ring-[#4A5F7F]">
+                <SelectTrigger className="border-[#D9CFB9] focus:ring-[#5F728D]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -289,7 +289,7 @@ function CreateUserDialog({ coaches, open, onClose }: { coaches: Coach[]; open: 
               <div className="space-y-1.5">
                 <Label className="text-xs font-semibold text-[#1F1D1A]">Assign Coach <span className="font-normal text-[#6E6A60]">(optional)</span></Label>
                 <Select name="coach_id">
-                  <SelectTrigger className="border-[#D9CFB9] focus:ring-[#4A5F7F]">
+                  <SelectTrigger className="border-[#D9CFB9] focus:ring-[#5F728D]">
                     <SelectValue placeholder="Select a coach…" />
                   </SelectTrigger>
                   <SelectContent>
@@ -302,7 +302,7 @@ function CreateUserDialog({ coaches, open, onClose }: { coaches: Coach[]; open: 
             )}
             <DialogFooter>
               <Button type="button" variant="outline" onClick={handleClose} className="border-[#D9CFB9]">Cancel</Button>
-              <Button type="submit" disabled={loading} className="bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full">
+              <Button type="submit" disabled={loading} className="bg-[#5F728D] hover:bg-[#54647C] text-white rounded-full">
                 {loading ? 'Creating…' : 'Create user'}
               </Button>
             </DialogFooter>
@@ -332,7 +332,7 @@ function EditUserDialog({ user, coaches, onClose }: { user: User; coaches: Coach
 
   return (
     <Dialog open onOpenChange={(v) => { if (!v) onClose() }}>
-      <DialogContent className="sm:max-w-md bg-[#FAF5EA] border-[#D9CFB9]">
+      <DialogContent className="sm:max-w-md bg-[#FFFFFF] border-[#D9CFB9]">
         <DialogHeader>
           <DialogTitle className="text-[#1F1D1A]">Edit user</DialogTitle>
         </DialogHeader>
@@ -342,16 +342,16 @@ function EditUserDialog({ user, coaches, onClose }: { user: User; coaches: Coach
           )}
           <div className="space-y-1.5">
             <Label className="text-xs font-semibold text-[#1F1D1A]">Full Name</Label>
-            <Input name="full_name" defaultValue={user.full_name ?? ''} required className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
+            <Input name="full_name" defaultValue={user.full_name ?? ''} required className="border-[#D9CFB9] focus-visible:ring-[#5F728D]" />
           </div>
           <div className="space-y-1.5">
             <Label className="text-xs font-semibold text-[#1F1D1A]">Email</Label>
-            <Input name="email" type="email" defaultValue={user.email ?? ''} required className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F]" />
+            <Input name="email" type="email" defaultValue={user.email ?? ''} required className="border-[#D9CFB9] focus-visible:ring-[#5F728D]" />
           </div>
           <div className="space-y-1.5">
             <Label className="text-xs font-semibold text-[#1F1D1A]">Role</Label>
             <Select name="role" value={role} onValueChange={(v) => setRole(v as Role)}>
-              <SelectTrigger className="border-[#D9CFB9] focus:ring-[#4A5F7F]">
+              <SelectTrigger className="border-[#D9CFB9] focus:ring-[#5F728D]">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -365,7 +365,7 @@ function EditUserDialog({ user, coaches, onClose }: { user: User; coaches: Coach
             <div className="space-y-1.5">
               <Label className="text-xs font-semibold text-[#1F1D1A]">Assign Coach <span className="font-normal text-[#6E6A60]">(optional)</span></Label>
               <Select name="coach_id" defaultValue={user.coach_id ?? undefined}>
-                <SelectTrigger className="border-[#D9CFB9] focus:ring-[#4A5F7F]">
+                <SelectTrigger className="border-[#D9CFB9] focus:ring-[#5F728D]">
                   <SelectValue placeholder="Select a coach…" />
                 </SelectTrigger>
                 <SelectContent>
@@ -378,7 +378,7 @@ function EditUserDialog({ user, coaches, onClose }: { user: User; coaches: Coach
           )}
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose} className="border-[#D9CFB9]">Cancel</Button>
-            <Button type="submit" disabled={loading} className="bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full">
+            <Button type="submit" disabled={loading} className="bg-[#5F728D] hover:bg-[#54647C] text-white rounded-full">
               {loading ? 'Saving…' : 'Save changes'}
             </Button>
           </DialogFooter>
@@ -402,7 +402,7 @@ function DeleteUserDialog({ user, onClose }: { user: User; onClose: () => void }
 
   return (
     <Dialog open onOpenChange={(v) => { if (!v) onClose() }}>
-      <DialogContent className="sm:max-w-sm bg-[#FAF5EA] border-[#D9CFB9]">
+      <DialogContent className="sm:max-w-sm bg-[#FFFFFF] border-[#D9CFB9]">
         <DialogHeader>
           <DialogTitle className="text-[#1F1D1A]">Delete user?</DialogTitle>
         </DialogHeader>
@@ -447,11 +447,11 @@ export function UsersTable({ users, coaches }: UsersTableProps) {
             placeholder="Search name or email…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-52 text-sm border-[#D9CFB9] focus-visible:ring-[#4A5F7F]"
+            className="w-52 text-sm border-[#D9CFB9] focus-visible:ring-[#5F728D]"
           />
           <Button
             onClick={() => setCreateOpen(true)}
-            className="bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full text-xs gap-1.5 flex-shrink-0"
+            className="bg-[#5F728D] hover:bg-[#54647C] text-white rounded-full text-xs gap-1.5 flex-shrink-0"
           >
             <Plus className="w-3.5 h-3.5" /> New User
           </Button>
@@ -462,7 +462,7 @@ export function UsersTable({ users, coaches }: UsersTableProps) {
       <div className="rounded-xl border border-[#D9CFB9] overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-[#F5EFE2] border-b border-[#D9CFB9]">
+            <tr className="bg-[#F7F7F5] border-b border-[#D9CFB9]">
               <th className="text-left px-4 py-3 text-xs font-semibold text-[#6E6A60] uppercase tracking-wide">Name</th>
               <th className="text-left px-4 py-3 text-xs font-semibold text-[#6E6A60] uppercase tracking-wide hidden sm:table-cell">Email</th>
               <th className="text-left px-4 py-3 text-xs font-semibold text-[#6E6A60] uppercase tracking-wide">Role</th>
@@ -477,7 +477,7 @@ export function UsersTable({ users, coaches }: UsersTableProps) {
               </tr>
             ) : (
               filtered.map((u) => (
-                <tr key={u.id} className="hover:bg-[#FAF5EA] transition-colors">
+                <tr key={u.id} className="hover:bg-[#FFFFFF] transition-colors">
                   <td className="px-4 py-3 font-medium text-[#1F1D1A]">
                     {u.full_name ?? '—'}
                     <span className="block sm:hidden text-xs text-[#6E6A60] font-normal">{u.email}</span>
@@ -497,14 +497,14 @@ export function UsersTable({ users, coaches }: UsersTableProps) {
                       <button
                         onClick={() => setEditUser(u)}
                         title="Edit user"
-                        className="p-1.5 rounded hover:bg-[#F5EFE2] text-[#6E6A60] hover:text-[#1F1D1A] transition-colors"
+                        className="p-1.5 rounded hover:bg-[#F7F7F5] text-[#6E6A60] hover:text-[#1F1D1A] transition-colors"
                       >
                         <Pencil className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => setSetPasswordUser(u)}
                         title="Set password"
-                        className="p-1.5 rounded hover:bg-[#F5EFE2] text-[#6E6A60] hover:text-[#4A5F7F] transition-colors"
+                        className="p-1.5 rounded hover:bg-[#F7F7F5] text-[#6E6A60] hover:text-[#5F728D] transition-colors"
                       >
                         <KeyRound className="w-3.5 h-3.5" />
                       </button>

@@ -13,14 +13,14 @@ export const metadata: Metadata = {
     'Explore parent coaching packages — from a focused 2-week program to ongoing monthly support. All pricing discussed during your free discovery call.',
 }
 
-const NAVY      = '#4A5F7F'
+const NAVY      = '#5F728D'
 const NAVY_TINT = '#C8D1DF'
-const CREAM     = '#F5EFE2'
-const LINEN     = '#FAF5EA'
+const CREAM     = '#F7F7F5'
+const LINEN     = '#FFFFFF'
 const TEXT      = '#1F1D1A'
 const TEXT2     = '#3A372F'
 const HAIRLINE  = '#D9CFB9'
-const STRAW     = '#F2CE84'
+const STRAW     = '#EFB63F'
 const D = 'var(--font-display)'
 const B = 'var(--font-body)'
 const U = 'var(--font-ui)'
@@ -31,7 +31,7 @@ function Pill({ children, cream }: { children: string; cream?: boolean }) {
       display: 'inline-flex', alignItems: 'center',
       padding: '7px 22px 8px',
       background: cream ? LINEN : NAVY,
-      color: cream ? TEXT : '#FAF5EA',
+      color: cream ? TEXT : '#FFFFFF',
       borderRadius: 999,
       fontFamily: U, fontWeight: 600, fontSize: '0.72rem',
       letterSpacing: '.18em', textTransform: 'uppercase' as const,
@@ -42,7 +42,7 @@ function Pill({ children, cream }: { children: string; cream?: boolean }) {
 }
 
 function HeartRule({ light, center }: { light?: boolean; center?: boolean }) {
-  const c = light ? '#FAF5EA' : TEXT
+  const c = light ? '#FFFFFF' : TEXT
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: center ? 'center' : 'flex-start', gap: 14, color: c }}>
       <div style={{ height: 1, width: 80, background: c, flexShrink: 0 }} />
@@ -155,15 +155,15 @@ export default function ServicesPage() {
                 display: 'flex',
                 flexDirection: 'column' as const,
                 overflow: 'hidden',
-                ...(featured ? { boxShadow: '0 4px 28px rgba(74,95,127,0.18)' } : {}),
+                ...(featured ? { boxShadow: '0 4px 28px rgba(95,114,141,0.18)' } : {}),
               }}
             >
               <div style={{ padding: '28px 28px 22px', background: featured ? NAVY : CREAM }}>
                 {featured && (
-                  <p style={{ fontFamily: U, fontSize: '0.64rem', fontWeight: 700, letterSpacing: '.20em', textTransform: 'uppercase' as const, color: 'rgba(250,245,234,0.5)', margin: '0 0 8px' }}>Most Popular</p>
+                  <p style={{ fontFamily: U, fontSize: '0.64rem', fontWeight: 700, letterSpacing: '.20em', textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.5)', margin: '0 0 8px' }}>Most Popular</p>
                 )}
-                <p style={{ fontFamily: U, fontSize: '0.68rem', fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase' as const, color: featured ? 'rgba(250,245,234,0.45)' : '#6E6A60', margin: '0 0 6px' }}>{duration}</p>
-                <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.55rem', lineHeight: 1.1, color: featured ? '#FAF5EA' : TEXT, margin: 0 }}>{name}</h2>
+                <p style={{ fontFamily: U, fontSize: '0.68rem', fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase' as const, color: featured ? 'rgba(255,255,255,0.45)' : '#6E6A60', margin: '0 0 6px' }}>{duration}</p>
+                <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.55rem', lineHeight: 1.1, color: featured ? '#FFFFFF' : TEXT, margin: 0 }}>{name}</h2>
               </div>
               <div style={{ padding: '22px 28px', background: LINEN, display: 'flex', flexDirection: 'column' as const, flex: 1, gap: 20 }}>
                 <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column' as const, gap: 12 }}>
@@ -180,7 +180,7 @@ export default function ServicesPage() {
                 </div>
                 <Link
                   href="/book"
-                  style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', padding: '13px 20px', background: NAVY, color: '#FAF5EA', borderRadius: 999, fontFamily: U, fontWeight: 600, fontSize: '0.72rem', letterSpacing: '.14em', textTransform: 'uppercase' as const, textDecoration: 'none' }}
+                  style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', padding: '13px 20px', background: NAVY, color: '#FFFFFF', borderRadius: 999, fontFamily: U, fontWeight: 600, fontSize: '0.72rem', letterSpacing: '.14em', textTransform: 'uppercase' as const, textDecoration: 'none' }}
                 >
                   BOOK A CONSULT
                 </Link>
@@ -237,7 +237,7 @@ export default function ServicesPage() {
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
           <Pill cream>REIMAGINE</Pill>
         </div>
-        <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.05, color: '#FAF5EA', margin: '0 0 20px', letterSpacing: '-0.015em' }}>
+        <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.05, color: '#FFFFFF', margin: '0 0 20px', letterSpacing: '-0.015em' }}>
           Not sure where to start?
         </h2>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 22 }}>

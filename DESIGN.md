@@ -7,22 +7,22 @@
 meta:
   brand: Reimagine Parenting
   author: Marissa Schattner
-  version: 1.0.0
+  version: 1.1.0
 
 colors:
   # ── Primary (action / authority)
-  navy:        "#4A5F7F"   # primary CTA background, nav accent, sidebar active
-  navy-2:      "#3E5070"   # navy hover / pressed state
+  navy:        "#5F728D"   # Muted Blue — primary CTA background, nav accent, sidebar active
+  navy-2:      "#54647C"   # Muted Blue hover / pressed state
   navy-soft:   "#6B7E9C"   # secondary nav elements, decorative
   navy-tint:   "#C8D1DF"   # badge backgrounds on dark surfaces, decorative separators
-  char:        "#2C2A28"   # dashboard sidebar, dark pill variant, icon-circle bg
+  char:        "#2C2A28"   # dashboard sidebar, icon-circle bg
 
-  # ── Backgrounds (warm neutral scale — light → warmer)
-  white:       "#FFFFFF"
+  # ── Backgrounds (clean neutral scale)
+  white:       "#FFFFFF"   # alternating section background
   parchment:   "#FDF8F0"
-  linen:       "#FAF5EA"   # section-alt background, card surface, linen-ds alias
-  cream:       "#F5EFE2"   # primary page background
-  bone:        "#F2EBDA"   # hover tint on cream surfaces
+  linen:       "#FFFFFF"   # section-alt background, card surface — now pure white
+  cream:       "#F7F7F5"   # Soft White — primary page background
+  bone:        "#F2EBDA"   # hover tint
   sand:        "#E8DED0"
   hairline:    "#D9CFB9"   # all 1px borders and dividers
 
@@ -31,11 +31,11 @@ colors:
   ds-text-2:   "#3A372F"   # secondary body copy, subheadings
   ds-dim:      "#6E6A60"   # captions, italicised metadata, placeholders
 
-  # ── Brand accents (logo palette 2025)
-  sage:        "#93A58F"   # step-1 circle, "HOW IT WORKS" pill, accent icon fills
-  sage-light:  "#9EAF98"   # quote icon, outcome-4 circle, lighter sage touch
-  peach:       "#F8B29A"   # step-2 circle, "PARENT STORIES" pill, outcome-2 circle
-  straw:       "#F2CE84"   # step-3 circle, outcome-3 circle, warm accent
+  # ── Brand accents (updated 2025)
+  sage:        "#9BB39B"   # Sage Green — step-1 circle, "HOW IT WORKS" pill, outcome circles
+  sage-light:  "#9BB39B"   # Sage Green (alias merged — same value as sage)
+  peach:       "#E98773"   # Coral Clay — step-2 circle, "PARENT STORIES" pill, "HI I'M MARISSA" pill
+  straw:       "#EFB63F"   # Sunshine Yellow — step-3 circle, outcome-3 icon
 
   # ── Extended warmth palette
   amber:       "#D97B2E"   # bold accent; use sparingly for emphasis
@@ -454,13 +454,13 @@ Reimagine Parenting is Marissa's parent-coaching practice serving neurodiverse f
 
 ### Semantic roles
 
-**Navy** (`#4A5F7F`) is the **primary action color**. Use it for the one most-important CTA per screen, the navigation accent, and the dashboard sidebar active state. Never use it for decorative blocks or backgrounds at scale — that dilutes its authority signal.
+**Navy** (`#5F728D`) is the **primary action color**. Use it for the one most-important CTA per screen, the navigation accent, and the dashboard sidebar active state. Never use it for decorative blocks or backgrounds at scale — that dilutes its authority signal.
 
 **Char** (`#2C2A28`) is the **dark surface** color — exclusively the dashboard sidebar and dark pill badges. It is warm-black, not neutral-black; it reads as intentional, not harsh.
 
-**Cream** (`#F5EFE2`) and **Linen** (`#FAF5EA`) are the **background surfaces**. They alternate section by section on the public site to create rhythm without visual clutter. Cream is the base; Linen is the alt. Never use both on the same section.
+**Cream** (`#F7F7F5`) and **Linen** (`#FFFFFF`) are the **background surfaces**. They alternate section by section on the public site to create rhythm without visual clutter. Cream is the base; Linen is the alt. Never use both on the same section.
 
-**Sage** (`#93A58F`), **Peach** (`#F8B29A`), and **Straw** (`#F2CE84`) are **brand accents**. They appear in step circles, section pill badges, outcome icon circles, and quote icons. They add playfulness and warmth without competing with navy for action priority. Never use them as button backgrounds for primary CTAs.
+**Sage** (`#9BB39B`), **Peach** (`#E98773`), and **Straw** (`#EFB63F`) are **brand accents**. They appear in step circles, section pill badges, outcome icon circles, and quote icons. They add playfulness and warmth without competing with navy for action priority. Never use them as button backgrounds for primary CTAs.
 
 **Hairline** (`#D9CFB9`) is the **only border color**. All 1px dividers, card outlines, and column separators use this value. Do not use any other color for borders.
 
@@ -552,8 +552,8 @@ The shadcn `--radius` token (0.5rem / 8px) governs internal UI elements (sidebar
 The primary CTA button. Navy background, linen text, full-pill shape, uppercase Inter label with tracking.
 
 ```
-backgroundColor: #4A5F7F
-textColor:       #FAF5EA
+backgroundColor: #5F728D
+textColor:       #FFFFFF
 rounded:         9999px
 paddingX:        32px
 paddingY:        15px
@@ -583,7 +583,7 @@ The heart-rule is a branded divider: two 80px hairlines flanking a 14px filled h
 
 ### testimonial-card
 ```
-backgroundColor: #FAF5EA (linen)
+backgroundColor: #FFFFFF (linen)
 border:          1px solid #D9CFB9
 borderRadius:    20px
 padding:         32px
@@ -596,7 +596,7 @@ Centered text. No card border. Columns separated by `1px solid hairline` vertica
 ### dashboard-sidebar
 Char (#2C2A28) background, 256px wide. The brand lockup inside uses `navy-tint` for "Reimagine" label and `linen` for "Parenting." Nav items are `rounded-lg` (8px), not pill — the pill shape is exclusive to public-facing elements.
 
-Active nav item: `bg-[#4A5F7F]/50` (navy at 50% opacity) + linen text.
+Active nav item: `bg-[#5F728D]/50` (navy at 50% opacity) + linen text.
 Inactive nav item: linen at 65% opacity, transitions to 100% on hover with `bg-white/8`.
 
 ---

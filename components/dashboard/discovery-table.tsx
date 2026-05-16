@@ -44,7 +44,7 @@ type DiscoveryCall = {
 }
 
 const statusColors: Record<string, string> = {
-  new: 'text-[#4A5F7F] font-medium',
+  new: 'text-[#5F728D] font-medium',
   contacted: 'text-[#8B6914] font-medium',
   booked: 'text-[#3D6B45] font-medium',
   converted: 'text-[#1F4D29] font-medium',
@@ -307,7 +307,7 @@ function AddLeadDialog({ open, onClose }: { open: boolean; onClose: () => void }
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
-            <Button type="submit" disabled={loading} className="bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full">
+            <Button type="submit" disabled={loading} className="bg-[#5F728D] hover:bg-[#54647C] text-white rounded-full">
               {loading ? 'Adding…' : 'Add lead'}
             </Button>
           </DialogFooter>
@@ -324,7 +324,7 @@ export function AddLeadButton({ size = 'default' }: { size?: 'default' | 'sm' })
       <Button
         onClick={() => setOpen(true)}
         size={size}
-        className="bg-[#4A5F7F] hover:bg-[#3E5070] text-white rounded-full gap-1.5"
+        className="bg-[#5F728D] hover:bg-[#54647C] text-white rounded-full gap-1.5"
       >
         <Plus className="w-4 h-4" /> Add Lead
       </Button>

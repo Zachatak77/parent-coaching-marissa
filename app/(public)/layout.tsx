@@ -3,13 +3,13 @@ import { PublicNav } from '@/components/public/public-nav'
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#F5EFE2' }}>
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#F7F7F5' }}>
       <PublicNav />
       <main className="flex-1">{children}</main>
       <footer>
 
         {/* Portal access strip */}
-        <div style={{ borderTop: '1px solid #D9CFB9', backgroundColor: '#F5EFE2' }} className="py-6">
+        <div style={{ borderTop: '1px solid #D9CFB9', backgroundColor: '#F7F7F5' }} className="py-6">
           <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.72rem', letterSpacing: '.10em', textTransform: 'uppercase', color: '#6E6A60' }} className="mr-2">Portal access</p>
             <Link
@@ -24,7 +24,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         {/* Main footer */}
         <div style={{ backgroundColor: '#2C2A28', color: '#C9BFAA' }} className="py-10 px-6 sm:px-10 lg:px-16">
           <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem', color: '#FAF5EA' }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem', color: '#FFFFFF' }}>
               REIMAGINE Parenting
             </div>
             <div className="flex flex-col sm:items-end gap-1 text-center sm:text-right">

@@ -117,7 +117,7 @@ export function ClientResourcesTab({
         </Button>
         <Button
           size="sm"
-          className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white"
+          className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white"
           onClick={() => setAssignOpen(true)}
         >
           <Plus className="w-4 h-4 mr-1.5" /> Assign Resource
@@ -192,7 +192,7 @@ export function ClientResourcesTab({
                   </div>
                   <Button
                     size="sm"
-                    className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white flex-shrink-0"
+                    className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white flex-shrink-0"
                     disabled={assigning === r.id}
                     onClick={() => handleAssign(r.id)}
                   >
@@ -230,7 +230,7 @@ export function ClientResourcesTab({
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setUploadOpen(false)}>Cancel</Button>
-              <Button type="submit" disabled={uploading} className="bg-[#4A5F7F] hover:bg-[#3E5070]/90 text-white">
+              <Button type="submit" disabled={uploading} className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white">
                 {uploading ? 'Uploading…' : 'Upload & Save'}
               </Button>
             </DialogFooter>

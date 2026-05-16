@@ -37,9 +37,9 @@ export function PortalDesktopHeader({ initials }: { initials: string }) {
   const pageTitle = pageTitles[pathname] ?? 'Portal'
 
   return (
-    <header className="hidden lg:flex items-center justify-between px-8 py-4 bg-[#FAF5EA] border-b border-[#D9CFB9]">
+    <header className="hidden lg:flex items-center justify-between px-8 py-4 bg-[#FFFFFF] border-b border-[#D9CFB9]">
       <span className="text-sm font-semibold text-[#1F1D1A]">{pageTitle}</span>
-      <div className="w-9 h-9 rounded-full bg-[#4A5F7F] flex items-center justify-center text-xs font-bold text-white">
+      <div className="w-9 h-9 rounded-full bg-[#5F728D] flex items-center justify-center text-xs font-bold text-white">
         {initials}
       </div>
     </header>
@@ -66,11 +66,11 @@ export function PortalSidebar({ firstName, initials, intakeSubmitted }: PortalSi
           <span style={{ display: 'block', fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: '0.58rem', letterSpacing: '.22em', textTransform: 'uppercase', color: '#C8D1DF', lineHeight: 1, marginBottom: 3 }}>
             Reimagine
           </span>
-          <span style={{ display: 'block', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.15rem', color: '#FAF5EA', lineHeight: 1, paddingLeft: 11 }}>
+          <span style={{ display: 'block', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.15rem', color: '#FFFFFF', lineHeight: 1, paddingLeft: 11 }}>
             Parenting
           </span>
         </div>
-        <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.8rem', color: 'rgba(250,245,234,0.65)' }}>
+        <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.8rem', color: 'rgba(255,255,255,0.65)' }}>
           Hi, {firstName}
         </p>
       </div>
@@ -85,8 +85,8 @@ export function PortalSidebar({ firstName, initials, intakeSubmitted }: PortalSi
             className={cn(
               'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors',
               isActive(href)
-                ? 'bg-[#4A5F7F]/50 text-[#FAF5EA] font-medium'
-                : 'text-[#FAF5EA]/65 hover:text-[#FAF5EA] hover:bg-white/8'
+                ? 'bg-[#5F728D]/50 text-[#FFFFFF] font-medium'
+                : 'text-[#FFFFFF]/65 hover:text-[#FFFFFF] hover:bg-white/8'
             )}
           >
             <Icon className="w-4 h-4 flex-shrink-0" />
@@ -99,7 +99,7 @@ export function PortalSidebar({ firstName, initials, intakeSubmitted }: PortalSi
       <div className="px-3 pb-4 pt-2 border-t border-white/10 space-y-0.5">
         <a
           href="mailto:parentcoachwithmarissa@gmail.com"
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-[#FAF5EA]/55 hover:text-[#FAF5EA] hover:bg-white/8 transition-colors"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-[#FFFFFF]/55 hover:text-[#FFFFFF] hover:bg-white/8 transition-colors"
         >
           <Mail className="w-4 h-4 flex-shrink-0" />
           Questions? Email us
@@ -107,7 +107,7 @@ export function PortalSidebar({ firstName, initials, intakeSubmitted }: PortalSi
         <form action="/auth/signout" method="post">
           <button
             type="submit"
-            className="flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-[#FAF5EA]/55 hover:text-[#FAF5EA] hover:bg-white/8 transition-colors"
+            className="flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-[#FFFFFF]/55 hover:text-[#FFFFFF] hover:bg-white/8 transition-colors"
           >
             <LogOut className="w-4 h-4 flex-shrink-0" />
             Sign out
@@ -125,10 +125,10 @@ export function PortalSidebar({ firstName, initials, intakeSubmitted }: PortalSi
       </aside>
 
       {/* Mobile top bar — single bar showing page title */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 text-[#FAF5EA] flex items-center justify-between px-4 h-14" style={{ background: '#2C2A28' }}>
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 text-[#FFFFFF] flex items-center justify-between px-4 h-14" style={{ background: '#2C2A28' }}>
         <span className="text-sm font-semibold">{pageTitle}</span>
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-[#4A5F7F] flex items-center justify-center text-xs font-bold text-[#FAF5EA]">
+          <div className="w-8 h-8 rounded-full bg-[#5F728D] flex items-center justify-center text-xs font-bold text-[#FFFFFF]">
             {initials}
           </div>
           <button onClick={() => setMobileOpen(true)} className="p-1 hover:bg-white/10 rounded">
@@ -144,7 +144,7 @@ export function PortalSidebar({ firstName, initials, intakeSubmitted }: PortalSi
           <div className="relative w-72 h-full flex flex-col shadow-xl" style={{ background: '#2C2A28' }}>
             <div className="flex items-center justify-between px-4 h-14 border-b border-white/10">
               <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase', color: '#C8D1DF' }}>Menu</span>
-              <button onClick={() => setMobileOpen(false)} className="p-1 text-[#FAF5EA]/60 hover:text-[#FAF5EA]">
+              <button onClick={() => setMobileOpen(false)} className="p-1 text-[#FFFFFF]/60 hover:text-[#FFFFFF]">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -179,14 +179,14 @@ export function PortalMobileTabs({ intakeSubmitted }: { intakeSubmitted: boolean
     href === '/portal' ? pathname === '/portal' : pathname.startsWith(href)
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FAF5EA] border-t border-[#D9CFB9] flex">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FFFFFF] border-t border-[#D9CFB9] flex">
       {tabs.map(({ href, label, icon: Icon }) => (
         <Link
           key={href}
           href={href}
           className={cn(
             'flex-1 flex flex-col items-center justify-center py-2 gap-0.5 text-[10px] font-medium transition-colors',
-            isActive(href) ? 'text-[#4A5F7F]' : 'text-[#6E6A60] hover:text-[#1F1D1A]'
+            isActive(href) ? 'text-[#5F728D]' : 'text-[#6E6A60] hover:text-[#1F1D1A]'
           )}
         >
           <Icon className="w-5 h-5" />

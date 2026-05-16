@@ -30,7 +30,7 @@ export default async function SessionsPage() {
 
       {!sessions || sessions.length === 0 ? (
         <div className="bg-white rounded-2xl border border-[#D9CFB9] p-10 shadow-sm text-center space-y-3">
-          <div className="flex items-center justify-center w-14 h-14 rounded-full mx-auto" style={{ background: '#9EAF98' }}>
+          <div className="flex items-center justify-center w-14 h-14 rounded-full mx-auto" style={{ background: '#9BB39B' }}>
             <CalendarDays className="w-7 h-7 text-[#1F1D1A]" />
           </div>
           <p className="text-sm text-[#6E6A60] max-w-sm mx-auto leading-relaxed">

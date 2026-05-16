@@ -13,9 +13,9 @@ const packageInfo: Record<string, { label: string; detail: string }> = {
   ongoing: { label: 'Ongoing Support Plan', detail: '' },
 }
 
-const SAGE_LIGHT = '#9EAF98'
-const PEACH      = '#F8B29A'
-const STRAW      = '#F2CE84'
+const SAGE_LIGHT = '#9BB39B'
+const PEACH      = '#E98773'
+const STRAW      = '#EFB63F'
 
 export default async function PortalDashboardPage() {
   const supabase = await createClient()
@@ -86,7 +86,7 @@ export default async function PortalDashboardPage() {
             {typeof value === 'number' && <p className="text-2xl font-bold text-[#1F1D1A]">{value}</p>}
             <p className="text-xs text-[#6E6A60] mt-0.5">{label}</p>
             {typeof green === 'boolean' && (
-              <span className={`inline-flex items-center mt-2 px-2 py-0.5 rounded-full text-[10px] font-semibold ${green ? 'bg-[#9EAF98]/30 text-[#1F1D1A]' : 'bg-[#F5EFE2] text-[#6E6A60]'}`}>
+              <span className={`inline-flex items-center mt-2 px-2 py-0.5 rounded-full text-[10px] font-semibold ${green ? 'bg-[#9BB39B]/30 text-[#1F1D1A]' : 'bg-[#F7F7F5] text-[#6E6A60]'}`}>
                 {green ? 'Active' : 'Pending'}
               </span>
             )}

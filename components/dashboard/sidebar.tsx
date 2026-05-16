@@ -51,11 +51,11 @@ export function Sidebar({ fullName, role, discoveryCount }: SidebarProps) {
           <span style={{ display: 'block', fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: '0.58rem', letterSpacing: '.22em', textTransform: 'uppercase', color: '#C8D1DF', lineHeight: 1, marginBottom: 3 }}>
             Reimagine
           </span>
-          <span style={{ display: 'block', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.15rem', color: '#FAF5EA', lineHeight: 1, paddingLeft: 11 }}>
+          <span style={{ display: 'block', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.15rem', color: '#FFFFFF', lineHeight: 1, paddingLeft: 11 }}>
             Parenting
           </span>
         </div>
-        <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.78rem', color: 'rgba(250,245,234,0.7)' }} className="truncate">
+        <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.78rem', color: 'rgba(255,255,255,0.7)' }} className="truncate">
           {fullName ?? 'Coach'}
         </p>
         <span className="inline-flex items-center mt-1.5 px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide" style={{ background: 'rgba(200,209,223,0.18)', color: '#C8D1DF' }}>
@@ -72,8 +72,8 @@ export function Sidebar({ fullName, role, discoveryCount }: SidebarProps) {
             className={cn(
               'flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-colors',
               isActive(href)
-                ? 'bg-[#4A5F7F]/50 text-[#FAF5EA] font-medium'
-                : 'text-[#FAF5EA]/65 hover:text-[#FAF5EA] hover:bg-white/8'
+                ? 'bg-[#5F728D]/50 text-[#FFFFFF] font-medium'
+                : 'text-[#FFFFFF]/65 hover:text-[#FFFFFF] hover:bg-white/8'
             )}
           >
             <span className="flex items-center gap-3">
@@ -93,7 +93,7 @@ export function Sidebar({ fullName, role, discoveryCount }: SidebarProps) {
         <form action="/auth/signout" method="post">
           <button
             type="submit"
-            className="flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-[#FAF5EA]/55 hover:text-[#FAF5EA] hover:bg-white/8 transition-colors"
+            className="flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-[#FFFFFF]/55 hover:text-[#FFFFFF] hover:bg-white/8 transition-colors"
           >
             <LogOut className="w-4 h-4 flex-shrink-0" />
             Sign out
@@ -111,10 +111,10 @@ export function Sidebar({ fullName, role, discoveryCount }: SidebarProps) {
       </aside>
 
       {/* Mobile top bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 py-3 text-[#FAF5EA]" style={{ background: '#2C2A28' }}>
+      <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 py-3 text-[#FFFFFF]" style={{ background: '#2C2A28' }}>
         <div className="flex items-center gap-2.5">
           <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: '0.56rem', letterSpacing: '.22em', textTransform: 'uppercase', color: '#C8D1DF' }}>Reimagine</span>
-          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.05rem', color: '#FAF5EA' }}>Parenting</span>
+          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.05rem', color: '#FFFFFF' }}>Parenting</span>
         </div>
         <button
           onClick={() => setMobileOpen(true)}
@@ -132,7 +132,7 @@ export function Sidebar({ fullName, role, discoveryCount }: SidebarProps) {
           <aside className="relative w-72 flex flex-col h-full" style={{ background: '#2C2A28' }}>
             <button
               onClick={() => setMobileOpen(false)}
-              className="absolute top-4 right-4 p-1.5 rounded-md hover:bg-white/10 text-[#FAF5EA]/70 hover:text-[#FAF5EA]"
+              className="absolute top-4 right-4 p-1.5 rounded-md hover:bg-white/10 text-[#FFFFFF]/70 hover:text-[#FFFFFF]"
               aria-label="Close menu"
             >
               <X className="w-5 h-5" />

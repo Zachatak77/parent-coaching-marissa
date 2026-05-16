@@ -30,13 +30,13 @@ export function NameForm({ defaultName }: { defaultName: string }) {
         <Input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F] max-w-sm"
+          className="border-[#D9CFB9] focus-visible:ring-[#5F728D] max-w-sm"
         />
       </div>
       <button
         type="submit"
         disabled={loading || !name.trim()}
-        className="px-4 py-2 rounded-lg bg-[#4A5F7F] text-white text-sm font-semibold hover:bg-[#3E5070] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        className="px-4 py-2 rounded-lg bg-[#5F728D] text-white text-sm font-semibold hover:bg-[#54647C] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {loading ? 'Saving…' : 'Save Name'}
       </button>
@@ -75,7 +75,7 @@ export function PasswordForm() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="At least 6 characters"
           autoComplete="new-password"
-          className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F] max-w-sm"
+          className="border-[#D9CFB9] focus-visible:ring-[#5F728D] max-w-sm"
         />
       </div>
       <div className="space-y-1.5">
@@ -86,13 +86,13 @@ export function PasswordForm() {
           onChange={(e) => setConfirm(e.target.value)}
           placeholder="Repeat your new password"
           autoComplete="new-password"
-          className="border-[#D9CFB9] focus-visible:ring-[#4A5F7F] max-w-sm"
+          className="border-[#D9CFB9] focus-visible:ring-[#5F728D] max-w-sm"
         />
       </div>
       <button
         type="submit"
         disabled={loading || !password}
-        className="px-4 py-2 rounded-lg bg-[#4A5F7F] text-white text-sm font-semibold hover:bg-[#3E5070] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        className="px-4 py-2 rounded-lg bg-[#5F728D] text-white text-sm font-semibold hover:bg-[#54647C] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {loading ? 'Updating…' : 'Update Password'}
       </button>

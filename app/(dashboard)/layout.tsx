@@ -23,7 +23,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   )
 
   return (
-    <div className="min-h-screen flex bg-[#F5EFE2]">
+    <div className="min-h-screen flex bg-[#F7F7F5]">
       <Sidebar
         fullName={profile?.full_name ?? null}
         role={profile?.role ?? null}
