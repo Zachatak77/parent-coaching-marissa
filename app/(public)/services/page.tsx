@@ -126,6 +126,7 @@ export default function ServicesPage() {
           {packages.map(({ name, duration, outcome, includes, featured, accent }) => (
             <div
               key={name}
+              className="mb-5 last:mb-0 sm:mb-0"
               style={{
                 gridRow: 'span 4',
                 display: 'grid',
