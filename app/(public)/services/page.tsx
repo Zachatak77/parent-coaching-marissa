@@ -126,23 +126,24 @@ export default function ServicesPage() {
           {packages.map(({ name, duration, outcome, includes, featured, accent }) => (
             <div
               key={name}
+              className="mb-5 last:mb-0 sm:mb-0"
               style={{
                 gridRow: 'span 4',
                 display: 'grid',
                 gridTemplateRows: 'subgrid',
                 borderRadius: 20,
-                border: `1px solid ${featured ? NAVY : HAIRLINE}`,
+                border: `1px solid ${NAVY}`,
                 overflow: 'hidden',
                 ...(featured ? { boxShadow: '0 4px 12px rgba(0,0,0,0.10)' } : {}),
               }}
             >
               {/* Header */}
-              <div style={{ padding: '28px 28px 22px', background: featured ? NAVY : (accent ?? CREAM) }}>
+              <div style={{ padding: '28px 28px 22px', background: NAVY }}>
                 {featured && (
                   <p style={{ fontFamily: U, fontSize: '0.64rem', fontWeight: 700, letterSpacing: '.20em', textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.5)', margin: '0 0 8px' }}>Most Popular</p>
                 )}
-                <p style={{ fontFamily: U, fontSize: '0.68rem', fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase' as const, color: featured ? 'rgba(255,255,255,0.45)' : '#6E6A60', margin: '0 0 6px' }}>{duration}</p>
-                <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.55rem', lineHeight: 1.1, color: featured ? '#FFFFFF' : TEXT, margin: 0 }}>{name}</h2>
+                <p style={{ fontFamily: U, fontSize: '0.68rem', fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.45)', margin: '0 0 6px' }}>{duration}</p>
+                <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.55rem', lineHeight: 1.1, color: '#FFFFFF', margin: 0 }}>{name}</h2>
               </div>
               {/* Checklist */}
               <ul style={{ listStyle: 'none', margin: 0, padding: '22px 28px 20px', background: LINEN, display: 'flex', flexDirection: 'column' as const, gap: 12 }}>
