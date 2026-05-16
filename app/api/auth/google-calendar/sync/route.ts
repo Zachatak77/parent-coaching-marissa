@@ -32,14 +32,19 @@ export async function POST() {
   const timeMin = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString()
   const timeMax = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
 
-  const listRes = await calendar.events.list({
-    calendarId: 'primary',
-    timeMin,
-    timeMax,
-    showDeleted: false,
-    singleEvents: true,
-    maxResults: 250,
-  })
+  let listRes
+  try {
+    listRes = await calendar.events.list({
+      calendarId: 'primary',
+      timeMin,
+      timeMax,
+      showDeleted: false,
+      singleEvents: true,
+      maxResults: 250,
+    })
+  } catch {
+    return NextResponse.json({ error: 'Failed to fetch calendar events' }, { status: 502 })
+  }
 
   const events = listRes.data.items ?? []
   let created = 0
