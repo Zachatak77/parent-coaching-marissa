@@ -42,8 +42,10 @@ export async function POST() {
       singleEvents: true,
       maxResults: 250,
     })
-  } catch {
-    return NextResponse.json({ error: 'Failed to fetch calendar events' }, { status: 502 })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error('[gcal-sync] events.list failed:', message)
+    return NextResponse.json({ error: `Calendar API error: ${message}` }, { status: 502 })
   }
 
   const events = listRes.data.items ?? []
