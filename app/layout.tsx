@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Cormorant_Garamond, Source_Serif_4 } from 'next/font/google'
 import { Toaster } from '@/components/ui/sonner'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         {children}
         <Toaster richColors position="top-right" />
+        <SpeedInsights />
       </body>
     </html>
   )
