@@ -43,7 +43,7 @@ export default async function DiscoveryCallsPage() {
 
   const { data: calls } = await supabase
     .from('discovery_calls')
-    .select('id, name, email, phone, child_ages, main_concern, how_they_heard, submitted_at, status, notes')
+    .select('id, name, email, phone, child_ages, main_concern, how_they_heard, submitted_at, scheduled_at, status, notes')
     .eq('coach_id', user!.id)
     .order('submitted_at', { ascending: false })
 

@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { formatDistanceToNow } from 'date-fns'
+import { formatDistanceToNow, format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -26,7 +26,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
-import { ChevronDown, ChevronUp, Search, Plus } from 'lucide-react'
+import { ChevronDown, ChevronUp, Search, Plus, Video } from 'lucide-react'
 import { updateDiscoveryStatusAction, updateDiscoveryNotesAction, createDiscoveryCallAction } from '@/app/actions/discovery'
 import { NewClientButton } from '@/components/dashboard/new-client-button'
 
@@ -39,6 +39,7 @@ type DiscoveryCall = {
   main_concern: string | null
   how_they_heard: string | null
   submitted_at: string
+  scheduled_at: string | null
   status: string
   notes: string | null
 }
@@ -90,6 +91,13 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
     else toast.success('Notes saved')
   }
 
+  const now = new Date()
+  const scheduledDate = call.scheduled_at ? new Date(call.scheduled_at) : null
+  const isFutureMeeting = scheduledDate && scheduledDate > now
+  const isPastMeeting = scheduledDate && scheduledDate <= now
+  const showConvert = status !== 'converted' && status !== 'closed' &&
+    (isPastMeeting || (!scheduledDate && status === 'booked'))
+
   return (
     <>
       <TableRow>
@@ -97,8 +105,9 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
           <p className="text-sm font-medium text-[#1F1D1A]">{call.name}</p>
         </TableCell>
         <TableCell className="text-sm text-muted-foreground">{call.email}</TableCell>
-        <TableCell className="text-sm text-muted-foreground">{call.phone ?? '—'}</TableCell>
-        <TableCell className="text-sm text-muted-foreground">{call.child_ages ?? '—'}</TableCell>
+        <TableCell className="text-sm text-muted-foreground whitespace-nowrap">
+          {scheduledDate ? format(scheduledDate, 'MMM d, yyyy h:mm a') : '—'}
+        </TableCell>
         <TableCell className="text-sm text-muted-foreground max-w-[180px]">
           <span className="line-clamp-2">{call.main_concern ?? '—'}</span>
         </TableCell>
@@ -123,7 +132,15 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
         </TableCell>
         <TableCell className="text-right">
           <div className="flex items-center justify-end gap-2">
-            {status === 'booked' && (
+            {isFutureMeeting && status !== 'converted' && status !== 'closed' && (
+              <Button size="sm" asChild className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white">
+                <a href="https://zoom.us" target="_blank" rel="noopener noreferrer">
+                  <Video className="w-4 h-4 mr-1.5" />
+                  Zoom
+                </a>
+              </Button>
+            )}
+            {showConvert && (
               <NewClientButton
                 coachId={coachId}
                 prefill={{ name: call.name, email: call.email }}
@@ -144,7 +161,7 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
 
       {expanded && (
         <TableRow className="bg-muted/10 hover:bg-muted/10">
-          <TableCell colSpan={8} className="px-6 py-5">
+          <TableCell colSpan={7} className="px-6 py-5">
             <div className="space-y-5">
               <div>
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5">Main Concern</p>
@@ -195,12 +212,22 @@ function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: 
     }
   }
 
+  const now = new Date()
+  const scheduledDate = call.scheduled_at ? new Date(call.scheduled_at) : null
+  const isFutureMeeting = scheduledDate && scheduledDate > now
+  const isPastMeeting = scheduledDate && scheduledDate <= now
+  const showConvert = status !== 'converted' && status !== 'closed' &&
+    (isPastMeeting || (!scheduledDate && status === 'booked'))
+
   return (
     <div className="bg-white rounded-xl border border-[#D9CFB9] p-4 space-y-3">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold text-[#1F1D1A] truncate">{call.name}</p>
           <p className="text-xs text-muted-foreground truncate">{call.email}</p>
+          {scheduledDate && (
+            <p className="text-xs text-muted-foreground mt-1">{format(scheduledDate, 'MMM d, yyyy h:mm a')}</p>
+          )}
           {call.main_concern && (
             <p className="text-xs text-muted-foreground line-clamp-2 mt-1.5">{call.main_concern}</p>
           )}
@@ -229,7 +256,15 @@ function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: 
             ))}
           </SelectContent>
         </Select>
-        {status === 'booked' && (
+        {isFutureMeeting && status !== 'converted' && status !== 'closed' && (
+          <Button size="sm" asChild className="bg-[#5F728D] hover:bg-[#54647C]/90 text-white">
+            <a href="https://zoom.us" target="_blank" rel="noopener noreferrer">
+              <Video className="w-4 h-4 mr-1.5" />
+              Zoom
+            </a>
+          </Button>
+        )}
+        {showConvert && (
           <NewClientButton
             coachId={coachId}
             prefill={{ name: call.name, email: call.email }}
@@ -244,8 +279,6 @@ function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: 
 
       {expanded && (
         <div className="pt-3 border-t space-y-2 text-xs text-muted-foreground">
-          {call.phone && <p><span className="font-medium">Phone:</span> {call.phone}</p>}
-          {call.child_ages && <p><span className="font-medium">Child ages:</span> {call.child_ages}</p>}
           {call.how_they_heard && <p><span className="font-medium">How they heard:</span> {call.how_they_heard}</p>}
         </div>
       )}
@@ -397,8 +430,7 @@ export function DiscoveryTable({
                 <TableRow className="bg-muted/30">
                   <TableHead>Name</TableHead>
                   <TableHead>Email</TableHead>
-                  <TableHead>Phone</TableHead>
-                  <TableHead>Child Ages</TableHead>
+                  <TableHead>Meeting Date & Time</TableHead>
                   <TableHead>Main Concern</TableHead>
                   <TableHead>Submitted</TableHead>
                   <TableHead>Status</TableHead>
