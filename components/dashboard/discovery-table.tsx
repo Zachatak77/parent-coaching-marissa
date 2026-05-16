@@ -420,10 +420,9 @@ export function DiscoveryTable({
       return matchSearch && matchStatus
     })
     .sort((a, b) => {
-      if (!a.scheduled_at && !b.scheduled_at) return 0
-      if (!a.scheduled_at) return 1
-      if (!b.scheduled_at) return -1
-      return new Date(a.scheduled_at).getTime() - new Date(b.scheduled_at).getTime()
+      const aDate = a.scheduled_at ?? a.submitted_at
+      const bDate = b.scheduled_at ?? b.submitted_at
+      return new Date(aDate).getTime() - new Date(bDate).getTime()
     })
 
   return (
