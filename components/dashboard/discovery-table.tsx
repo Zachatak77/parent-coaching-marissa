@@ -26,7 +26,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
-import { ChevronDown, ChevronUp, Search, Plus, Video } from 'lucide-react'
+import { ChevronDown, ChevronUp, Search, Plus, Video, Mail, Phone, Users, Calendar } from 'lucide-react'
 import { updateDiscoveryStatusAction, updateDiscoveryNotesAction, createDiscoveryCallAction } from '@/app/actions/discovery'
 import { NewClientButton } from '@/components/dashboard/new-client-button'
 
@@ -63,8 +63,55 @@ function StatusLabel({ status }: { status: string }) {
 const STATUSES = ['new', 'contacted', 'booked', 'converted', 'closed'] as const
 type Status = typeof STATUSES[number]
 
+function ContactCardDialog({ call, open, onClose }: { call: DiscoveryCall; open: boolean; onClose: () => void }) {
+  const scheduledDate = call.scheduled_at ? new Date(call.scheduled_at) : null
+  return (
+    <Dialog open={open} onOpenChange={(v) => { if (!v) onClose() }}>
+      <DialogContent className="sm:max-w-xs">
+        <DialogHeader>
+          <DialogTitle className="text-base">{call.name}</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-3 text-sm pt-1">
+          <div className="flex items-center gap-3">
+            <Mail className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+            <a href={`mailto:${call.email}`} className="text-[#5F728D] hover:underline break-all">{call.email}</a>
+          </div>
+          {call.phone && (
+            <div className="flex items-center gap-3">
+              <Phone className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+              <a href={`tel:${call.phone}`} className="hover:underline">{call.phone}</a>
+            </div>
+          )}
+          {call.child_ages && (
+            <div className="flex items-center gap-3">
+              <Users className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+              <span>Children: {call.child_ages}</span>
+            </div>
+          )}
+          {scheduledDate && (
+            <div className="flex items-center gap-3">
+              <Calendar className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+              <span>{format(scheduledDate, 'MMM d, yyyy h:mm a')}</span>
+            </div>
+          )}
+          {call.how_they_heard && (
+            <div className="pt-2 border-t">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">How They Heard</p>
+              <p>{call.how_they_heard}</p>
+            </div>
+          )}
+          <p className="text-xs text-muted-foreground pt-1 border-t">
+            Submitted {format(new Date(call.submitted_at), 'MMM d, yyyy')}
+          </p>
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string }) {
   const [expanded, setExpanded] = React.useState(false)
+  const [contactOpen, setContactOpen] = React.useState(false)
   const [status, setStatus] = React.useState(call.status as Status)
   const [notes, setNotes] = React.useState(call.notes ?? '')
   const [noteSaving, setNoteSaving] = React.useState(false)
@@ -100,11 +147,16 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
 
   return (
     <>
+      <ContactCardDialog call={call} open={contactOpen} onClose={() => setContactOpen(false)} />
       <TableRow>
         <TableCell className="font-medium">
-          <p className="text-sm font-medium text-[#1F1D1A]">{call.name}</p>
+          <button
+            onClick={() => setContactOpen(true)}
+            className="text-sm font-medium text-[#1F1D1A] hover:text-[#5F728D] hover:underline text-left"
+          >
+            {call.name}
+          </button>
         </TableCell>
-        <TableCell className="text-sm text-muted-foreground">{call.email}</TableCell>
         <TableCell className="text-sm text-muted-foreground whitespace-nowrap">
           {scheduledDate ? format(scheduledDate, 'MMM d, yyyy h:mm a') : '—'}
         </TableCell>
@@ -161,7 +213,7 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
 
       {expanded && (
         <TableRow className="bg-muted/10 hover:bg-muted/10">
-          <TableCell colSpan={7} className="px-6 py-5">
+          <TableCell colSpan={6} className="px-6 py-5">
             <div className="space-y-5">
               <div>
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5">Main Concern</p>
@@ -197,6 +249,7 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
 
 function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: string }) {
   const [expanded, setExpanded] = React.useState(false)
+  const [contactOpen, setContactOpen] = React.useState(false)
   const [status, setStatus] = React.useState(call.status as Status)
   const [notes, setNotes] = React.useState(call.notes ?? '')
   const [noteSaving, setNoteSaving] = React.useState(false)
@@ -232,10 +285,15 @@ function MobileDiscoveryCard({ call, coachId }: { call: DiscoveryCall; coachId: 
 
   return (
     <div className="bg-white rounded-xl border border-[#D9CFB9] p-4 space-y-3">
+      <ContactCardDialog call={call} open={contactOpen} onClose={() => setContactOpen(false)} />
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-[#1F1D1A] truncate">{call.name}</p>
-          <p className="text-xs text-muted-foreground truncate">{call.email}</p>
+          <button
+            onClick={() => setContactOpen(true)}
+            className="text-sm font-semibold text-[#1F1D1A] hover:text-[#5F728D] hover:underline text-left truncate w-full"
+          >
+            {call.name}
+          </button>
           {scheduledDate && (
             <p className="text-xs text-muted-foreground mt-1">{format(scheduledDate, 'MMM d, yyyy h:mm a')}</p>
           )}
@@ -469,7 +527,6 @@ export function DiscoveryTable({
               <TableHeader>
                 <TableRow className="bg-muted/30">
                   <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
                   <TableHead>Meeting Date & Time</TableHead>
                   <TableHead>Main Concern</TableHead>
                   <TableHead>Submitted</TableHead>
