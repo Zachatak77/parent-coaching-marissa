@@ -4,7 +4,7 @@ import * as React from 'react'
 import { toast } from 'sonner'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { updateProfileAction, updatePasswordAction } from '@/app/actions/portal'
+import { updateProfileAction, updatePasswordAction, updatePhoneAction } from '@/app/actions/portal'
 
 export function NameForm({ defaultName }: { defaultName: string }) {
   const [name, setName] = React.useState(defaultName)
@@ -39,6 +39,45 @@ export function NameForm({ defaultName }: { defaultName: string }) {
         className="px-4 py-2 rounded-lg bg-[#5F728D] text-white text-sm font-semibold hover:bg-[#54647C] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {loading ? 'Saving…' : 'Save Name'}
+      </button>
+    </form>
+  )
+}
+
+export function PhoneForm({ defaultPhone }: { defaultPhone: string }) {
+  const [phone, setPhone] = React.useState(defaultPhone)
+  const [loading, setLoading] = React.useState(false)
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      const result = await updatePhoneAction(phone)
+      if (result.error) { toast.error(result.error); return }
+      toast.success('Phone updated.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <div className="space-y-1.5">
+        <Label className="text-sm text-[#1F1D1A]">Phone Number</Label>
+        <Input
+          type="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          placeholder="(555) 000-0000"
+          className="border-[#D9CFB9] focus-visible:ring-[#5F728D] max-w-sm"
+        />
+      </div>
+      <button
+        type="submit"
+        disabled={loading}
+        className="px-4 py-2 rounded-lg bg-[#5F728D] text-white text-sm font-semibold hover:bg-[#54647C] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        {loading ? 'Saving…' : 'Save Phone'}
       </button>
     </form>
   )

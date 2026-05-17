@@ -29,6 +29,21 @@ export async function updatePasswordAction(password: string) {
   return { success: true }
 }
 
+export async function updatePhoneAction(phone: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Unauthorized' }
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({ phone: phone.trim() || null })
+    .eq('id', user.id)
+
+  if (error) return { error: error.message }
+  revalidatePath('/portal/profile')
+  return { success: true }
+}
+
 export async function submitIntakeAction(clientId: string, responses: Record<string, unknown>) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()

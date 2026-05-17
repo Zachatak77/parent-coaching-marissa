@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getClientForUser } from '@/lib/supabase/queries'
 import { redirect } from 'next/navigation'
 import { format } from 'date-fns'
-import { NameForm, PasswordForm } from '@/components/portal/profile-forms'
+import { NameForm, PhoneForm, PasswordForm } from '@/components/portal/profile-forms'
 
 export const metadata = { title: 'Profile — Parent Portal' }
 
@@ -21,7 +21,7 @@ export default async function ProfilePage() {
   if (!client) redirect('/portal')
 
   const { data: profile } = await supabase
-    .from('profiles').select('full_name, email').eq('id', user.id).single()
+    .from('profiles').select('full_name, email, phone').eq('id', user.id).single()
 
   const packageLabel = packageNames[client.package] ?? client.package
 
@@ -34,6 +34,10 @@ export default async function ProfilePage() {
         <h2 className="text-sm font-semibold text-[#1F1D1A]">Profile Settings</h2>
 
         <NameForm defaultName={profile?.full_name ?? ''} />
+
+        <div className="pt-2 border-t border-[#D9CFB9]">
+          <PhoneForm defaultPhone={profile?.phone ?? ''} />
+        </div>
 
         <div className="space-y-1.5 pt-2 border-t border-[#D9CFB9]">
           <p className="text-xs font-semibold text-[#6E6A60] uppercase tracking-wide mt-4">Email</p>
