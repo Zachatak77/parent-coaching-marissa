@@ -473,7 +473,7 @@ export function DiscoveryTable({
 }) {
   const [search, setSearch] = React.useState('')
   const [activeStatuses, setActiveStatuses] = React.useState<Set<Status>>(
-    new Set(['new', 'contacted', 'booked'])
+    new Set(['new', 'contacted', 'booked'] as Status[])
   )
 
   const toggleStatus = (s: Status) => {
