@@ -15,6 +15,12 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
   Table,
   TableBody,
   TableCell,
@@ -466,7 +472,17 @@ export function DiscoveryTable({
   coachId: string
 }) {
   const [search, setSearch] = React.useState('')
-  const [statusFilter, setStatusFilter] = React.useState('all')
+  const [activeStatuses, setActiveStatuses] = React.useState<Set<Status>>(
+    new Set(['new', 'contacted', 'booked'])
+  )
+
+  const toggleStatus = (s: Status) => {
+    setActiveStatuses((prev) => {
+      const next = new Set(prev)
+      if (next.has(s)) { next.delete(s) } else { next.add(s) }
+      return next
+    })
+  }
 
   const filtered = calls
     .filter((c) => {
@@ -474,7 +490,7 @@ export function DiscoveryTable({
         !search ||
         c.name.toLowerCase().includes(search.toLowerCase()) ||
         c.email.toLowerCase().includes(search.toLowerCase())
-      const matchStatus = statusFilter === 'all' || c.status === statusFilter
+      const matchStatus = activeStatuses.has(c.status as Status)
       return matchSearch && matchStatus
     })
     .sort((a, b) => {
@@ -495,17 +511,30 @@ export function DiscoveryTable({
             className="pl-8"
           />
         </div>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-40">
-            <SelectValue placeholder="All statuses" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="w-44 justify-between font-normal">
+              {activeStatuses.size === STATUSES.length
+                ? 'All Statuses'
+                : activeStatuses.size === 0
+                  ? 'No Statuses'
+                  : `${activeStatuses.size} of ${STATUSES.length} statuses`}
+              <ChevronDown className="w-4 h-4 ml-2 opacity-50" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-44">
             {STATUSES.map((s) => (
-              <SelectItem key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</SelectItem>
+              <DropdownMenuCheckboxItem
+                key={s}
+                checked={activeStatuses.has(s)}
+                onCheckedChange={() => toggleStatus(s)}
+                onSelect={(e) => e.preventDefault()}
+              >
+                <StatusLabel status={s} />
+              </DropdownMenuCheckboxItem>
             ))}
-          </SelectContent>
-        </Select>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {filtered.length === 0 ? (
