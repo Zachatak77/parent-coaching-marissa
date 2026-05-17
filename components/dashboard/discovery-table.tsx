@@ -169,9 +169,6 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
         <TableCell className="text-sm text-muted-foreground max-w-[180px]">
           <span className="line-clamp-2">{call.main_concern ?? '—'}</span>
         </TableCell>
-        <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
-          {formatDistanceToNow(new Date(call.submitted_at), { addSuffix: true })}
-        </TableCell>
         <TableCell>
           <Select value={status} onValueChange={(v) => handleStatusChange(v as Status)}>
             <SelectTrigger className="w-36 h-9">
@@ -219,7 +216,7 @@ function DiscoveryRow({ call, coachId }: { call: DiscoveryCall; coachId: string 
 
       {expanded && (
         <TableRow className="bg-muted/10 hover:bg-muted/10">
-          <TableCell colSpan={6} className="px-6 py-5">
+          <TableCell colSpan={5} className="px-6 py-5">
             <div className="space-y-5">
               <div>
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5">Main Concern</p>
@@ -558,7 +555,6 @@ export function DiscoveryTable({
                   <TableHead>Name</TableHead>
                   <TableHead>Meeting Date & Time</TableHead>
                   <TableHead>Main Concern</TableHead>
-                  <TableHead>Submitted</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
