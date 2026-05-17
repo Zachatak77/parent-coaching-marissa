@@ -496,7 +496,7 @@ export function DiscoveryTable({
     .sort((a, b) => {
       const aDate = a.scheduled_at ?? a.submitted_at
       const bDate = b.scheduled_at ?? b.submitted_at
-      return new Date(aDate).getTime() - new Date(bDate).getTime()
+      return new Date(bDate).getTime() - new Date(aDate).getTime()
     })
 
   return (
