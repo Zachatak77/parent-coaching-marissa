@@ -12,6 +12,7 @@ import {
   LogOut,
   Menu,
   X,
+  BookOpen,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -36,6 +37,7 @@ export function Sidebar({ fullName, role, discoveryCount }: SidebarProps) {
       icon: PhoneCall,
       badge: discoveryCount > 0 ? discoveryCount : null,
     },
+    { href: '/coach/blog', label: 'Blog', icon: BookOpen },
     { href: '/dashboard/resources', label: 'Resources', icon: Library },
     { href: '/dashboard/settings', label: 'Settings', icon: Settings },
   ]

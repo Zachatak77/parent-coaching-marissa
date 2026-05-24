@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 const links = [
   { href: '/about', label: 'About' },
   { href: '/services', label: 'Services' },
+  { href: '/blog', label: 'Blog' },
 ]
 
 const NAVY = '#5F728D'
