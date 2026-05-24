@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAllPublishedPosts, getPostsByAuthor, getAllPosts, createPost } from '@/lib/blog'
 import { requireAuth, requireRole } from '@/lib/api-helpers'
-import { PrismaClient } from '@prisma/client'
-
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
-const prisma = globalForPrisma.prisma ?? new PrismaClient()
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+import { prisma } from '@/lib/prisma'
 
 export async function GET(request: NextRequest) {
   const { session } = await requireAuth()

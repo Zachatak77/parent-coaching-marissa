@@ -1,4 +1,5 @@
-import { PrismaClient, PostStatus } from '@prisma/client'
+import { PostStatus } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 
 export type { PostStatus }
 
@@ -18,12 +19,6 @@ export type CreatePostInput = {
   ogImage?: string
   noIndex?: boolean
 }
-
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
-
-const prisma = globalForPrisma.prisma ?? new PrismaClient()
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
 // ── Author shape included in list/detail queries ───────────────────────────
 const authorSelect = { id: true, fullName: true } as const

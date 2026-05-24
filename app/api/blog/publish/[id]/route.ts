@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { togglePublish } from '@/lib/blog'
 import { requireRole } from '@/lib/api-helpers'
-import { PrismaClient } from '@prisma/client'
-
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
-const prisma = globalForPrisma.prisma ?? new PrismaClient()
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+import { prisma } from '@/lib/prisma'
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params
