@@ -26,6 +26,7 @@
     "@react-email/render": "^2.0.7",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.49.2",
+    "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
