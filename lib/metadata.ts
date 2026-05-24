@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
-import type { BlogPost } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
+
+type BlogPost = Prisma.BlogPostGetPayload<{}>
 
 export function generatePostMetadata(
   post: BlogPost & { author: { fullName: string | null } },

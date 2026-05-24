@@ -2,7 +2,9 @@
 
 import { useRouter } from 'next/navigation'
 import { PostEditor, type PostFormData } from '@/components/blog/PostEditor'
-import type { BlogPost } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
+
+type BlogPost = Prisma.BlogPostGetPayload<{}>
 
 export function AdminEditPostClient({ post }: { post: BlogPost }) {
   const router = useRouter()
