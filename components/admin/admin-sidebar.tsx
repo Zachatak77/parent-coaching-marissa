@@ -3,7 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Users, LogOut, Menu, X } from 'lucide-react'
+import { LayoutDashboard, Users, LogOut, Menu, X, BookOpen } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface AdminSidebarProps {
@@ -13,6 +13,7 @@ interface AdminSidebarProps {
 const navItems = [
   { href: '/admin',       label: 'Overview', icon: LayoutDashboard },
   { href: '/admin/users', label: 'Users',    icon: Users },
+  { href: '/admin/blog',  label: 'Blog',     icon: BookOpen },
 ]
 
 export function AdminSidebar({ fullName }: AdminSidebarProps) {
