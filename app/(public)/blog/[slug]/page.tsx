@@ -10,8 +10,12 @@ import type { Metadata } from 'next'
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://reimagineparenting.co'
 
 export async function generateStaticParams() {
-  const posts = await getAllPublishedPosts()
-  return posts.map((p) => ({ slug: p.slug }))
+  try {
+    const posts = await getAllPublishedPosts()
+    return posts.map((p) => ({ slug: p.slug }))
+  } catch {
+    return []
+  }
 }
 
 export async function generateMetadata({

@@ -3,6 +3,8 @@ import { PostCard } from '@/components/blog/PostCard'
 import { HeartRule } from '@/components/public/heart-rule'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Blog | Reimagine Parenting',
   description: 'Insights, tips, and guidance from our parent coaches.',
