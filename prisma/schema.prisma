@@ -5,3 +5,47 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// Maps to the existing Supabase public.profiles table.
+// Prisma does not manage this table's creation — it is owned by Supabase Auth.
+// When running the migration locally, review the generated SQL and remove any
+// CREATE TABLE / ALTER TABLE statements for "profiles" before applying.
+model User {
+  id        String     @id
+  fullName  String?    @map("full_name")
+  email     String?
+  blogPosts BlogPost[]
+
+  @@map("profiles")
+}
+
+model BlogPost {
+  id             String     @id @default(cuid())
+  title          String
+  slug           String     @unique
+  content        String     @db.Text
+  excerpt        String?
+  status         PostStatus @default(DRAFT)
+  authorId       String
+  author         User       @relation(fields: [authorId], references: [id])
+  coverImage     String?
+  coverImageAlt  String?
+  seoTitle       String?
+  seoDescription String?
+  seoKeywords    String[]
+  canonicalUrl   String?
+  ogImage        String?
+  noIndex        Boolean    @default(false)
+  tags           String[]
+  publishedAt    DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  @@map("blog_posts")
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
