@@ -2,9 +2,14 @@
 
 import { useRouter } from 'next/navigation'
 import { PostEditor, type PostFormData } from '@/components/blog/PostEditor'
-import type { Prisma } from '@prisma/client'
-
-type BlogPost = Prisma.BlogPostGetPayload<{}>
+type BlogPost = {
+  id: string; title: string; slug: string; content: string
+  excerpt: string | null; status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
+  authorId: string; coverImage: string | null; coverImageAlt: string | null
+  seoTitle: string | null; seoDescription: string | null; seoKeywords: string[]
+  canonicalUrl: string | null; ogImage: string | null; noIndex: boolean
+  tags: string[]; publishedAt: Date | null; createdAt: Date; updatedAt: Date
+}
 
 export function EditPostClient({ post, role }: { post: BlogPost; role: 'coach' | 'admin' }) {
   const router = useRouter()
