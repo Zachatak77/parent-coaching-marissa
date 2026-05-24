@@ -1,6 +1,29 @@
+/**
+ * Blog seed — Prisma v7 requires a driver adapter for PrismaClient.
+ *
+ * To run locally, install the pg adapter first:
+ *   npm install @prisma/adapter-pg pg @types/pg
+ *
+ * Then replace the prisma instantiation below with:
+ *   import { PrismaPg } from '@prisma/adapter-pg'
+ *   import { Pool } from 'pg'
+ *   const pool = new Pool({ connectionString: process.env.DIRECT_URL })
+ *   const prisma = new PrismaClient({ adapter: new PrismaPg(pool) })
+ *
+ * Alternatively, run the SQL equivalent directly in Supabase SQL Editor.
+ */
 import { PrismaClient, PostStatus } from '@prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
+import { Pool } from 'pg'
+import { config } from 'dotenv'
+import { resolve } from 'path'
 
-const prisma = new PrismaClient()
+config({ path: resolve(__dirname, '../.env.local') })
+config({ path: resolve(__dirname, '../.env') })
+
+const pool = new Pool({ connectionString: process.env.DIRECT_URL })
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const prisma = new PrismaClient({ adapter: new PrismaPg(pool) as any })
 
 async function main() {
   // Seed requires at least one profile to exist as author.
