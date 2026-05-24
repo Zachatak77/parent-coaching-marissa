@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { prisma } from '@/lib/prisma'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Users, UserCheck, PhoneCall, CalendarDays, Package } from 'lucide-react'
+import { Users, UserCheck, PhoneCall, CalendarDays, Package, BookOpen, Pencil, Eye } from 'lucide-react'
 
 function formatRelative(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime()
@@ -91,6 +92,33 @@ export default async function AdminOverviewPage() {
   const conversionRate = totalDiscovery > 0
     ? Math.round(((discoveryConverted ?? 0) / totalDiscovery) * 100)
     : 0
+
+  // Blog stats — gracefully degrade if DB not available
+  let blogCounts = { published: 0, draft: 0, archived: 0 }
+  let recentPosts: Array<{
+    id: string; title: string; slug: string
+    status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
+    publishedAt: Date | null; createdAt: Date
+    author: { fullName: string | null }
+  }> = []
+  try {
+    const [published, draft, archived, posts] = await Promise.all([
+      prisma.blogPost.count({ where: { status: 'PUBLISHED' } }),
+      prisma.blogPost.count({ where: { status: 'DRAFT' } }),
+      prisma.blogPost.count({ where: { status: 'ARCHIVED' } }),
+      prisma.blogPost.findMany({
+        take: 5,
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true, title: true, slug: true, status: true,
+          publishedAt: true, createdAt: true,
+          author: { select: { fullName: true } },
+        },
+      }),
+    ])
+    blogCounts = { published, draft, archived }
+    recentPosts = posts as typeof recentPosts
+  } catch { /* DB unavailable — show zeros */ }
 
   const hour = now.getHours()
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
@@ -205,6 +233,72 @@ export default async function AdminOverviewPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Blog admin portal */}
+      <Card className="border-[#D9CFB9] mb-6">
+        <CardHeader className="pb-4 border-b border-[#D9CFB9]">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base font-semibold text-[#1F1D1A] flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-[#5F728D]" />
+              Blog Management
+            </CardTitle>
+            <div className="flex gap-3">
+              <Button asChild size="sm" variant="outline" className="rounded-full text-xs border-[#D9CFB9]">
+                <Link href="/coach/blog/new">+ New Post</Link>
+              </Button>
+              <Button asChild size="sm" className="rounded-full text-xs bg-[#5F728D] hover:bg-[#54647C] text-white">
+                <Link href="/admin/blog">Manage All</Link>
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-4">
+          {/* Stat row */}
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            {[
+              { label: 'Published', count: blogCounts.published, color: '#9BB39B' },
+              { label: 'Drafts',    count: blogCounts.draft,      color: '#C8A96E' },
+              { label: 'Archived', count: blogCounts.archived,   color: '#B0A898' },
+            ].map(({ label, count, color }) => (
+              <div key={label} className="text-center py-3 rounded-xl bg-[#F7F7F5] border border-[#D9CFB9]">
+                <div className="text-2xl font-bold text-[#1F1D1A]">{count}</div>
+                <div className="text-xs mt-0.5" style={{ color, fontFamily: 'Inter', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  {label}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Recent posts list */}
+          {recentPosts.length === 0 ? (
+            <p className="text-sm text-muted-foreground text-center py-4">No posts yet.</p>
+          ) : (
+            <ul className="divide-y divide-[#D9CFB9]">
+              {recentPosts.map((post) => (
+                <li key={post.id} className="flex items-center justify-between gap-3 py-2.5">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-[#1F1D1A] truncate">{post.title}</p>
+                    <p className="text-xs text-muted-foreground">{post.author.fullName ?? '—'}</p>
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <Badge variant={post.status === 'PUBLISHED' ? 'green' : post.status === 'DRAFT' ? 'yellow' : 'gray'}>
+                      {post.status.charAt(0) + post.status.slice(1).toLowerCase()}
+                    </Badge>
+                    <Link href={`/admin/blog/${post.id}/edit`} className="rounded p-1 hover:bg-[#F2EBDA] transition-colors">
+                      <Pencil className="w-3.5 h-3.5 text-[#6E6A60]" />
+                    </Link>
+                    {post.status === 'PUBLISHED' && (
+                      <a href={`/blog/${post.slug}`} target="_blank" rel="noreferrer" className="rounded p-1 hover:bg-[#F2EBDA] transition-colors">
+                        <Eye className="w-3.5 h-3.5 text-[#6E6A60]" />
+                      </a>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Recent activity */}
       <div className="grid sm:grid-cols-2 gap-6">
