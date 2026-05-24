@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -77,6 +77,33 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [saving, setSaving] = useState(false)
   const [slugTaken, setSlugTaken] = useState(false)
+  const mdInputRef = useRef<HTMLInputElement>(null)
+
+  function importMarkdown(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (ev) => {
+      const raw = (ev.target?.result as string) ?? ''
+      // Extract title from first H1 if the title field is empty
+      const h1Match = raw.match(/^#\s+(.+)/m)
+      const extractedTitle = h1Match?.[1]?.trim() ?? ''
+      const content = extractedTitle
+        ? raw.replace(/^#\s+.+\n?/, '').trimStart()
+        : raw
+      setForm((f) => ({
+        ...f,
+        content,
+        ...(extractedTitle && !f.title ? {
+          title: extractedTitle,
+          slug: !slugManuallyEdited ? generateSlug(extractedTitle) : f.slug,
+        } : {}),
+      }))
+    }
+    reader.readAsText(file)
+    // Reset so the same file can be re-imported if needed
+    e.target.value = ''
+  }
 
   function validate(): boolean {
     const next: Record<string, string> = {}
@@ -192,7 +219,23 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
 
       {/* Section 4: Content */}
       <div>
-        <Label>Content *</Label>
+        <div className="flex items-center justify-between mb-1">
+          <Label>Content *</Label>
+          <button
+            type="button"
+            onClick={() => mdInputRef.current?.click()}
+            className="text-xs text-[#5F728D] hover:text-[#3D5068] underline underline-offset-2"
+          >
+            Import .md file
+          </button>
+          <input
+            ref={mdInputRef}
+            type="file"
+            accept=".md,.markdown"
+            className="hidden"
+            onChange={importMarkdown}
+          />
+        </div>
         <Textarea
           value={form.content}
           onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
