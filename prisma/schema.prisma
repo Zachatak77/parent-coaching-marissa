@@ -11,7 +11,7 @@ datasource db {
 // When running the migration locally, review the generated SQL and remove any
 // CREATE TABLE / ALTER TABLE statements for "profiles" before applying.
 model User {
-  id        String     @id
+  id        String     @id @db.Uuid
   fullName  String?    @map("full_name")
   email     String?
   blogPosts BlogPost[]
@@ -26,7 +26,7 @@ model BlogPost {
   content        String     @db.Text
   excerpt        String?
   status         PostStatus @default(DRAFT)
-  authorId       String
+  authorId       String     @db.Uuid
   author         User       @relation(fields: [authorId], references: [id])
   coverImage     String?
   coverImageAlt  String?

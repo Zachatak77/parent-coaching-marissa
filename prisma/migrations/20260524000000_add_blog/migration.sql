@@ -9,7 +9,7 @@ CREATE TABLE "blog_posts" (
     "content" TEXT NOT NULL,
     "excerpt" TEXT,
     "status" "PostStatus" NOT NULL DEFAULT 'DRAFT',
-    "authorId" TEXT NOT NULL,
+    "authorId" UUID NOT NULL,
     "coverImage" TEXT,
     "coverImageAlt" TEXT,
     "seoTitle" TEXT,
