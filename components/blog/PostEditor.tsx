@@ -28,6 +28,7 @@ interface PostEditorProps {
     canonicalUrl: string | null
     ogImage: string | null
     noIndex: boolean
+    scheduledAt: Date | string | null
   }
   role: 'coach' | 'admin'
   onSave: (data: PostFormData, action: 'draft' | 'publish') => Promise<void>
@@ -49,6 +50,7 @@ export interface PostFormData {
   canonicalUrl: string
   ogImage: string
   noIndex: boolean
+  scheduledAt: string
 }
 
 export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
@@ -67,6 +69,9 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
     canonicalUrl: post?.canonicalUrl ?? '',
     ogImage: post?.ogImage ?? '',
     noIndex: post?.noIndex ?? false,
+    scheduledAt: post?.scheduledAt
+      ? (() => { const d = new Date(post.scheduledAt as string); return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16) })()
+      : '',
   })
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -239,6 +244,30 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
         </div>
       </div>
 
+      {/* Section: Schedule */}
+      <div>
+        <Label>Publish Schedule</Label>
+        <div className="mt-1 flex items-center gap-3">
+          <input
+            type="datetime-local"
+            value={form.scheduledAt}
+            min={(() => { const now = new Date(); return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16) })()}
+            onChange={(e) => setForm((f) => ({ ...f, scheduledAt: e.target.value }))}
+            className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          />
+          {form.scheduledAt && (
+            <Button type="button" variant="ghost" size="sm" onClick={() => setForm((f) => ({ ...f, scheduledAt: '' }))}>
+              Clear
+            </Button>
+          )}
+        </div>
+        <p className="text-xs text-[#6E6A60] mt-1">
+          {form.scheduledAt
+            ? '⏰ Post will auto-publish at the scheduled time. Click "Save" to apply.'
+            : 'Optional. Leave empty to publish manually.'}
+        </p>
+      </div>
+
       {/* Section 7: SEO Panel */}
       <SeoPanel
         seoTitle={form.seoTitle}
@@ -257,7 +286,7 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
         </Button>
         <div className="flex gap-3">
           <Button variant="outline" onClick={() => handleSave('draft')} disabled={saving}>
-            {saving ? 'Saving...' : 'Save as Draft'}
+            {saving ? 'Saving...' : form.scheduledAt ? 'Save / Schedule' : 'Save as Draft'}
           </Button>
           <Button
             onClick={() => handleSave('publish')}

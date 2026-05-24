@@ -18,6 +18,7 @@ export type CreatePostInput = {
   canonicalUrl?: string
   ogImage?: string
   noIndex?: boolean
+  scheduledAt?: Date | null
 }
 
 // ── Author shape included in list/detail queries ───────────────────────────
@@ -83,6 +84,7 @@ export async function createPost(data: CreatePostInput, authorId: string) {
     data: {
       ...data,
       authorId,
+      scheduledAt: data.scheduledAt ?? null,
       publishedAt: data.status === 'PUBLISHED' ? new Date() : null,
     },
   })
@@ -102,6 +104,14 @@ export async function updatePost(id: string, data: Partial<CreatePostInput>) {
       ...data,
       ...(publishedAt !== undefined ? { publishedAt } : {}),
     },
+  })
+}
+
+export async function publishScheduledPosts() {
+  const now = new Date()
+  return prisma.blogPost.updateMany({
+    where: { status: 'DRAFT', scheduledAt: { lte: now } },
+    data: { status: 'PUBLISHED', publishedAt: now, scheduledAt: null },
   })
 }
 

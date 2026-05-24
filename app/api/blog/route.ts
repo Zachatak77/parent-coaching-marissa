@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
   }
 
-  const { title, content, slug, seoTitle, seoDescription, status, ...rest } = body as Record<string, unknown>
+  const { title, content, slug, seoTitle, seoDescription, status, scheduledAt, ...rest } = body as Record<string, unknown>
 
   if (!title || typeof title !== 'string' || !title.trim()) {
     return NextResponse.json({ error: 'Title is required' }, { status: 400 })
@@ -73,8 +73,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid status' }, { status: 400 })
   }
 
+  let scheduledAtDate: Date | null = null
+  if (scheduledAt !== undefined && scheduledAt !== null && scheduledAt !== '') {
+    scheduledAtDate = new Date(scheduledAt as string)
+    if (isNaN(scheduledAtDate.getTime())) {
+      return NextResponse.json({ error: 'Invalid scheduledAt' }, { status: 400 })
+    }
+  }
+
   const post = await createPost(
-    { title: title as string, content: content as string, slug: slug as string, seoTitle: seoTitle as string | undefined, seoDescription: seoDescription as string | undefined, status: status as 'DRAFT' | 'PUBLISHED' | 'ARCHIVED', ...rest } as Parameters<typeof createPost>[0],
+    { title: title as string, content: content as string, slug: slug as string, seoTitle: seoTitle as string | undefined, seoDescription: seoDescription as string | undefined, status: status as 'DRAFT' | 'PUBLISHED' | 'ARCHIVED', scheduledAt: scheduledAtDate, ...rest } as Parameters<typeof createPost>[0],
     session.user.id
   )
   return NextResponse.json(post, { status: 201 })

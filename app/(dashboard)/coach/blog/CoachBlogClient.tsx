@@ -12,6 +12,7 @@ interface Post {
   authorId: string
   createdAt: Date
   publishedAt: Date | null
+  scheduledAt: Date | string | null
   author: { id: string; fullName: string | null }
 }
 
