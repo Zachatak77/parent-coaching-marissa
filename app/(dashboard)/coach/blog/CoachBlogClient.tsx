@@ -6,7 +6,13 @@ import { PostTable } from '@/components/blog/PostTable'
 
 interface Post {
   id: string
-  [key: string]: unknown
+  title: string
+  slug: string
+  status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
+  authorId: string
+  createdAt: Date
+  publishedAt: Date | null
+  author: { id: string; fullName: string | null }
 }
 
 interface Props {

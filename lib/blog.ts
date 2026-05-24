@@ -60,6 +60,7 @@ export async function getPostBySlug(slug: string) {
 export async function getPostsByAuthor(authorId: string) {
   return prisma.blogPost.findMany({
     where: { authorId },
+    include: { author: { select: authorSelect } },
     orderBy: { createdAt: 'desc' },
   })
 }

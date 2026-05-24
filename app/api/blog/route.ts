@@ -17,8 +17,9 @@ export async function GET(request: NextRequest) {
 
   if (session.user.role === 'admin') {
     const { searchParams } = new URL(request.url)
-    const status = searchParams.get('status') ?? undefined
+    const statusParam = searchParams.get('status')
     const authorId = searchParams.get('authorId') ?? undefined
+    const status = (statusParam as 'DRAFT' | 'PUBLISHED' | 'ARCHIVED' | null) ?? undefined
     const posts = await getAllPosts({ status, authorId })
     return NextResponse.json(posts)
   }

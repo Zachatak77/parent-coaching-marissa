@@ -8,10 +8,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 
 interface Post {
   id: string
-  status: string
   title: string
-  author?: { id: string; fullName: string }
-  [key: string]: unknown
+  slug: string
+  status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
+  authorId: string
+  createdAt: Date
+  publishedAt: Date | null
+  author: { id: string; fullName: string | null }
 }
 
 interface Props {
