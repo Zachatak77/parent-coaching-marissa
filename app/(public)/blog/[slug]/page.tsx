@@ -186,12 +186,27 @@ export default async function BlogPostPage({
           </div>
         )}
 
-        {/* Content */}
+        {/* Content — HTML for new posts, markdown fallback for legacy */}
         <div
           className="text-[1.05rem] text-[#3A372F] leading-[1.6]"
           style={{ fontFamily: 'var(--font-serif-4)' }}
         >
-          <MarkdownContent content={post.content} />
+          {post.content.trim().startsWith('<') ? (
+            <div
+              className={[
+                '[&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mb-3 [&_h2]:mt-8',
+                '[&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mb-2 [&_h3]:mt-6',
+                '[&_p]:mb-4',
+                '[&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-4 [&_ul]:space-y-1',
+                '[&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-4 [&_ol]:space-y-1',
+                '[&_strong]:font-bold',
+                '[&_em]:italic',
+              ].join(' ')}
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
+          ) : (
+            <MarkdownContent content={post.content} />
+          )}
         </div>
 
         {/* Footer */}

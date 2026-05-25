@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -9,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { CoverImageUpload } from './CoverImageUpload'
 import { SeoPanel } from './SeoPanel'
+import { RichTextEditor } from './RichTextEditor'
 import { generateSlug } from '@/lib/slugify'
 
 interface PostEditorProps {
@@ -77,81 +77,12 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [saving, setSaving] = useState(false)
   const [slugTaken, setSlugTaken] = useState(false)
-  const mdInputRef = useRef<HTMLInputElement>(null)
-  const contentRef = useRef<HTMLTextAreaElement>(null)
-
-  function applyFormat(type: 'bold' | 'italic' | 'bullet' | 'number' | 'indent' | 'unindent') {
-    const el = contentRef.current
-    if (!el) return
-    const s = el.selectionStart
-    const e = el.selectionEnd
-    const val = el.value
-    const sel = val.slice(s, e)
-
-    let insert: string
-    let after: [number, number]
-
-    switch (type) {
-      case 'bold':
-        insert = `**${sel || 'bold'}**`
-        after = sel ? [s + 2, e + 2] : [s + 2, s + 6]
-        break
-      case 'italic':
-        insert = `*${sel || 'italic'}*`
-        after = sel ? [s + 1, e + 1] : [s + 1, s + 7]
-        break
-      case 'bullet':
-        insert = sel ? sel.split('\n').map(l => `- ${l}`).join('\n') : '- '
-        after = [s, s + insert.length]
-        break
-      case 'number':
-        insert = sel ? sel.split('\n').map((l, i) => `${i + 1}. ${l}`).join('\n') : '1. '
-        after = [s, s + insert.length]
-        break
-      case 'indent':
-        insert = sel ? sel.split('\n').map(l => `  ${l}`).join('\n') : '  '
-        after = [s, s + insert.length]
-        break
-      case 'unindent':
-        insert = sel.split('\n').map(l => l.replace(/^ {1,2}/, '')).join('\n')
-        after = [s, s + insert.length]
-        break
-    }
-
-    setForm(f => ({ ...f, content: val.slice(0, s) + insert + val.slice(e) }))
-    requestAnimationFrame(() => { el.focus(); el.setSelectionRange(after[0], after[1]) })
-  }
-
-  function importMarkdown(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      const raw = (ev.target?.result as string) ?? ''
-      // Extract title from first H1 if the title field is empty
-      const h1Match = raw.match(/^#\s+(.+)/m)
-      const extractedTitle = h1Match?.[1]?.trim() ?? ''
-      const content = extractedTitle
-        ? raw.replace(/^#\s+.+\n?/, '').trimStart()
-        : raw
-      setForm((f) => ({
-        ...f,
-        content,
-        ...(extractedTitle && !f.title ? {
-          title: extractedTitle,
-          slug: !slugManuallyEdited ? generateSlug(extractedTitle) : f.slug,
-        } : {}),
-      }))
-    }
-    reader.readAsText(file)
-    // Reset so the same file can be re-imported if needed
-    e.target.value = ''
-  }
 
   function validate(): boolean {
     const next: Record<string, string> = {}
     if (!form.title.trim()) next.title = 'Title is required'
-    if (!form.content.trim()) next.content = 'Content is required'
+    // strip HTML tags to check if there's actual content
+    if (!form.content.replace(/<[^>]*>/g, '').trim()) next.content = 'Content is required'
     if (!form.slug.trim()) next.slug = 'Slug is required'
     if (form.seoTitle.length > 60) next.seoTitle = 'SEO title must be 60 characters or less'
     if (form.seoDescription.length > 160) next.seoDescription = 'SEO description must be 160 characters or less'
@@ -183,21 +114,6 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
       setForm((f) => ({ ...f, title, slug: generateSlug(title) }))
     } else {
       setForm((f) => ({ ...f, title }))
-    }
-  }
-
-  function handleContentKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === 'Tab') {
-      e.preventDefault()
-      const el = e.currentTarget
-      const start = el.selectionStart
-      const end = el.selectionEnd
-      const newValue = el.value.substring(0, start) + '  ' + el.value.substring(end)
-      setForm((f) => ({ ...f, content: newValue }))
-      requestAnimationFrame(() => {
-        el.selectionStart = start + 2
-        el.selectionEnd = start + 2
-      })
     }
   }
 
@@ -262,61 +178,20 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
 
       {/* Section 4: Content */}
       <div>
-        <div className="flex items-center justify-between mb-1">
-          <Label>Content *</Label>
-          <button
-            type="button"
-            onClick={() => mdInputRef.current?.click()}
-            className="text-xs text-[#5F728D] hover:text-[#3D5068] underline underline-offset-2"
-          >
-            Import .md file
-          </button>
-          <input
-            ref={mdInputRef}
-            type="file"
-            accept=".md,.markdown"
-            className="hidden"
-            onChange={importMarkdown}
-          />
-        </div>
-
-        {/* Format toolbar */}
-        <div className="flex items-center gap-0.5 px-2 py-1 rounded-t-md border border-b-0 border-input bg-[#F7F7F5]">
-          {([
-            { type: 'bold',     label: 'B',  title: 'Bold',          style: { fontWeight: 700 } },
-            { type: 'italic',   label: 'I',  title: 'Italic',        style: { fontStyle: 'italic' as const } },
-            null,
-            { type: 'bullet',   label: '•',  title: 'Bullet list',   style: {} },
-            { type: 'number',   label: '1.', title: 'Numbered list', style: {} },
-            null,
-            { type: 'indent',   label: '→',  title: 'Indent',        style: {} },
-            { type: 'unindent', label: '←',  title: 'Unindent',      style: {} },
-          ] as const).map((btn, i) =>
-            btn === null
-              ? <div key={i} className="w-px h-4 bg-[#D9CFB9] mx-1" />
-              : (
-                <button
-                  key={btn.type}
-                  type="button"
-                  title={btn.title}
-                  onMouseDown={(ev) => { ev.preventDefault(); applyFormat(btn.type) }}
-                  style={btn.style}
-                  className="w-8 h-6 rounded text-sm text-[#3A372F] hover:bg-[#D9CFB9] transition-colors font-[Inter]"
-                >
-                  {btn.label}
-                </button>
-              )
-          )}
-        </div>
-
-        <Textarea
-          ref={contentRef}
-          value={form.content}
-          onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
-          onKeyDown={handleContentKeyDown}
-          rows={20}
-          placeholder="Write your post content here..."
-          className="mt-0 font-mono text-sm rounded-t-none"
+        <Label className="mb-1 block">Content *</Label>
+        <RichTextEditor
+          content={form.content}
+          onChange={(html) => setForm((f) => ({ ...f, content: html }))}
+          onImportFile={(html, extractedTitle) => {
+            setForm((f) => ({
+              ...f,
+              content: html,
+              ...(extractedTitle && !f.title ? {
+                title: extractedTitle,
+                slug: !slugManuallyEdited ? generateSlug(extractedTitle) : f.slug,
+              } : {}),
+            }))
+          }}
         />
         {errors.content && <p className="text-red-600 text-sm mt-1">{errors.content}</p>}
       </div>
