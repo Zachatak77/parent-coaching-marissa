@@ -9,6 +9,61 @@ import type { Metadata } from 'next'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://reimagineparenting.co'
 
+// Minimal markdown renderer — handles exactly what the toolbar produces:
+// **bold**, *italic*, - bullets, 1. ordered lists, ## h2, ### h3, blank-line paragraphs
+function renderInline(text: string) {
+  const parts: React.ReactNode[] = []
+  const re = /\*\*(.+?)\*\*|\*(.+?)\*/g
+  let last = 0, m: RegExpExecArray | null, k = 0
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) parts.push(text.slice(last, m.index))
+    parts.push(m[1] ? <strong key={k++}>{m[1]}</strong> : <em key={k++}>{m[2]}</em>)
+    last = m.index + m[0].length
+  }
+  if (last < text.length) parts.push(text.slice(last))
+  return parts
+}
+
+function MarkdownContent({ content }: { content: string }) {
+  const nodes: React.ReactNode[] = []
+  const listBuf: React.ReactNode[] = []
+  let listKind: 'ul' | 'ol' | null = null
+  let key = 0
+
+  function flush() {
+    if (!listKind || !listBuf.length) return
+    nodes.push(
+      listKind === 'ul'
+        ? <ul key={key++} className="list-disc pl-6 mb-4 space-y-1">{[...listBuf]}</ul>
+        : <ol key={key++} className="list-decimal pl-6 mb-4 space-y-1">{[...listBuf]}</ol>
+    )
+    listBuf.length = 0
+    listKind = null
+  }
+
+  for (const line of content.split('\n')) {
+    const bullet  = line.match(/^-\s+(.+)/)
+    const ordered = line.match(/^\d+\.\s+(.+)/)
+    const h2      = line.match(/^##\s+(.+)/)
+    const h3      = line.match(/^###\s+(.+)/)
+
+    if (bullet) {
+      if (listKind !== 'ul') { flush(); listKind = 'ul' }
+      listBuf.push(<li key={key++}>{renderInline(bullet[1])}</li>)
+    } else if (ordered) {
+      if (listKind !== 'ol') { flush(); listKind = 'ol' }
+      listBuf.push(<li key={key++}>{renderInline(ordered[1])}</li>)
+    } else {
+      flush()
+      if (h2) nodes.push(<h2 key={key++} className="text-2xl font-bold mb-3 mt-8" style={{ fontFamily: 'var(--font-display)' }}>{renderInline(h2[1])}</h2>)
+      else if (h3) nodes.push(<h3 key={key++} className="text-xl font-semibold mb-2 mt-6" style={{ fontFamily: 'var(--font-display)' }}>{renderInline(h3[1])}</h3>)
+      else if (line.trim()) nodes.push(<p key={key++} className="mb-4">{renderInline(line)}</p>)
+    }
+  }
+  flush()
+  return <>{nodes}</>
+}
+
 export async function generateStaticParams() {
   try {
     const posts = await getAllPublishedPosts()
@@ -133,10 +188,10 @@ export default async function BlogPostPage({
 
         {/* Content */}
         <div
-          className="text-[1.05rem] text-[#3A372F] leading-[1.6] space-y-4 whitespace-pre-wrap"
+          className="text-[1.05rem] text-[#3A372F] leading-[1.6]"
           style={{ fontFamily: 'var(--font-serif-4)' }}
         >
-          {post.content}
+          <MarkdownContent content={post.content} />
         </div>
 
         {/* Footer */}
