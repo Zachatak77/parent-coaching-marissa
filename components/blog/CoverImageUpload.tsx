@@ -23,6 +23,17 @@ export function CoverImageUpload({ value, altValue, onChange, disabled }: CoverI
     const file = e.target.files?.[0]
     if (!file) return
 
+    // Fast client-side checks before hitting the network
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+    if (!allowedTypes.includes(file.type)) {
+      setError('Unsupported file type. Use JPEG, PNG, WebP, or GIF.')
+      return
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError('File is too large. Maximum size is 5MB.')
+      return
+    }
+
     setUploading(true)
     setProgress(0)
     setError(null)
@@ -75,6 +86,7 @@ export function CoverImageUpload({ value, altValue, onChange, disabled }: CoverI
               src={value}
               alt={altValue || 'Cover image'}
               fill
+              sizes="(max-width: 640px) 100vw, 640px"
               className="object-cover"
             />
           </div>

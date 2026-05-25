@@ -69,7 +69,7 @@ export function SeoPanel({
               <Input
                 value={seoTitle}
                 onChange={(e) => onChange('seoTitle', e.target.value)}
-                maxLength={70}
+                maxLength={60}
               />
               <div className="flex items-center justify-between">
                 <p className="text-xs text-[#6E6A60]">Defaults to post title if left blank</p>

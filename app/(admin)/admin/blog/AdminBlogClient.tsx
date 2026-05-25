@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
+import { toast } from 'sonner'
 import { PostTable } from '@/components/blog/PostTable'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -43,6 +44,10 @@ export function AdminBlogClient({ posts: initialPosts }: Props) {
     const res = await fetch(`/api/blog/${id}`, { method: 'DELETE' })
     if (res.ok) {
       setLocalPosts(prev => prev.filter(p => p.id !== id))
+      toast.success('Post deleted')
+    } else {
+      const err = await res.json().catch(() => ({}))
+      toast.error(err.error ?? 'Failed to delete post. Please try again.')
     }
   }
 
@@ -51,6 +56,10 @@ export function AdminBlogClient({ posts: initialPosts }: Props) {
     if (res.ok) {
       const updated = await res.json()
       setLocalPosts(prev => prev.map(p => p.id === id ? { ...p, ...updated } : p))
+      toast.success('Status updated')
+    } else {
+      const err = await res.json().catch(() => ({}))
+      toast.error(err.error ?? 'Failed to update status. Please try again.')
     }
   }
 

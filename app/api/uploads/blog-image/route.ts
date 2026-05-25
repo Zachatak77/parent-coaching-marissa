@@ -30,7 +30,11 @@ export async function POST(request: NextRequest) {
   }
 
   const { put } = await import('@vercel/blob')
-  const blob = await put(`blog/${session!.user.id}/${Date.now()}-${file.name}`, file, { access: 'public' })
+  const safeName = file.name
+    .replace(/\.{2,}/g, '_')           // block path traversal (..)
+    .replace(/[^a-zA-Z0-9._-]/g, '_')  // strip special chars
+    .slice(0, 100)
+  const blob = await put(`blog/${session!.user.id}/${Date.now()}-${safeName}`, file, { access: 'public' })
 
   return NextResponse.json({ url: blob.url })
 }

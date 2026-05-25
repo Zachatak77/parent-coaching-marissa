@@ -1,5 +1,6 @@
 import { getPostBySlug, getAllPublishedPosts } from '@/lib/blog'
 import { generatePostMetadata } from '@/lib/metadata'
+import { sanitizeHtml } from '@/lib/sanitize'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -9,8 +10,7 @@ import type { Metadata } from 'next'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://reimagineparenting.co'
 
-// Minimal markdown renderer — handles exactly what the toolbar produces:
-// **bold**, *italic*, - bullets, 1. ordered lists, ## h2, ### h3, blank-line paragraphs
+// Minimal markdown renderer — fallback for legacy posts stored as markdown
 function renderInline(text: string) {
   const parts: React.ReactNode[] = []
   const re = /\*\*(.+?)\*\*|\*(.+?)\*/g
@@ -81,7 +81,7 @@ export async function generateMetadata({
   const { slug } = await params
   const post = await getPostBySlug(slug)
   if (!post) return {}
-  return generatePostMetadata(post as any, SITE_URL)
+  return generatePostMetadata(post, SITE_URL)
 }
 
 export default async function BlogPostPage({
@@ -92,6 +92,11 @@ export default async function BlogPostPage({
   const { slug } = await params
   const post = await getPostBySlug(slug)
   if (!post) notFound()
+
+  // Read time: strip HTML tags, count words at ~200 wpm
+  const plainText = post.content.replace(/<[^>]*>/g, ' ').trim()
+  const wordCount = plainText.split(/\s+/).filter(Boolean).length
+  const readTime = Math.max(1, Math.ceil(wordCount / 200))
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -157,7 +162,7 @@ export default async function BlogPostPage({
           {post.title}
         </h1>
 
-        {/* Author + date */}
+        {/* Author + date + read time */}
         <div
           className="flex items-center gap-3 text-sm text-[#6E6A60]"
           style={{ fontFamily: 'Inter' }}
@@ -167,6 +172,8 @@ export default async function BlogPostPage({
           {post.publishedAt && (
             <span>{format(post.publishedAt, 'MMMM d, yyyy')}</span>
           )}
+          <span>·</span>
+          <span>{readTime} min read</span>
         </div>
 
         {/* Heart rule */}
@@ -181,12 +188,13 @@ export default async function BlogPostPage({
               src={post.coverImage}
               alt={post.coverImageAlt || post.title}
               fill
+              sizes="(max-width: 768px) 100vw, 768px"
               className="object-cover"
             />
           </div>
         )}
 
-        {/* Content — HTML for new posts, markdown fallback for legacy */}
+        {/* Content — HTML for new posts (sanitized), markdown fallback for legacy */}
         <div
           className="text-[1.05rem] text-[#3A372F] leading-[1.6]"
           style={{ fontFamily: 'var(--font-serif-4)' }}
@@ -202,7 +210,7 @@ export default async function BlogPostPage({
                 '[&_strong]:font-bold',
                 '[&_em]:italic',
               ].join(' ')}
-              dangerouslySetInnerHTML={{ __html: post.content }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
             />
           ) : (
             <MarkdownContent content={post.content} />

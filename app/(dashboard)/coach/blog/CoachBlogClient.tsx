@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { toast } from 'sonner'
 import { PostTable } from '@/components/blog/PostTable'
 
 interface Post {
@@ -28,6 +29,10 @@ export function CoachBlogClient({ posts: initialPosts, role }: Props) {
     const res = await fetch(`/api/blog/${id}`, { method: 'DELETE' })
     if (res.ok) {
       setPosts(prev => prev.filter(p => p.id !== id))
+      toast.success('Post deleted')
+    } else {
+      const err = await res.json().catch(() => ({}))
+      toast.error(err.error ?? 'Failed to delete post. Please try again.')
     }
   }
 
@@ -36,6 +41,10 @@ export function CoachBlogClient({ posts: initialPosts, role }: Props) {
     if (res.ok) {
       const updated = await res.json()
       setPosts(prev => prev.map(p => p.id === id ? { ...p, ...updated } : p))
+      toast.success('Status updated')
+    } else {
+      const err = await res.json().catch(() => ({}))
+      toast.error(err.error ?? 'Failed to update status. Please try again.')
     }
   }
 
