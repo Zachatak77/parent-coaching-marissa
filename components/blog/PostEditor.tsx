@@ -78,6 +78,49 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
   const [saving, setSaving] = useState(false)
   const [slugTaken, setSlugTaken] = useState(false)
   const mdInputRef = useRef<HTMLInputElement>(null)
+  const contentRef = useRef<HTMLTextAreaElement>(null)
+
+  function applyFormat(type: 'bold' | 'italic' | 'bullet' | 'number' | 'indent' | 'unindent') {
+    const el = contentRef.current
+    if (!el) return
+    const s = el.selectionStart
+    const e = el.selectionEnd
+    const val = el.value
+    const sel = val.slice(s, e)
+
+    let insert: string
+    let after: [number, number]
+
+    switch (type) {
+      case 'bold':
+        insert = `**${sel || 'bold'}**`
+        after = sel ? [s + 2, e + 2] : [s + 2, s + 6]
+        break
+      case 'italic':
+        insert = `*${sel || 'italic'}*`
+        after = sel ? [s + 1, e + 1] : [s + 1, s + 7]
+        break
+      case 'bullet':
+        insert = sel ? sel.split('\n').map(l => `- ${l}`).join('\n') : '- '
+        after = [s, s + insert.length]
+        break
+      case 'number':
+        insert = sel ? sel.split('\n').map((l, i) => `${i + 1}. ${l}`).join('\n') : '1. '
+        after = [s, s + insert.length]
+        break
+      case 'indent':
+        insert = sel ? sel.split('\n').map(l => `  ${l}`).join('\n') : '  '
+        after = [s, s + insert.length]
+        break
+      case 'unindent':
+        insert = sel.split('\n').map(l => l.replace(/^ {1,2}/, '')).join('\n')
+        after = [s, s + insert.length]
+        break
+    }
+
+    setForm(f => ({ ...f, content: val.slice(0, s) + insert + val.slice(e) }))
+    requestAnimationFrame(() => { el.focus(); el.setSelectionRange(after[0], after[1]) })
+  }
 
   function importMarkdown(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -236,13 +279,44 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
             onChange={importMarkdown}
           />
         </div>
+
+        {/* Format toolbar */}
+        <div className="flex items-center gap-0.5 px-2 py-1 rounded-t-md border border-b-0 border-input bg-[#F7F7F5]">
+          {([
+            { type: 'bold',     label: 'B',  title: 'Bold',          style: { fontWeight: 700 } },
+            { type: 'italic',   label: 'I',  title: 'Italic',        style: { fontStyle: 'italic' as const } },
+            null,
+            { type: 'bullet',   label: '•',  title: 'Bullet list',   style: {} },
+            { type: 'number',   label: '1.', title: 'Numbered list', style: {} },
+            null,
+            { type: 'indent',   label: '→',  title: 'Indent',        style: {} },
+            { type: 'unindent', label: '←',  title: 'Unindent',      style: {} },
+          ] as const).map((btn, i) =>
+            btn === null
+              ? <div key={i} className="w-px h-4 bg-[#D9CFB9] mx-1" />
+              : (
+                <button
+                  key={btn.type}
+                  type="button"
+                  title={btn.title}
+                  onMouseDown={(ev) => { ev.preventDefault(); applyFormat(btn.type) }}
+                  style={btn.style}
+                  className="w-8 h-6 rounded text-sm text-[#3A372F] hover:bg-[#D9CFB9] transition-colors font-[Inter]"
+                >
+                  {btn.label}
+                </button>
+              )
+          )}
+        </div>
+
         <Textarea
+          ref={contentRef}
           value={form.content}
           onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
           onKeyDown={handleContentKeyDown}
           rows={20}
           placeholder="Write your post content here..."
-          className="mt-1 font-mono text-sm"
+          className="mt-0 font-mono text-sm rounded-t-none"
         />
         {errors.content && <p className="text-red-600 text-sm mt-1">{errors.content}</p>}
       </div>

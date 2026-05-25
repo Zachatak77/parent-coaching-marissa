@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { format } from 'date-fns'
+import ReactMarkdown from 'react-markdown'
 import { HeartRule } from '@/components/public/heart-rule'
 import type { Metadata } from 'next'
 
@@ -133,10 +134,24 @@ export default async function BlogPostPage({
 
         {/* Content */}
         <div
-          className="text-[1.05rem] text-[#3A372F] leading-[1.6] space-y-4 whitespace-pre-wrap"
+          className="text-[1.05rem] text-[#3A372F] leading-[1.6]"
           style={{ fontFamily: 'var(--font-serif-4)' }}
         >
-          {post.content}
+          <ReactMarkdown
+            components={{
+              p:      ({ children }) => <p className="mb-4">{children}</p>,
+              strong: ({ children }) => <strong className="font-bold">{children}</strong>,
+              em:     ({ children }) => <em className="italic">{children}</em>,
+              ul:     ({ children }) => <ul className="list-disc pl-6 mb-4 space-y-1">{children}</ul>,
+              ol:     ({ children }) => <ol className="list-decimal pl-6 mb-4 space-y-1">{children}</ol>,
+              li:     ({ children }) => <li>{children}</li>,
+              h2:     ({ children }) => <h2 className="text-2xl font-bold mb-3 mt-8" style={{ fontFamily: 'var(--font-display)' }}>{children}</h2>,
+              h3:     ({ children }) => <h3 className="text-xl font-semibold mb-2 mt-6" style={{ fontFamily: 'var(--font-display)' }}>{children}</h3>,
+              blockquote: ({ children }) => <blockquote className="border-l-4 border-[#D9CFB9] pl-4 italic text-[#6E6A60] my-4">{children}</blockquote>,
+            }}
+          >
+            {post.content}
+          </ReactMarkdown>
         </div>
 
         {/* Footer */}
