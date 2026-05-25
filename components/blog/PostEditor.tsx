@@ -336,7 +336,7 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
             disabled={saving}
             style={{ backgroundColor: '#5F728D', color: '#fff', borderRadius: 9999 }}
           >
-            {post ? 'Update' : 'Publish'}
+            {!post || post.status === 'DRAFT' ? 'Publish' : 'Update'}
           </Button>
         </div>
       </div>

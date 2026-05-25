@@ -31,6 +31,14 @@ export function CoachBlogClient({ posts: initialPosts, role }: Props) {
     }
   }
 
+  async function handleTogglePublish(id: string) {
+    const res = await fetch(`/api/blog/publish/${id}`, { method: 'PUT' })
+    if (res.ok) {
+      const updated = await res.json()
+      setPosts(prev => prev.map(p => p.id === id ? { ...p, ...updated } : p))
+    }
+  }
+
   const buttonStyle = 'bg-[#5F728D] text-white rounded-full px-5 py-2 text-sm font-semibold uppercase tracking-wide'
 
   return (
@@ -61,6 +69,7 @@ export function CoachBlogClient({ posts: initialPosts, role }: Props) {
           posts={posts}
           role={role}
           onDelete={handleDelete}
+          onTogglePublish={handleTogglePublish}
         />
       )}
     </div>

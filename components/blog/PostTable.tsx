@@ -111,8 +111,8 @@ export function PostTable({ posts, role, onDelete, onTogglePublish }: PostTableP
                       </a>
                     )}
 
-                    {/* Toggle publish (admin only) */}
-                    {role === 'admin' && onTogglePublish && (
+                    {/* Toggle publish */}
+                    {onTogglePublish && (
                       <button
                         type="button"
                         onClick={() => onTogglePublish(post.id)}
