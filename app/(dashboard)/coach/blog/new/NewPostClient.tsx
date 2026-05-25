@@ -8,10 +8,13 @@ export function NewPostClient({ role }: { role: 'coach' | 'admin' }) {
 
   async function handleSave(data: PostFormData, action: 'draft' | 'publish') {
     const status = action === 'publish' ? 'PUBLISHED' : 'DRAFT'
+    const scheduledAt = action === 'publish'
+      ? null
+      : (data.scheduledAt ? new Date(data.scheduledAt).toISOString() : null)
     const res = await fetch('/api/blog', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...data, status }),
+      body: JSON.stringify({ ...data, status, scheduledAt }),
     })
     if (!res.ok) {
       const err = await res.json()

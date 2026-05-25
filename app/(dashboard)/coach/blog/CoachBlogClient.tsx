@@ -12,6 +12,7 @@ interface Post {
   authorId: string
   createdAt: Date
   publishedAt: Date | null
+  scheduledAt: Date | string | null
   author: { id: string; fullName: string | null }
 }
 
@@ -27,6 +28,14 @@ export function CoachBlogClient({ posts: initialPosts, role }: Props) {
     const res = await fetch(`/api/blog/${id}`, { method: 'DELETE' })
     if (res.ok) {
       setPosts(prev => prev.filter(p => p.id !== id))
+    }
+  }
+
+  async function handleTogglePublish(id: string) {
+    const res = await fetch(`/api/blog/publish/${id}`, { method: 'PUT' })
+    if (res.ok) {
+      const updated = await res.json()
+      setPosts(prev => prev.map(p => p.id === id ? { ...p, ...updated } : p))
     }
   }
 
@@ -60,6 +69,7 @@ export function CoachBlogClient({ posts: initialPosts, role }: Props) {
           posts={posts}
           role={role}
           onDelete={handleDelete}
+          onTogglePublish={handleTogglePublish}
         />
       )}
     </div>

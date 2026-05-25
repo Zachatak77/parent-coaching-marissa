@@ -24,6 +24,7 @@ interface PostTableProps {
     authorId: string
     createdAt: Date
     publishedAt: Date | null
+    scheduledAt: Date | string | null
     author: { id: string; fullName: string | null }
   }>
   role: 'coach' | 'admin'
@@ -78,7 +79,12 @@ export function PostTable({ posts, role, onDelete, onTogglePublish }: PostTableP
                   </td>
                 )}
                 <td className="px-4 py-3">
-                  <StatusBadge status={post.status} />
+                  <StatusBadge status={post.status} scheduledAt={post.scheduledAt} />
+                  {post.scheduledAt && post.status === 'DRAFT' && new Date(post.scheduledAt) > new Date() && (
+                    <p className="text-xs text-[#5F728D] mt-0.5">
+                      {new Date(post.scheduledAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}
+                    </p>
+                  )}
                 </td>
                 <td className="px-4 py-3 text-[#6E6A60]">
                   {format(post.publishedAt || post.createdAt, 'MMM d, yyyy')}
@@ -105,8 +111,8 @@ export function PostTable({ posts, role, onDelete, onTogglePublish }: PostTableP
                       </a>
                     )}
 
-                    {/* Toggle publish (admin only) */}
-                    {role === 'admin' && onTogglePublish && (
+                    {/* Toggle publish */}
+                    {onTogglePublish && (
                       <button
                         type="button"
                         onClick={() => onTogglePublish(post.id)}

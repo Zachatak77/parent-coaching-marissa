@@ -17,7 +17,12 @@ export default async function CoachBlogPage() {
   if (profile?.role === 'parent') redirect('/portal')
   if (!profile?.role || (profile.role !== 'coach' && profile.role !== 'admin')) redirect('/login')
 
-  const posts = await getPostsByAuthor(user.id)
+  let posts: Awaited<ReturnType<typeof getPostsByAuthor>> = []
+  try {
+    posts = await getPostsByAuthor(user.id)
+  } catch {
+    // DB unavailable — render with empty list
+  }
 
   return <CoachBlogClient posts={posts} role={profile.role as 'coach' | 'admin'} />
 }

@@ -37,6 +37,7 @@ model BlogPost {
   ogImage        String?
   noIndex        Boolean    @default(false)
   tags           String[]
+  scheduledAt    DateTime?  @map("scheduled_at")
   publishedAt    DateTime?
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt

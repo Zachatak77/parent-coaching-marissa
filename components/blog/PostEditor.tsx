@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -28,6 +28,7 @@ interface PostEditorProps {
     canonicalUrl: string | null
     ogImage: string | null
     noIndex: boolean
+    scheduledAt: Date | string | null
   }
   role: 'coach' | 'admin'
   onSave: (data: PostFormData, action: 'draft' | 'publish') => Promise<void>
@@ -49,6 +50,7 @@ export interface PostFormData {
   canonicalUrl: string
   ogImage: string
   noIndex: boolean
+  scheduledAt: string
 }
 
 export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
@@ -67,11 +69,84 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
     canonicalUrl: post?.canonicalUrl ?? '',
     ogImage: post?.ogImage ?? '',
     noIndex: post?.noIndex ?? false,
+    scheduledAt: post?.scheduledAt
+      ? (() => { const d = new Date(post.scheduledAt as string); return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16) })()
+      : '',
   })
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [saving, setSaving] = useState(false)
   const [slugTaken, setSlugTaken] = useState(false)
+  const mdInputRef = useRef<HTMLInputElement>(null)
+  const contentRef = useRef<HTMLTextAreaElement>(null)
+
+  function applyFormat(type: 'bold' | 'italic' | 'bullet' | 'number' | 'indent' | 'unindent') {
+    const el = contentRef.current
+    if (!el) return
+    const s = el.selectionStart
+    const e = el.selectionEnd
+    const val = el.value
+    const sel = val.slice(s, e)
+
+    let insert: string
+    let after: [number, number]
+
+    switch (type) {
+      case 'bold':
+        insert = `**${sel || 'bold'}**`
+        after = sel ? [s + 2, e + 2] : [s + 2, s + 6]
+        break
+      case 'italic':
+        insert = `*${sel || 'italic'}*`
+        after = sel ? [s + 1, e + 1] : [s + 1, s + 7]
+        break
+      case 'bullet':
+        insert = sel ? sel.split('\n').map(l => `- ${l}`).join('\n') : '- '
+        after = [s, s + insert.length]
+        break
+      case 'number':
+        insert = sel ? sel.split('\n').map((l, i) => `${i + 1}. ${l}`).join('\n') : '1. '
+        after = [s, s + insert.length]
+        break
+      case 'indent':
+        insert = sel ? sel.split('\n').map(l => `  ${l}`).join('\n') : '  '
+        after = [s, s + insert.length]
+        break
+      case 'unindent':
+        insert = sel.split('\n').map(l => l.replace(/^ {1,2}/, '')).join('\n')
+        after = [s, s + insert.length]
+        break
+    }
+
+    setForm(f => ({ ...f, content: val.slice(0, s) + insert + val.slice(e) }))
+    requestAnimationFrame(() => { el.focus(); el.setSelectionRange(after[0], after[1]) })
+  }
+
+  function importMarkdown(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (ev) => {
+      const raw = (ev.target?.result as string) ?? ''
+      // Extract title from first H1 if the title field is empty
+      const h1Match = raw.match(/^#\s+(.+)/m)
+      const extractedTitle = h1Match?.[1]?.trim() ?? ''
+      const content = extractedTitle
+        ? raw.replace(/^#\s+.+\n?/, '').trimStart()
+        : raw
+      setForm((f) => ({
+        ...f,
+        content,
+        ...(extractedTitle && !f.title ? {
+          title: extractedTitle,
+          slug: !slugManuallyEdited ? generateSlug(extractedTitle) : f.slug,
+        } : {}),
+      }))
+    }
+    reader.readAsText(file)
+    // Reset so the same file can be re-imported if needed
+    e.target.value = ''
+  }
 
   function validate(): boolean {
     const next: Record<string, string> = {}
@@ -187,14 +262,61 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
 
       {/* Section 4: Content */}
       <div>
-        <Label>Content *</Label>
+        <div className="flex items-center justify-between mb-1">
+          <Label>Content *</Label>
+          <button
+            type="button"
+            onClick={() => mdInputRef.current?.click()}
+            className="text-xs text-[#5F728D] hover:text-[#3D5068] underline underline-offset-2"
+          >
+            Import .md file
+          </button>
+          <input
+            ref={mdInputRef}
+            type="file"
+            accept=".md,.markdown"
+            className="hidden"
+            onChange={importMarkdown}
+          />
+        </div>
+
+        {/* Format toolbar */}
+        <div className="flex items-center gap-0.5 px-2 py-1 rounded-t-md border border-b-0 border-input bg-[#F7F7F5]">
+          {([
+            { type: 'bold',     label: 'B',  title: 'Bold',          style: { fontWeight: 700 } },
+            { type: 'italic',   label: 'I',  title: 'Italic',        style: { fontStyle: 'italic' as const } },
+            null,
+            { type: 'bullet',   label: '•',  title: 'Bullet list',   style: {} },
+            { type: 'number',   label: '1.', title: 'Numbered list', style: {} },
+            null,
+            { type: 'indent',   label: '→',  title: 'Indent',        style: {} },
+            { type: 'unindent', label: '←',  title: 'Unindent',      style: {} },
+          ] as const).map((btn, i) =>
+            btn === null
+              ? <div key={i} className="w-px h-4 bg-[#D9CFB9] mx-1" />
+              : (
+                <button
+                  key={btn.type}
+                  type="button"
+                  title={btn.title}
+                  onMouseDown={(ev) => { ev.preventDefault(); applyFormat(btn.type) }}
+                  style={btn.style}
+                  className="w-8 h-6 rounded text-sm text-[#3A372F] hover:bg-[#D9CFB9] transition-colors font-[Inter]"
+                >
+                  {btn.label}
+                </button>
+              )
+          )}
+        </div>
+
         <Textarea
+          ref={contentRef}
           value={form.content}
           onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
           onKeyDown={handleContentKeyDown}
           rows={20}
           placeholder="Write your post content here..."
-          className="mt-1 font-mono text-sm"
+          className="mt-0 font-mono text-sm rounded-t-none"
         />
         {errors.content && <p className="text-red-600 text-sm mt-1">{errors.content}</p>}
       </div>
@@ -239,6 +361,30 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
         </div>
       </div>
 
+      {/* Section: Schedule */}
+      <div>
+        <Label>Publish Schedule</Label>
+        <div className="mt-1 flex items-center gap-3">
+          <input
+            type="datetime-local"
+            value={form.scheduledAt}
+            min={(() => { const now = new Date(); return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16) })()}
+            onChange={(e) => setForm((f) => ({ ...f, scheduledAt: e.target.value }))}
+            className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          />
+          {form.scheduledAt && (
+            <Button type="button" variant="ghost" size="sm" onClick={() => setForm((f) => ({ ...f, scheduledAt: '' }))}>
+              Clear
+            </Button>
+          )}
+        </div>
+        <p className="text-xs text-[#6E6A60] mt-1">
+          {form.scheduledAt
+            ? '⏰ Post will auto-publish at the scheduled time. Click "Save" to apply.'
+            : 'Optional. Leave empty to publish manually.'}
+        </p>
+      </div>
+
       {/* Section 7: SEO Panel */}
       <SeoPanel
         seoTitle={form.seoTitle}
@@ -257,14 +403,14 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
         </Button>
         <div className="flex gap-3">
           <Button variant="outline" onClick={() => handleSave('draft')} disabled={saving}>
-            {saving ? 'Saving...' : 'Save as Draft'}
+            {saving ? 'Saving...' : form.scheduledAt ? 'Save / Schedule' : 'Save as Draft'}
           </Button>
           <Button
             onClick={() => handleSave('publish')}
             disabled={saving}
             style={{ backgroundColor: '#5F728D', color: '#fff', borderRadius: 9999 }}
           >
-            {post ? 'Update' : 'Publish'}
+            {!post || post.status === 'DRAFT' ? 'Publish' : 'Update'}
           </Button>
         </div>
       </div>

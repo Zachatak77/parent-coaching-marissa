@@ -8,7 +8,7 @@ type BlogPost = {
   authorId: string; coverImage: string | null; coverImageAlt: string | null
   seoTitle: string | null; seoDescription: string | null; seoKeywords: string[]
   canonicalUrl: string | null; ogImage: string | null; noIndex: boolean
-  tags: string[]; publishedAt: Date | null; createdAt: Date; updatedAt: Date
+  tags: string[]; publishedAt: Date | null; scheduledAt: Date | string | null; createdAt: Date; updatedAt: Date
 }
 
 export function AdminEditPostClient({ post }: { post: BlogPost }) {
@@ -16,10 +16,13 @@ export function AdminEditPostClient({ post }: { post: BlogPost }) {
 
   async function handleSave(data: PostFormData, action: 'draft' | 'publish') {
     const status = action === 'publish' ? 'PUBLISHED' : data.status
+    const scheduledAt = action === 'publish'
+      ? null
+      : (data.scheduledAt ? new Date(data.scheduledAt).toISOString() : null)
     const res = await fetch(`/api/blog/${post.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...data, status }),
+      body: JSON.stringify({ ...data, status, scheduledAt }),
     })
     if (!res.ok) {
       const err = await res.json()
