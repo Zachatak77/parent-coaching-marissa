@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
@@ -40,7 +39,10 @@ function TestNav() {
     >
       <nav className="max-w-6xl mx-auto flex h-16 items-center justify-between px-6 sm:px-10 lg:px-16">
         <Link href="/test" className="flex items-center flex-shrink-0">
-          <Image src="/Brand_Logo.png" alt="Reimagine Parenting" height={40} width={160} priority style={{ objectFit: 'contain' }} />
+          <div>
+            <span style={{ display: 'block', fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.85rem', letterSpacing: '.22em', textTransform: 'uppercase', color: DIM, lineHeight: 1, marginBottom: 1 }}>Reimagine</span>
+            <span style={{ display: 'block', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.25rem', color: BLUE, lineHeight: 1 }}>Parenting</span>
+          </div>
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
