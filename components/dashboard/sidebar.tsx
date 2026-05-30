@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
@@ -50,12 +51,7 @@ export function Sidebar({ fullName, role, discoveryCount }: SidebarProps) {
       {/* Brand */}
       <div className="px-6 py-6 border-b border-white/10">
         <div className="mb-4">
-          <span style={{ display: 'block', fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: '0.58rem', letterSpacing: '.22em', textTransform: 'uppercase', color: '#C8D1DF', lineHeight: 1, marginBottom: 3 }}>
-            Reimagine
-          </span>
-          <span style={{ display: 'block', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.15rem', color: '#FFFFFF', lineHeight: 1, paddingLeft: 11 }}>
-            Parenting
-          </span>
+          <Image src="/Brand_Logo.png" alt="Reimagine Parenting" height={36} width={144} priority style={{ objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
         </div>
         <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.78rem', color: 'rgba(255,255,255,0.7)' }} className="truncate">
           {fullName ?? 'Coach'}
@@ -114,9 +110,8 @@ export function Sidebar({ fullName, role, discoveryCount }: SidebarProps) {
 
       {/* Mobile top bar */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 py-3 text-[#FFFFFF]" style={{ background: '#2C2A28' }}>
-        <div className="flex items-center gap-2.5">
-          <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: '0.56rem', letterSpacing: '.22em', textTransform: 'uppercase', color: '#C8D1DF' }}>Reimagine</span>
-          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.05rem', color: '#FFFFFF' }}>Parenting</span>
+        <div className="flex items-center">
+          <Image src="/Brand_Logo.png" alt="Reimagine Parenting" height={30} width={120} priority style={{ objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
         </div>
         <button
           onClick={() => setMobileOpen(true)}
