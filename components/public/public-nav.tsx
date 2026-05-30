@@ -39,7 +39,7 @@ export function PublicNav() {
 
         {/* Logo */}
         <Link href="/" className="flex items-center flex-shrink-0">
-          <Image src="/logo.png" alt="Reimagine Parenting" width={44} height={44} priority />
+          <Image src="/Brand_Logo.png" alt="Reimagine Parenting" width={160} height={34} priority />
         </Link>
 
         {/* Desktop links */}
