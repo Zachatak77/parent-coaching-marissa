@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Suspense } from 'react'
+import Image from 'next/image'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import Link from 'next/link'
@@ -80,12 +81,7 @@ function LoginForm() {
         {/* Wordmark */}
         <div style={{ textAlign: 'center', marginBottom: 36 }}>
           <Link href="/" style={{ textDecoration: 'none', display: 'inline-block' }}>
-            <span style={{ display: 'block', fontFamily: U, fontWeight: 700, fontSize: '0.58rem', letterSpacing: '.22em', textTransform: 'uppercase', color: DIM, lineHeight: 1, marginBottom: 4 }}>
-              Reimagine
-            </span>
-            <span style={{ display: 'block', fontFamily: D, fontWeight: 700, fontSize: '1.6rem', color: TEXT, lineHeight: 1, paddingLeft: 14 }}>
-              Parenting
-            </span>
+            <Image src="/Brand_Logo.png" alt="Reimagine Parenting" height={44} width={176} priority style={{ objectFit: 'contain' }} />
           </Link>
         </div>
 
