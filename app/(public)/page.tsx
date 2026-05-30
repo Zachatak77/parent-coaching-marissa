@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { HeartRule } from '@/components/public/heart-rule'
 import { Pill } from '@/components/public/pill'
 import { SecHead } from '@/components/public/sec-head'
@@ -40,6 +41,9 @@ export default function HomePage() {
 
         <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-24">
           <div style={{ maxWidth: 680 }}>
+            <div style={{ marginBottom: 28 }}>
+              <Image src="/logo.png" alt="Reimagine Parenting" width={120} height={120} priority />
+            </div>
             <h1 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2.6rem, 6vw, 4.4rem)', lineHeight: 1.05, color: TEXT, margin: '0 0 18px', letterSpacing: '-0.02em' }}>
               Take Charge of Parenting<br />In Your Home
             </h1>

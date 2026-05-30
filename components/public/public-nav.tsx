@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -38,10 +39,7 @@ export function PublicNav() {
 
         {/* Logo */}
         <Link href="/" className="flex items-center flex-shrink-0">
-          <div>
-            <span style={{ display: 'block', fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.85rem', letterSpacing: '.22em', textTransform: 'uppercase', color: NAVY, lineHeight: 1, marginBottom: 1 }}>Reimagine</span>
-            <span style={{ display: 'block', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.25rem', color: '#1F1D1A', lineHeight: 1 }}>Parenting</span>
-          </div>
+          <Image src="/logo.png" alt="Reimagine Parenting" width={44} height={44} priority />
         </Link>
 
         {/* Desktop links */}
