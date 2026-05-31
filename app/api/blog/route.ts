@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAllPublishedPosts, getPostsByAuthor, getAllPosts, createPost } from '@/lib/blog'
-import { requireAuth, requireRole } from '@/lib/api-helpers'
+import { requireAuth, requireRole, checkApiKey } from '@/lib/api-helpers'
 import { validatePostBody } from '@/lib/blog-validation'
 import { sanitizeHtml } from '@/lib/sanitize'
 import { prisma } from '@/lib/prisma'
@@ -35,9 +35,6 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const { error, session } = await requireRole('coach')
-  if (error) return error
-
   let body: Record<string, unknown>
   try {
     body = await request.json()
@@ -49,6 +46,23 @@ export async function POST(request: NextRequest) {
   if (validationError || !data) {
     return NextResponse.json({ error: validationError }, { status: 400 })
   }
+
+  // API key fast-path for automation clients (e.g. n8n)
+  const automationAuthorId = process.env.BLOG_AUTOMATION_AUTHOR_ID
+  if (checkApiKey(request) && automationAuthorId) {
+    const existing = await prisma.blogPost.findUnique({ where: { slug: data.slug } })
+    if (existing) {
+      return NextResponse.json({ error: 'Slug already exists' }, { status: 400 })
+    }
+    const post = await createPost(
+      { ...data, content: sanitizeHtml(data.content) },
+      automationAuthorId,
+    )
+    return NextResponse.json(post, { status: 201 })
+  }
+
+  const { error, session } = await requireRole('coach')
+  if (error) return error
 
   const existing = await prisma.blogPost.findUnique({ where: { slug: data.slug } })
   if (existing) {
