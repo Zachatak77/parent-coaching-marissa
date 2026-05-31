@@ -68,11 +68,15 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const post = await getPostBySlugPreview(slug)
-  if (!post) return {}
-  return {
-    title: `[Draft] ${post.title}`,
-    robots: { index: false, follow: false },
+  try {
+    const post = await getPostBySlugPreview(slug)
+    if (!post) return {}
+    return {
+      title: `[Draft] ${post.title}`,
+      robots: { index: false, follow: false },
+    }
+  } catch {
+    return {}
   }
 }
 
@@ -82,8 +86,13 @@ export default async function DraftPreviewPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const post = await getPostBySlugPreview(slug)
-  if (!post) notFound()
+  let post: Awaited<ReturnType<typeof getPostBySlugPreview>>
+  try {
+    post = await getPostBySlugPreview(slug)
+  } catch {
+    notFound()
+  }
+  if (!post!) notFound()
 
   const plainText = post.content.replace(/<[^>]*>/g, ' ').trim()
   const wordCount = plainText.split(/\s+/).filter(Boolean).length
