@@ -86,13 +86,8 @@ export default async function DraftPreviewPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  let post: Awaited<ReturnType<typeof getPostBySlugPreview>>
-  try {
-    post = await getPostBySlugPreview(slug)
-  } catch {
-    notFound()
-  }
-  if (!post!) notFound()
+  const post = await getPostBySlugPreview(slug).catch(() => null)
+  if (!post) notFound()
 
   const plainText = post.content.replace(/<[^>]*>/g, ' ').trim()
   const wordCount = plainText.split(/\s+/).filter(Boolean).length
