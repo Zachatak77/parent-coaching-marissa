@@ -51,6 +51,13 @@ export async function getPostBySlug(slug: string) {
   }) ?? null
 }
 
+export async function getPostBySlugPreview(slug: string) {
+  return prisma.blogPost.findFirst({
+    where: { slug, status: 'DRAFT' },
+    include: { author: { select: authorSelect } },
+  }) ?? null
+}
+
 // ── Author queries ─────────────────────────────────────────────────────────
 
 export async function getPostsByAuthor(authorId: string) {
