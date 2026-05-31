@@ -5,10 +5,15 @@ import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://reimagineparenting.co'
+
 export const metadata: Metadata = {
   title: 'Blog | Reimagine Parenting',
   description: 'Insights, tips, and guidance from our parent coaches.',
   openGraph: { type: 'website' },
+  alternates: {
+    types: { 'application/rss+xml': `${SITE_URL}/api/rss` },
+  },
 }
 
 export default async function BlogPage() {

@@ -1,15 +1,12 @@
 import type { Metadata } from 'next'
-type BlogPost = {
-  id: string; title: string; slug: string; content: string
-  excerpt: string | null; status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
-  authorId: string; coverImage: string | null; coverImageAlt: string | null
-  seoTitle: string | null; seoDescription: string | null; seoKeywords: string[]
-  canonicalUrl: string | null; ogImage: string | null; noIndex: boolean
-  tags: string[]; publishedAt: Date | null; createdAt: Date; updatedAt: Date
-}
+import type { Prisma } from '@prisma/client'
+
+type BlogPostWithAuthor = Prisma.BlogPostGetPayload<{
+  include: { author: { select: { id: true; fullName: true } } }
+}>
 
 export function generatePostMetadata(
-  post: BlogPost & { author: { fullName: string | null } },
+  post: BlogPostWithAuthor,
   siteUrl: string,
 ): Metadata {
   const title = post.seoTitle || post.title

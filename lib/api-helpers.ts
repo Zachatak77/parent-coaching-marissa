@@ -26,3 +26,9 @@ export async function requireRole(role: 'coach' | 'admin') {
   }
   return { error: null, session: session! }
 }
+
+export function checkApiKey(request: Request): boolean {
+  const key = process.env.BLOG_API_KEY
+  if (!key) return false
+  return request.headers.get('authorization') === `Bearer ${key}`
+}

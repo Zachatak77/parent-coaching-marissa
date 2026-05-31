@@ -99,15 +99,27 @@ export function PostTable({ posts, role, onDelete, onTogglePublish }: PostTableP
                       <Pencil className="h-4 w-4 text-[#6E6A60]" />
                     </Link>
 
-                    {/* Preview (published only) */}
+                    {/* Preview */}
                     {post.status === 'PUBLISHED' && (
                       <a
                         href={`/blog/${post.slug}`}
                         target="_blank"
                         rel="noreferrer"
                         className="rounded p-1.5 transition-colors hover:bg-[#F2EBDA]"
+                        title="View published post"
                       >
                         <Eye className="h-4 w-4 text-[#6E6A60]" />
+                      </a>
+                    )}
+                    {post.status === 'DRAFT' && (
+                      <a
+                        href={`/blog/draft/${post.slug}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="rounded p-1.5 transition-colors hover:bg-[#F2EBDA]"
+                        title="Preview draft"
+                      >
+                        <Eye className="h-4 w-4 text-[#D9CFB9]" />
                       </a>
                     )}
 

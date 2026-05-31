@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAllPublishedPosts, getPostsByAuthor, getAllPosts, createPost } from '@/lib/blog'
-import { requireAuth, requireRole } from '@/lib/api-helpers'
+import { requireAuth, requireRole, checkApiKey } from '@/lib/api-helpers'
+import { validatePostBody } from '@/lib/blog-validation'
+import { sanitizeHtml } from '@/lib/sanitize'
 import { prisma } from '@/lib/prisma'
 
 export async function GET(request: NextRequest) {
@@ -15,7 +17,10 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const statusParam = searchParams.get('status')
     const authorId = searchParams.get('authorId') ?? undefined
-    const status = (statusParam as 'DRAFT' | 'PUBLISHED' | 'ARCHIVED' | null) ?? undefined
+    const validStatuses = ['DRAFT', 'PUBLISHED', 'ARCHIVED']
+    const status = statusParam && validStatuses.includes(statusParam)
+      ? (statusParam as 'DRAFT' | 'PUBLISHED' | 'ARCHIVED')
+      : undefined
     const posts = await getAllPosts({ status, authorId })
     return NextResponse.json(posts)
   }
@@ -30,9 +35,6 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const { error, session } = await requireRole('coach')
-  if (error) return error
-
   let body: Record<string, unknown>
   try {
     body = await request.json()
@@ -40,50 +42,36 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
   }
 
-  const { title, content, slug, seoTitle, seoDescription, status, scheduledAt, ...rest } = body as Record<string, unknown>
-
-  if (!title || typeof title !== 'string' || !title.trim()) {
-    return NextResponse.json({ error: 'Title is required' }, { status: 400 })
-  }
-  if (!content || typeof content !== 'string' || !content.trim()) {
-    return NextResponse.json({ error: 'Content is required' }, { status: 400 })
-  }
-  if (!slug || typeof slug !== 'string' || !slug.trim()) {
-    return NextResponse.json({ error: 'Slug is required' }, { status: 400 })
+  const { data, error: validationError } = validatePostBody(body)
+  if (validationError || !data) {
+    return NextResponse.json({ error: validationError }, { status: 400 })
   }
 
-  const existing = await prisma.blogPost.findUnique({ where: { slug: slug as string } })
+  // API key fast-path for automation clients (e.g. n8n)
+  const automationAuthorId = process.env.BLOG_AUTOMATION_AUTHOR_ID
+  if (checkApiKey(request) && automationAuthorId) {
+    const existing = await prisma.blogPost.findUnique({ where: { slug: data.slug } })
+    if (existing) {
+      return NextResponse.json({ error: 'Slug already exists' }, { status: 400 })
+    }
+    const post = await createPost(
+      { ...data, content: sanitizeHtml(data.content) },
+      automationAuthorId,
+    )
+    return NextResponse.json(post, { status: 201 })
+  }
+
+  const { error, session } = await requireRole('coach')
+  if (error) return error
+
+  const existing = await prisma.blogPost.findUnique({ where: { slug: data.slug } })
   if (existing) {
     return NextResponse.json({ error: 'Slug already exists' }, { status: 400 })
   }
 
-  if (seoTitle !== undefined && seoTitle !== null) {
-    if (typeof seoTitle !== 'string' || seoTitle.length > 60) {
-      return NextResponse.json({ error: 'SEO title must be 60 characters or less' }, { status: 400 })
-    }
-  }
-  if (seoDescription !== undefined && seoDescription !== null) {
-    if (typeof seoDescription !== 'string' || seoDescription.length > 160) {
-      return NextResponse.json({ error: 'SEO description must be 160 characters or less' }, { status: 400 })
-    }
-  }
-
-  const validStatuses = ['DRAFT', 'PUBLISHED', 'ARCHIVED']
-  if (!status || !validStatuses.includes(status as string)) {
-    return NextResponse.json({ error: 'Invalid status' }, { status: 400 })
-  }
-
-  let scheduledAtDate: Date | null = null
-  if (scheduledAt !== undefined && scheduledAt !== null && scheduledAt !== '') {
-    scheduledAtDate = new Date(scheduledAt as string)
-    if (isNaN(scheduledAtDate.getTime())) {
-      return NextResponse.json({ error: 'Invalid scheduledAt' }, { status: 400 })
-    }
-  }
-
   const post = await createPost(
-    { title: title as string, content: content as string, slug: slug as string, seoTitle: seoTitle as string | undefined, seoDescription: seoDescription as string | undefined, status: status as 'DRAFT' | 'PUBLISHED' | 'ARCHIVED', scheduledAt: scheduledAtDate, ...rest } as Parameters<typeof createPost>[0],
-    session.user.id
+    { ...data, content: sanitizeHtml(data.content) },
+    session.user.id,
   )
   return NextResponse.json(post, { status: 201 })
 }

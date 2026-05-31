@@ -1,8 +1,7 @@
-import { redirect } from 'next/navigation'
-import { notFound } from 'next/navigation'
+import { redirect, notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
-import { AdminEditPostClient } from './AdminEditPostClient'
+import { EditPostClient } from '@/components/blog/EditPostClient'
 
 export default async function AdminEditPostPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -16,5 +15,20 @@ export default async function AdminEditPostPage({ params }: { params: Promise<{ 
   const post = await prisma.blogPost.findUnique({ where: { id } })
   if (!post) notFound()
 
-  return <AdminEditPostClient post={post} />
+  // Serialize Date fields so they cross the RSC boundary as strings
+  const serialized = {
+    ...post,
+    publishedAt: post.publishedAt?.toISOString() ?? null,
+    scheduledAt: post.scheduledAt?.toISOString() ?? null,
+    createdAt: post.createdAt.toISOString(),
+    updatedAt: post.updatedAt.toISOString(),
+  }
+
+  return (
+    <EditPostClient
+      post={serialized}
+      role="admin"
+      redirectPath="/admin/blog"
+    />
+  )
 }

@@ -51,6 +51,14 @@ export async function getPostBySlug(slug: string) {
   }) ?? null
 }
 
+export async function getPostBySlugPreview(slug: string) {
+  const post = await prisma.blogPost.findUnique({
+    where: { slug },
+    include: { author: { select: authorSelect } },
+  })
+  return post?.status === 'DRAFT' ? post : null
+}
+
 // ── Author queries ─────────────────────────────────────────────────────────
 
 export async function getPostsByAuthor(authorId: string) {

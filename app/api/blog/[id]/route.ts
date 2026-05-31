@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { updatePost, deletePost } from '@/lib/blog'
 import { requireAuth, requireRole } from '@/lib/api-helpers'
+import { validatePostBody } from '@/lib/blog-validation'
+import { sanitizeHtml } from '@/lib/sanitize'
 import { prisma } from '@/lib/prisma'
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
@@ -41,51 +43,17 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
   }
 
-  const { title, content, slug, seoTitle, seoDescription, status, scheduledAt, ...rest } = body as Record<string, unknown>
-
-  if (!title || typeof title !== 'string' || !title.trim()) {
-    return NextResponse.json({ error: 'Title is required' }, { status: 400 })
-  }
-  if (!content || typeof content !== 'string' || !content.trim()) {
-    return NextResponse.json({ error: 'Content is required' }, { status: 400 })
-  }
-  if (!slug || typeof slug !== 'string' || !slug.trim()) {
-    return NextResponse.json({ error: 'Slug is required' }, { status: 400 })
+  const { data, error: validationError } = validatePostBody(body)
+  if (validationError || !data) {
+    return NextResponse.json({ error: validationError }, { status: 400 })
   }
 
-  const existing = await prisma.blogPost.findFirst({ where: { slug: slug as string, id: { not: id } } })
-  if (existing) {
+  const slugConflict = await prisma.blogPost.findFirst({ where: { slug: data.slug, id: { not: id } } })
+  if (slugConflict) {
     return NextResponse.json({ error: 'Slug already exists' }, { status: 400 })
   }
 
-  if (seoTitle !== undefined && seoTitle !== null) {
-    if (typeof seoTitle !== 'string' || seoTitle.length > 60) {
-      return NextResponse.json({ error: 'SEO title must be 60 characters or less' }, { status: 400 })
-    }
-  }
-  if (seoDescription !== undefined && seoDescription !== null) {
-    if (typeof seoDescription !== 'string' || seoDescription.length > 160) {
-      return NextResponse.json({ error: 'SEO description must be 160 characters or less' }, { status: 400 })
-    }
-  }
-
-  const validStatuses = ['DRAFT', 'PUBLISHED', 'ARCHIVED']
-  if (!status || !validStatuses.includes(status as string)) {
-    return NextResponse.json({ error: 'Invalid status' }, { status: 400 })
-  }
-
-  let scheduledAtDate: Date | null = null
-  if (scheduledAt !== undefined && scheduledAt !== null && scheduledAt !== '') {
-    scheduledAtDate = new Date(scheduledAt as string)
-    if (isNaN(scheduledAtDate.getTime())) {
-      return NextResponse.json({ error: 'Invalid scheduledAt' }, { status: 400 })
-    }
-  }
-
-  const updated = await updatePost(
-    id,
-    { title: title as string, content: content as string, slug: slug as string, seoTitle: seoTitle as string | undefined, seoDescription: seoDescription as string | undefined, status: status as 'DRAFT' | 'PUBLISHED' | 'ARCHIVED', scheduledAt: scheduledAtDate, ...rest } as Parameters<typeof updatePost>[1]
-  )
+  const updated = await updatePost(id, { ...data, content: sanitizeHtml(data.content) })
   return NextResponse.json(updated)
 }
 
