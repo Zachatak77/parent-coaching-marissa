@@ -1,5 +1,4 @@
 import { getPostBySlugPreview } from '@/lib/blog'
-import { sanitizeHtml } from '@/lib/sanitize'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -179,7 +178,7 @@ export default async function DraftPreviewPage({
               '[&_strong]:font-bold',
               '[&_em]:italic',
             ].join(' ')}
-            dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
+            dangerouslySetInnerHTML={{ __html: post.content }}
           />
         ) : (
           <MarkdownContent content={post.content} />
