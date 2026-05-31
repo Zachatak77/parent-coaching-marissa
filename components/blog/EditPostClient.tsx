@@ -73,7 +73,13 @@ export function EditPostClient({ post, role, redirectPath }: EditPostClientProps
           {saveError}
         </div>
       )}
-      <PostEditor post={post} role={role} onSave={handleSave} onCancel={() => router.push(redirectPath)} />
+      <PostEditor
+        post={post}
+        role={role}
+        previewHref={post.status === 'PUBLISHED' ? `/blog/${post.slug}` : post.status === 'DRAFT' ? `/blog/draft/${post.slug}` : undefined}
+        onSave={handleSave}
+        onCancel={() => router.push(redirectPath)}
+      />
     </div>
   )
 }

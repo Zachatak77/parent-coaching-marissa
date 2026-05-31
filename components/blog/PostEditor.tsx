@@ -13,6 +13,7 @@ import {
 import { CoverImageUpload } from './CoverImageUpload'
 import { SeoPanel } from './SeoPanel'
 import { RichTextEditor } from './RichTextEditor'
+import { Eye } from 'lucide-react'
 import { generateSlug } from '@/lib/slugify'
 import { SLUG_RE } from '@/lib/blog-validation'
 
@@ -36,6 +37,7 @@ interface PostEditorProps {
     scheduledAt: string | null
   }
   role: 'coach' | 'admin'
+  previewHref?: string
   onSave: (data: PostFormData, action: 'draft' | 'publish') => Promise<void>
   onCancel: () => void
 }
@@ -58,7 +60,7 @@ export interface PostFormData {
   scheduledAt: string
 }
 
-export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
+export function PostEditor({ post, role, previewHref, onSave, onCancel }: PostEditorProps) {
   const [form, setForm] = useState<PostFormData>({
     title: post?.title ?? '',
     slug: post?.slug ?? '',
@@ -305,9 +307,22 @@ export function PostEditor({ post, role, onSave, onCancel }: PostEditorProps) {
 
         {/* Sticky footer */}
         <div className="sticky bottom-0 z-10 bg-white border-t border-[#D9CFB9] py-4 px-4 flex items-center justify-between gap-3">
-          <Button variant="outline" onClick={handleCancelClick} disabled={saving}>
-            Cancel
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={handleCancelClick} disabled={saving}>
+              Cancel
+            </Button>
+            {previewHref && (
+              <a
+                href={previewHref}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-md border border-input bg-background px-3 py-2 text-sm font-medium text-[#6E6A60] hover:bg-[#F2EBDA] hover:text-[#1F1D1A] transition-colors"
+              >
+                <Eye className="h-4 w-4" />
+                {post?.status === 'PUBLISHED' ? 'View Post' : 'Preview Draft'}
+              </a>
+            )}
+          </div>
           <div className="flex gap-3">
             <Button variant="outline" onClick={() => handleSave('draft')} disabled={saving}>
               {saving ? 'Saving...' : form.scheduledAt ? 'Save / Schedule' : 'Save as Draft'}
