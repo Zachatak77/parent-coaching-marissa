@@ -2,8 +2,11 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { PostTable } from '@/components/blog/PostTable'
+import { AIGenerateDialog, type GeneratedPost } from '@/components/blog/AIGenerateDialog'
+import { Sparkles } from 'lucide-react'
 
 interface Post {
   id: string
@@ -23,7 +26,9 @@ interface Props {
 }
 
 export function CoachBlogClient({ posts: initialPosts, role }: Props) {
+  const router = useRouter()
   const [posts, setPosts] = useState(initialPosts)
+  const [showAIDialog, setShowAIDialog] = useState(false)
 
   async function handleDelete(id: string) {
     const res = await fetch(`/api/blog/${id}`, { method: 'DELETE' })
@@ -48,17 +53,52 @@ export function CoachBlogClient({ posts: initialPosts, role }: Props) {
     }
   }
 
+  async function handleGenerate(generated: GeneratedPost) {
+    const res = await fetch('/api/blog', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: generated.title,
+        slug: generated.slug,
+        excerpt: generated.excerpt,
+        content: generated.content,
+        tags: generated.tags,
+        status: 'DRAFT',
+      }),
+    })
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}))
+      toast.error((err as { error?: string }).error ?? 'Failed to create draft')
+      return
+    }
+    const post = await res.json()
+    toast.success('Draft created')
+    router.push(`/coach/blog/${post.id}/edit`)
+  }
+
   const buttonStyle = 'bg-[#5F728D] text-white rounded-full px-5 py-2 text-sm font-semibold uppercase tracking-wide'
 
   return (
     <div>
+      <AIGenerateDialog open={showAIDialog} onOpenChange={setShowAIDialog} onGenerate={handleGenerate} />
+
       <div className="flex justify-between items-center mb-8">
         <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.875rem', color: '#1F1D1A' }}>
           My Posts
         </h1>
-        <Link href="/coach/blog/new" className={buttonStyle} style={{ fontFamily: 'Inter' }}>
-          + New Post
-        </Link>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowAIDialog(true)}
+            className="flex items-center gap-1.5 rounded-full border border-[#5F728D] px-5 py-2 text-sm font-semibold uppercase tracking-wide text-[#5F728D] transition-colors hover:bg-[#5F728D] hover:text-white"
+            style={{ fontFamily: 'Inter' }}
+          >
+            <Sparkles className="h-4 w-4" />
+            Generate with AI
+          </button>
+          <Link href="/coach/blog/new" className={buttonStyle} style={{ fontFamily: 'Inter' }}>
+            + New Post
+          </Link>
+        </div>
       </div>
 
       {posts.length === 0 ? (
