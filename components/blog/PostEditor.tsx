@@ -87,6 +87,7 @@ export function PostEditor({ post, role, previewHref, onSave, onCancel }: PostEd
   const [isDirty, setIsDirty] = useState(false)
   const [showCancelDialog, setShowCancelDialog] = useState(false)
   const [showAIDialog, setShowAIDialog] = useState(false)
+  const [editorKey, setEditorKey] = useState(0)
 
   // Warn on browser tab close / page refresh when there are unsaved changes
   useEffect(() => {
@@ -164,6 +165,7 @@ export function PostEditor({ post, role, previewHref, onSave, onCancel }: PostEd
       content: markdownToHtml(generated.content),
       tags: generated.tags,
     }))
+    setEditorKey((k) => k + 1)
   }
 
   return (
@@ -249,6 +251,7 @@ export function PostEditor({ post, role, previewHref, onSave, onCancel }: PostEd
         <div>
           <Label className="mb-1 block">Content *</Label>
           <RichTextEditor
+            key={editorKey}
             content={form.content}
             onChange={(html) => markDirty((f) => ({ ...f, content: html }))}
             onImportFile={(html, extractedTitle) => {
