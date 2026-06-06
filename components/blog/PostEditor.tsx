@@ -12,10 +12,11 @@ import {
 } from '@/components/ui/dialog'
 import { CoverImageUpload } from './CoverImageUpload'
 import { SeoPanel } from './SeoPanel'
-import { RichTextEditor } from './RichTextEditor'
-import { Eye } from 'lucide-react'
+import { RichTextEditor, markdownToHtml } from './RichTextEditor'
+import { Eye, Sparkles } from 'lucide-react'
 import { generateSlug } from '@/lib/slugify'
 import { SLUG_RE } from '@/lib/blog-validation'
+import { AIGenerateDialog, type GeneratedPost } from './AIGenerateDialog'
 
 interface PostEditorProps {
   post?: {
@@ -85,6 +86,7 @@ export function PostEditor({ post, role, previewHref, onSave, onCancel }: PostEd
   const [saving, setSaving] = useState(false)
   const [isDirty, setIsDirty] = useState(false)
   const [showCancelDialog, setShowCancelDialog] = useState(false)
+  const [showAIDialog, setShowAIDialog] = useState(false)
 
   // Warn on browser tab close / page refresh when there are unsaved changes
   useEffect(() => {
@@ -152,9 +154,40 @@ export function PostEditor({ post, role, previewHref, onSave, onCancel }: PostEd
     }
   }
 
+  function handleAIGenerate(generated: GeneratedPost) {
+    setSlugManuallyEdited(true)
+    markDirty((f) => ({
+      ...f,
+      title: generated.title,
+      slug: generated.slug,
+      excerpt: generated.excerpt.slice(0, 300),
+      content: markdownToHtml(generated.content),
+      tags: generated.tags,
+    }))
+  }
+
   return (
     <>
+      <AIGenerateDialog
+        open={showAIDialog}
+        onOpenChange={setShowAIDialog}
+        onGenerate={handleAIGenerate}
+      />
+
       <div className="max-w-3xl mx-auto py-8 px-4 space-y-8">
+        {/* AI Generate */}
+        <div className="flex justify-end">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => setShowAIDialog(true)}
+            className="gap-1.5 border-[#5F728D] text-[#5F728D] hover:bg-[#5F728D] hover:text-white"
+          >
+            <Sparkles className="h-4 w-4" />
+            Generate with AI
+          </Button>
+        </div>
+
         {/* Section 1: Title + Slug */}
         <div className="space-y-4">
           <div>
