@@ -6,8 +6,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { HeartRule } from '@/components/public/heart-rule'
-import { Pill } from '@/components/public/pill'
+import { Reveal } from '@/components/public/reveal'
+import { ArrowCta, Eyebrow } from '@/components/public/motifs'
 
 export const metadata: Metadata = {
   title: 'Coaching Programs | Reimagine Parenting',
@@ -15,15 +15,13 @@ export const metadata: Metadata = {
     'Explore parent coaching packages — from a focused 2-week program to ongoing monthly support. All pricing discussed during your free discovery call.',
 }
 
-const NAVY      = '#5F728D'
-const NAVY_TINT = '#C8D1DF'
-const CREAM     = '#F7F7F5'
-const LINEN     = '#FFFFFF'
-const TEXT      = '#1F1D1A'
-const TEXT2     = '#3A372F'
-const HAIRLINE  = '#D9CFB9'
-const SAGE      = '#9BB39B'
-const STRAW     = '#EFB63F'
+const NAVY  = '#5F728D'
+const INK   = '#23211E'
+const CREAM = '#F7F7F5'
+const TEXT  = '#1F1D1A'
+const TEXT2 = '#3A372F'
+const DIM   = '#6E6A60'
+const SAGE  = '#9BB39B'
 const D = 'var(--font-display)'
 const B = 'var(--font-body)'
 const U = 'var(--font-ui)'
@@ -91,10 +89,10 @@ const faqs = [
   },
 ]
 
-function CheckIcon() {
+function CheckIcon({ color = SAGE }: { color?: string }) {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 3 }}>
-      <path d="M3 8 L6.5 11.5 L13 5" stroke="var(--ds-dim)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg aria-hidden width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 4 }}>
+      <polyline points="20 6 9 17 4 12" />
     </svg>
   )
 }
@@ -104,135 +102,140 @@ export default function ServicesPage() {
     <div style={{ background: CREAM }}>
 
       {/* ── Header ── */}
-      <section className="px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-24" style={{ background: CREAM }}>
-        <div style={{ maxWidth: 600 }}>
-          <div style={{ marginBottom: 20 }}><Pill bg={SAGE} fg={TEXT}>COACHING PROGRAMS</Pill></div>
-          <h1 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2.8rem, 6vw, 5rem)', lineHeight: 1.05, color: TEXT, margin: '0 0 20px', letterSpacing: '-0.02em' }}>
-            Programs built around your family
-          </h1>
-          <div style={{ margin: '0 0 24px' }}><HeartRule /></div>
-          <p style={{ fontFamily: B, fontSize: '1.1rem', color: TEXT2, lineHeight: 1.6, margin: '0 0 18px' }}>
-            Every family is different. Choose the level of support that fits where you are right now.
-          </p>
+      <section aria-labelledby="services-hero" className="relative overflow-hidden px-6 sm:px-10 lg:px-16 py-16 sm:py-24" style={{ background: '#FFFFFF' }}>
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div className="rp-blob-1 absolute -top-32 -right-24 h-[420px] w-[420px] rounded-full opacity-[0.18] blur-3xl"
+            style={{ background: `radial-gradient(circle at 35% 35%, ${NAVY}, transparent 70%)` }} />
+        </div>
+        <div className="relative mx-auto max-w-6xl">
+          <Reveal>
+            <Eyebrow>Coaching programs</Eyebrow>
+            <h1 id="services-hero" style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2.8rem, 6vw, 5rem)', lineHeight: 1.02, letterSpacing: '-0.025em', color: TEXT, margin: '22px 0 20px', maxWidth: 700 }}>
+              Programs built around your family
+            </h1>
+            <p style={{ fontFamily: B, fontSize: '1.15rem', color: TEXT2, lineHeight: 1.6, maxWidth: 540, margin: 0 }}>
+              Every family is different. Choose the level of support that fits where you are right now.
+            </p>
+          </Reveal>
         </div>
       </section>
 
       {/* ── Packages ── */}
-      <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: LINEN }}>
-        <div className="grid sm:grid-cols-3 gap-x-7 max-w-5xl mx-auto" style={{ gridTemplateRows: 'auto 1fr auto auto', rowGap: 0 }}>
-          {packages.map(({ name, duration, outcome, includes, featured }) => (
-            <div
-              key={name}
-              className="mb-5 last:mb-0 sm:mb-0"
-              style={{
-                gridRow: 'span 4',
-                display: 'grid',
-                gridTemplateRows: 'subgrid',
-                borderRadius: 20,
-                border: `1px solid ${NAVY}`,
-                overflow: 'hidden',
-                ...(featured ? { boxShadow: '0 4px 12px rgba(0,0,0,0.10)' } : {}),
-              }}
-            >
-              {/* Header */}
-              <div style={{ padding: '28px 28px 22px', background: NAVY }}>
+      <section aria-label="Coaching packages" className="px-6 sm:px-10 lg:px-16 py-20 sm:py-28" style={{ background: CREAM }}>
+        <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-3">
+          {packages.map(({ name, duration, outcome, includes, featured }, i) => (
+            <Reveal key={name} delay={i * 120}>
+              <article
+                className="relative flex h-full flex-col rounded-2xl border bg-white p-8 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl"
+                style={featured
+                  ? { borderColor: NAVY, boxShadow: '0 8px 32px rgba(95,114,141,0.18)' }
+                  : { borderColor: 'rgba(0,0,0,0.08)' }}
+              >
                 {featured && (
-                  <p style={{ fontFamily: U, fontSize: '0.64rem', fontWeight: 700, letterSpacing: '.20em', textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.5)', margin: '0 0 8px' }}>Most Popular</p>
+                  <span className="absolute -top-3 left-8 rounded-full px-3.5 py-1" style={{ background: NAVY, fontFamily: U, fontWeight: 700, fontSize: '0.62rem', letterSpacing: '.18em', textTransform: 'uppercase', color: '#fff' }}>
+                    Most popular
+                  </span>
                 )}
-                <p style={{ fontFamily: U, fontSize: '0.68rem', fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.45)', margin: '0 0 6px' }}>{duration}</p>
-                <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.55rem', lineHeight: 1.1, color: '#FFFFFF', margin: 0 }}>{name}</h2>
-              </div>
-              {/* Checklist */}
-              <ul style={{ listStyle: 'none', margin: 0, padding: '22px 28px 20px', background: LINEN, display: 'flex', flexDirection: 'column' as const, gap: 12 }}>
-                {includes.map((item) => (
-                  <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-                    <CheckIcon />
-                    <span style={{ fontFamily: B, fontSize: '0.94rem', color: TEXT2, lineHeight: 1.5 }}>{item}</span>
-                  </li>
-                ))}
-              </ul>
-              {/* Outcome */}
-              <div style={{ padding: '18px 28px 0', background: LINEN, borderTop: `1px solid ${HAIRLINE}` }}>
-                <p style={{ fontFamily: U, fontSize: '0.64rem', fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase' as const, color: '#6E6A60', margin: '0 0 6px' }}>Outcome</p>
-                <p style={{ fontFamily: B, fontSize: '0.92rem', fontStyle: 'italic', color: TEXT, lineHeight: 1.45, margin: 0 }}>{outcome}</p>
-              </div>
-              {/* Button */}
-              <div style={{ padding: '20px 28px 22px', background: LINEN }}>
+                <p style={{ fontFamily: U, fontWeight: 600, fontSize: '0.7rem', letterSpacing: '.16em', textTransform: 'uppercase', color: NAVY, margin: '0 0 10px' }}>{duration}</p>
+                <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.65rem', lineHeight: 1.1, color: TEXT, margin: '0 0 20px' }}>{name}</h2>
+                <ul className="m-0 flex flex-col gap-3 p-0" style={{ listStyle: 'none' }}>
+                  {includes.map((item) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <CheckIcon />
+                      <span style={{ fontFamily: B, fontSize: '0.95rem', color: TEXT2, lineHeight: 1.5 }}>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-6 flex-1 border-t pt-5" style={{ borderColor: 'rgba(0,0,0,0.07)' }}>
+                  <p style={{ fontFamily: U, fontWeight: 700, fontSize: '0.64rem', letterSpacing: '.14em', textTransform: 'uppercase', color: DIM, margin: '0 0 6px' }}>Outcome</p>
+                  <p style={{ fontFamily: B, fontStyle: 'italic', fontSize: '0.95rem', color: TEXT, lineHeight: 1.5, margin: 0 }}>{outcome}</p>
+                </div>
                 <Link
                   href="/book"
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '13px 20px', background: NAVY, color: '#FFFFFF', borderRadius: 999, fontFamily: U, fontWeight: 600, fontSize: '0.72rem', letterSpacing: '.14em', textTransform: 'uppercase' as const, textDecoration: 'none' }}
+                  className="mt-7 flex items-center justify-center rounded-full py-[13px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5F728D] focus-visible:ring-offset-2"
+                  style={{ background: featured ? NAVY : INK, color: '#fff', fontFamily: U, fontWeight: 600, fontSize: '0.76rem', letterSpacing: '.14em', textTransform: 'uppercase', textDecoration: 'none' }}
                 >
-                  BOOK A CONSULT
+                  Book a consult
                 </Link>
-              </div>
-            </div>
+              </article>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* ── Add-ons ── */}
-      <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: CREAM }}>
-        <div style={{ maxWidth: 680, margin: '0 auto' }}>
-          <div style={{ marginBottom: 12 }}><Pill bg={STRAW} fg={TEXT}>ADD-ONS</Pill></div>
-          <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: '1.8rem', lineHeight: 1.1, color: TEXT, margin: '0 0 8px', letterSpacing: '-0.01em' }}>Add-ons</h2>
-          <p style={{ fontFamily: B, fontSize: '0.94rem', color: TEXT2, margin: '0 0 24px', lineHeight: 1.5 }}>
-            Pricing for all packages and add-ons is discussed during your discovery call.
-          </p>
-          <div className="grid sm:grid-cols-3 gap-4">
-            {['Additional Session', 'IEP / School Prep Call', 'Custom Behavior Plan'].map((addon) => (
-              <div key={addon} style={{ background: LINEN, borderRadius: 12, border: `1px solid ${HAIRLINE}`, padding: '18px 22px', display: 'flex', alignItems: 'center', gap: 12 }}>
-                <CheckIcon />
-                <p style={{ fontFamily: U, fontSize: '0.86rem', fontWeight: 600, color: TEXT, margin: 0 }}>{addon}</p>
-              </div>
+      <section aria-labelledby="addons-heading" className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: '#FFFFFF' }}>
+        <div className="mx-auto max-w-4xl">
+          <Reveal>
+            <Eyebrow>Add-ons</Eyebrow>
+            <h2 id="addons-heading" style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(1.7rem, 3vw, 2.2rem)', lineHeight: 1.1, letterSpacing: '-0.01em', color: TEXT, margin: '16px 0 10px' }}>
+              Extra support when you need it
+            </h2>
+            <p style={{ fontFamily: B, fontSize: '1rem', color: TEXT2, margin: '0 0 28px', lineHeight: 1.55 }}>
+              Pricing for all packages and add-ons is discussed during your discovery call.
+            </p>
+          </Reveal>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {['Additional Session', 'IEP / School Prep Call', 'Custom Behavior Plan'].map((addon, i) => (
+              <Reveal key={addon} delay={i * 100}>
+                <div className="flex items-center gap-3 rounded-xl border p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md" style={{ borderColor: 'rgba(0,0,0,0.08)', background: CREAM }}>
+                  <CheckIcon />
+                  <p style={{ fontFamily: U, fontSize: '0.9rem', fontWeight: 600, color: TEXT, margin: 0 }}>{addon}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── FAQ ── */}
-      <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: LINEN }}>
-        <div style={{ maxWidth: 680, margin: '0 auto' }}>
-          <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 2.8rem)', lineHeight: 1.05, color: TEXT, margin: '0 0 36px', letterSpacing: '-0.015em' }}>
-            Frequently asked questions
-          </h2>
-          <Accordion type="single" collapsible className="w-full">
-            {faqs.map(({ q, a }, i) => (
-              <AccordionItem key={i} value={`faq-${i}`} className="border-none" style={{ borderBottom: `1px solid ${HAIRLINE}` }}>
-                <AccordionTrigger
-                  className="hover:no-underline py-5 text-left"
-                  style={{ fontFamily: U, fontWeight: 600, fontSize: '0.96rem', color: TEXT }}
-                >
-                  {q}
-                </AccordionTrigger>
-                <AccordionContent className="pb-6" style={{ fontFamily: B, fontSize: '1rem', color: TEXT2, lineHeight: 1.65 }}>
-                  {a}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+      <section aria-labelledby="faq-heading" className="px-6 sm:px-10 lg:px-16 py-20 sm:py-28" style={{ background: CREAM }}>
+        <div className="mx-auto max-w-2xl">
+          <Reveal>
+            <Eyebrow>Good to know</Eyebrow>
+            <h2 id="faq-heading" style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 2.8rem)', lineHeight: 1.08, letterSpacing: '-0.015em', color: TEXT, margin: '18px 0 36px' }}>
+              Frequently asked questions
+            </h2>
+          </Reveal>
+          <Reveal delay={120}>
+            <Accordion type="single" collapsible className="w-full">
+              {faqs.map(({ q, a }, i) => (
+                <AccordionItem key={i} value={`faq-${i}`} className="border-none" style={{ borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
+                  <AccordionTrigger
+                    className="hover:no-underline py-5 text-left"
+                    style={{ fontFamily: U, fontWeight: 600, fontSize: '0.96rem', color: TEXT }}
+                  >
+                    {q}
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-6" style={{ fontFamily: B, fontSize: '1rem', color: TEXT2, lineHeight: 1.65 }}>
+                    {a}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </Reveal>
         </div>
       </section>
 
       {/* ── CTA ── */}
-      <section className="px-6 sm:px-10 lg:px-16 py-20 sm:py-24" style={{ background: NAVY, textAlign: 'center' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
-          <Pill cream>REIMAGINE</Pill>
+      <section aria-labelledby="services-cta" className="relative overflow-hidden px-6 sm:px-10 lg:px-16 py-24 sm:py-28 text-center" style={{ background: INK }}>
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div className="absolute left-1/2 top-1/2 h-[420px] w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-[0.16] blur-3xl"
+            style={{ background: `radial-gradient(ellipse, ${NAVY}, transparent 65%)` }} />
         </div>
-        <h2 style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.05, color: '#FFFFFF', margin: '0 0 20px', letterSpacing: '-0.015em' }}>
-          Not sure where to start?
-        </h2>
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 22 }}>
-          <HeartRule light center />
+        <div className="relative mx-auto max-w-2xl">
+          <Reveal>
+            <h2 id="services-cta" style={{ fontFamily: D, fontWeight: 700, fontSize: 'clamp(2rem, 4.5vw, 3.2rem)', lineHeight: 1.06, letterSpacing: '-0.02em', color: '#fff', margin: '0 0 18px' }}>
+              Not sure where to start?
+            </h2>
+            <p style={{ fontFamily: B, fontSize: '1.08rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, maxWidth: 460, margin: '0 auto 34px' }}>
+              Let&apos;s talk. The discovery call is free and there&apos;s no pressure.
+            </p>
+            <div className="flex justify-center">
+              <ArrowCta href="/book" variant="white">Book a free consult</ArrowCta>
+            </div>
+          </Reveal>
         </div>
-        <p style={{ fontFamily: B, fontSize: '1.05rem', color: 'rgba(255,255,255,0.75)', lineHeight: 1.55, maxWidth: 480, margin: '0 auto 32px' }}>
-          Let&apos;s talk. The discovery call is free and there&apos;s no pressure.
-        </p>
-        <Link
-          href="/book"
-          style={{ display: 'inline-flex', alignItems: 'center', padding: '15px 36px', background: LINEN, color: TEXT, borderRadius: 999, fontFamily: U, fontWeight: 600, fontSize: '0.84rem', letterSpacing: '.16em', textTransform: 'uppercase', textDecoration: 'none' }}
-        >
-          BOOK A CONSULT →
-        </Link>
       </section>
 
     </div>

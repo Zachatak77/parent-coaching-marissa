@@ -13,7 +13,7 @@ const CREAM    = '#F7F7F5'
 const TEXT     = '#1F1D1A'
 const TEXT2    = '#3A372F'
 const DIM      = '#6E6A60'
-const HAIRLINE = '#D9CFB9'
+const HAIRLINE = 'rgba(0,0,0,0.09)'
 const D = 'var(--font-display)'
 const U = 'var(--font-ui)'
 const B = 'var(--font-body)'
@@ -75,8 +75,12 @@ function LoginForm() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: CREAM }}>
-      <div style={{ width: '100%', maxWidth: 400 }}>
+    <div className="relative overflow-hidden" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: CREAM }}>
+      <div aria-hidden className="rp-blob-1 pointer-events-none absolute -top-32 -right-24 h-[420px] w-[420px] rounded-full opacity-[0.16] blur-3xl"
+        style={{ background: `radial-gradient(circle at 35% 35%, ${NAVY}, transparent 70%)` }} />
+      <div aria-hidden className="rp-blob-2 pointer-events-none absolute -bottom-32 -left-24 h-[380px] w-[380px] rounded-full opacity-[0.12] blur-3xl"
+        style={{ background: 'radial-gradient(circle, #9BB39B, transparent 70%)' }} />
+      <div className="relative" style={{ width: '100%', maxWidth: 400 }}>
 
         {/* Wordmark */}
         <div style={{ textAlign: 'center', marginBottom: 36 }}>

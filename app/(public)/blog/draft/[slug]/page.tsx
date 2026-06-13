@@ -2,7 +2,6 @@ import { getPostBySlugPreview } from '@/lib/blog'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { HeartRule } from '@/components/public/heart-rule'
 import type { Metadata } from 'next'
 
 // Minimal markdown renderer — fallback for legacy posts stored as markdown
@@ -114,7 +113,7 @@ export default async function DraftPreviewPage({
           {post.tags.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center rounded-full bg-[#F2EBDA] px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-[#6E6A60]"
+              className="inline-flex items-center rounded-full bg-[#5F728D]/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-[#5F728D]"
               style={{ fontFamily: 'Inter' }}
             >
               {tag}
@@ -144,10 +143,8 @@ export default async function DraftPreviewPage({
         <span>{readTime} min read</span>
       </div>
 
-      {/* Heart rule */}
-      <div className="mt-6 mb-8">
-        <HeartRule />
-      </div>
+      {/* Accent rule */}
+      <div aria-hidden className="mt-6 mb-8 h-[3px] w-12 rounded-full bg-[#E98773]" />
 
       {/* Cover image */}
       {post.coverImage && (
@@ -186,7 +183,7 @@ export default async function DraftPreviewPage({
       </div>
 
       {/* Footer */}
-      <div className="border-t border-[#D9CFB9] mt-12 pt-8">
+      <div className="border-t border-black/[0.08] mt-12 pt-8">
         <Link
           href="/blog"
           className="text-sm text-[#6E6A60] hover:text-[#1F1D1A] no-underline"
