@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { ResourceLibrary } from '@/components/dashboard/resource-library'
+import { Reveal } from '@/components/public/reveal'
+import { PageHeader } from '@/components/dashboard/ui/page-header'
 
 export default async function DashboardResourcesPage() {
   const supabase = await createClient()
@@ -24,14 +26,17 @@ export default async function DashboardResourcesPage() {
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-[#1F1D1A]">Resources</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Manage and assign resources to your clients.
-        </p>
-      </div>
+      <Reveal>
+        <PageHeader
+          eyebrow="Library"
+          title="Resources"
+          subtitle="Manage and assign resources to your clients."
+        />
+      </Reveal>
 
-      <ResourceLibrary resources={resources ?? []} clients={typedClients} />
+      <Reveal delay={80}>
+        <ResourceLibrary resources={resources ?? []} clients={typedClients} />
+      </Reveal>
     </div>
   )
 }

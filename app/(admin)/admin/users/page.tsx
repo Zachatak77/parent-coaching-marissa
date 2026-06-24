@@ -1,6 +1,8 @@
 import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { UsersTable } from '@/components/admin/users-table'
+import { Reveal } from '@/components/public/reveal'
+import { PageHeader } from '@/components/dashboard/ui/page-header'
 
 export default async function AdminUsersPage({
   searchParams,
@@ -30,16 +32,19 @@ export default async function AdminUsersPage({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-semibold text-[#1F1D1A]">Users</h1>
-          <p className="text-sm text-muted-foreground mt-1">{users?.length ?? 0} total</p>
-        </div>
-      </div>
+      <Reveal>
+        <PageHeader
+          eyebrow="People"
+          title="Users"
+          subtitle={`${users?.length ?? 0} total`}
+        />
+      </Reveal>
 
-      <Suspense>
-        <UsersTable users={users ?? []} coaches={coaches ?? []} />
-      </Suspense>
+      <Reveal delay={80}>
+        <Suspense>
+          <UsersTable users={users ?? []} coaches={coaches ?? []} />
+        </Suspense>
+      </Reveal>
     </div>
   )
 }
