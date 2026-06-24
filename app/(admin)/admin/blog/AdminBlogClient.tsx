@@ -6,6 +6,9 @@ import { toast } from 'sonner'
 import { PostTable } from '@/components/blog/PostTable'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Reveal } from '@/components/public/reveal'
+import { PageHeader } from '@/components/dashboard/ui/page-header'
+import { LiftCard } from '@/components/dashboard/ui/lift-card'
 
 interface Post {
   id: string
@@ -66,35 +69,42 @@ export function AdminBlogClient({ posts: initialPosts }: Props) {
   const buttonStyle = 'bg-[#5F728D] text-white rounded-full px-5 py-2 text-sm font-semibold uppercase tracking-wide'
 
   const statCards = [
-    { label: 'Total', count: localPosts.length },
-    { label: 'Published', count: localPosts.filter(p => p.status === 'PUBLISHED').length },
-    { label: 'Drafts', count: localPosts.filter(p => p.status === 'DRAFT').length },
-    { label: 'Archived', count: localPosts.filter(p => p.status === 'ARCHIVED').length },
+    { label: 'Total', count: localPosts.length, accent: 'var(--navy)' },
+    { label: 'Published', count: localPosts.filter(p => p.status === 'PUBLISHED').length, accent: 'var(--sage)' },
+    { label: 'Drafts', count: localPosts.filter(p => p.status === 'DRAFT').length, accent: 'var(--straw)' },
+    { label: 'Archived', count: localPosts.filter(p => p.status === 'ARCHIVED').length, accent: 'var(--peach)' },
   ]
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.875rem', color: '#1F1D1A' }}>
-          All Posts
-        </h1>
-        <Link href="/coach/blog/new" className={buttonStyle} style={{ fontFamily: 'Inter' }}>
-          + New Post
-        </Link>
-      </div>
+      <Reveal>
+        <PageHeader
+          eyebrow="Writing"
+          title="All Posts"
+          actions={
+            <Link href="/coach/blog/new" className={buttonStyle} style={{ fontFamily: 'Inter' }}>
+              + New Post
+            </Link>
+          }
+        />
+      </Reveal>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-        {statCards.map(card => (
-          <div key={card.label} className="bg-white border border-[#D9CFB9] rounded-[20px] p-5 text-center">
-            <div style={{ fontSize: '1.875rem', fontFamily: 'var(--font-display)', fontWeight: 700, color: '#1F1D1A' }}>
-              {card.count}
-            </div>
-            <div style={{ fontSize: '0.75rem', fontFamily: 'Inter', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#6E6A60' }}>
-              {card.label}
-            </div>
-          </div>
-        ))}
-      </div>
+      <Reveal delay={80}>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+          {statCards.map(card => (
+            <LiftCard key={card.label} accent={card.accent}>
+              <div className="p-5 text-center">
+                <div className="font-cormorant text-3xl font-semibold text-[#1F1D1A]">
+                  {card.count}
+                </div>
+                <div style={{ fontSize: '0.75rem', fontFamily: 'Inter', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#6E6A60' }}>
+                  {card.label}
+                </div>
+              </div>
+            </LiftCard>
+          ))}
+        </div>
+      </Reveal>
 
       <div className="flex gap-4 mb-6 flex-wrap">
         <Input

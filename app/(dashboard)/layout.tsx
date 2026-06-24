@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Sidebar } from '@/components/dashboard/sidebar'
+import { BlobField } from '@/components/dashboard/ui/blob-field'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -29,8 +30,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
         role={profile?.role ?? null}
         discoveryCount={discoveryCount ?? 0}
       />
-      <main className="flex-1 overflow-auto md:pt-0 pt-14">
-        <div className="max-w-6xl mx-auto px-6 py-8">{children}</div>
+      <main className="relative flex-1 overflow-x-hidden overflow-y-auto md:pt-0 pt-14">
+        <BlobField />
+        <div className="relative max-w-6xl mx-auto px-6 py-10">{children}</div>
       </main>
     </div>
   )

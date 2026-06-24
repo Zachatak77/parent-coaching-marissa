@@ -7,6 +7,9 @@ import { toast } from 'sonner'
 import { PostTable } from '@/components/blog/PostTable'
 import { AIGenerateDialog, type GeneratedPost } from '@/components/blog/AIGenerateDialog'
 import { Sparkles } from 'lucide-react'
+import { Reveal } from '@/components/public/reveal'
+import { PageHeader } from '@/components/dashboard/ui/page-header'
+import { LiftCard } from '@/components/dashboard/ui/lift-card'
 
 interface Post {
   id: string
@@ -82,45 +85,52 @@ export function CoachBlogClient({ posts: initialPosts, role }: Props) {
     <div>
       <AIGenerateDialog open={showAIDialog} onOpenChange={setShowAIDialog} onGenerate={handleGenerate} />
 
-      <div className="flex justify-between items-center mb-8">
-        <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.875rem', color: '#1F1D1A' }}>
-          My Posts
-        </h1>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setShowAIDialog(true)}
-            className="flex items-center gap-1.5 rounded-full border border-[#5F728D] px-5 py-2 text-sm font-semibold uppercase tracking-wide text-[#5F728D] transition-colors hover:bg-[#5F728D] hover:text-white"
-            style={{ fontFamily: 'Inter' }}
-          >
-            <Sparkles className="h-4 w-4" />
-            Generate with AI
-          </button>
-          <Link href="/coach/blog/new" className={buttonStyle} style={{ fontFamily: 'Inter' }}>
-            + New Post
-          </Link>
-        </div>
-      </div>
-
-      {posts.length === 0 ? (
-        <div className="flex flex-col items-center py-20">
-          <p style={{ fontFamily: 'var(--font-serif-4)', fontSize: '1.125rem', color: '#6E6A60', marginBottom: '0.5rem' }}>
-            You haven't written any posts yet.
-          </p>
-          <p style={{ fontSize: '0.875rem', color: '#6E6A60' }}>
-            Start sharing your expertise with parents.
-          </p>
-          <Link href="/coach/blog/new" className={buttonStyle} style={{ fontFamily: 'Inter', marginTop: '1.5rem' }}>
-            Write your first post
-          </Link>
-        </div>
-      ) : (
-        <PostTable
-          posts={posts}
-          role={role}
-          onDelete={handleDelete}
-          onTogglePublish={handleTogglePublish}
+      <Reveal>
+        <PageHeader
+          eyebrow="Writing"
+          title="My Posts"
+          actions={
+            <>
+              <button
+                onClick={() => setShowAIDialog(true)}
+                className="flex items-center gap-1.5 rounded-full border border-[#5F728D] px-5 py-2 text-sm font-semibold uppercase tracking-wide text-[#5F728D] transition-colors hover:bg-[#5F728D] hover:text-white"
+                style={{ fontFamily: 'Inter' }}
+              >
+                <Sparkles className="h-4 w-4" />
+                Generate with AI
+              </button>
+              <Link href="/coach/blog/new" className={buttonStyle} style={{ fontFamily: 'Inter' }}>
+                + New Post
+              </Link>
+            </>
+          }
         />
-      )}
+      </Reveal>
+
+      <Reveal delay={80}>
+        {posts.length === 0 ? (
+          <LiftCard interactive={false} className="border-dashed">
+            <div className="flex flex-col items-center py-20 text-center">
+              <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '1.5rem', color: '#1F1D1A', marginBottom: '0.5rem' }}>
+                You haven't written any posts yet.
+              </p>
+              <p style={{ fontSize: '0.875rem', color: '#6E6A60' }}>
+                Start sharing your expertise with parents.
+              </p>
+              <Link href="/coach/blog/new" className={buttonStyle} style={{ fontFamily: 'Inter', marginTop: '1.5rem' }}>
+                Write your first post
+              </Link>
+            </div>
+          </LiftCard>
+        ) : (
+          <PostTable
+            posts={posts}
+            role={role}
+            onDelete={handleDelete}
+            onTogglePublish={handleTogglePublish}
+          />
+        )}
+      </Reveal>
     </div>
   )
 }

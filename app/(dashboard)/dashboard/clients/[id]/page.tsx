@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Reveal } from '@/components/public/reveal'
+import { LiftCard, LiftCardContent, LiftCardHeader } from '@/components/dashboard/ui/lift-card'
 import { ClientNotesEditor } from '@/components/dashboard/client-notes-editor'
 import { CoachingPlanEditor } from '@/components/dashboard/coaching-plan-editor'
 import { SessionsList } from '@/components/dashboard/log-session-form'
@@ -98,9 +99,10 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
       </div>
 
       {/* Client header */}
+      <Reveal>
       <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-semibold text-[#1F1D1A]">{clientName}</h1>
+          <h1 className="font-cormorant font-semibold text-[#1F1D1A]" style={{ fontSize: 'clamp(1.9rem, 3.5vw, 2.6rem)', lineHeight: 1.05 }}>{clientName}</h1>
           <p className="text-sm text-muted-foreground mt-0.5">{clientEmail}</p>
           {clientPhone && <p className="text-sm text-muted-foreground">{clientPhone}</p>}
           <div className="flex flex-wrap items-center gap-2 mt-2">
@@ -112,21 +114,22 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
 
         <div className="flex gap-6 text-center">
           <div>
-            <p className="text-2xl font-semibold text-[#1F1D1A]">{sessions?.length ?? 0}</p>
+            <p className="font-cormorant text-3xl font-semibold text-[#1F1D1A]">{sessions?.length ?? 0}</p>
             <p className="text-xs text-muted-foreground">Total sessions</p>
           </div>
           <div>
-            <p className="text-sm font-semibold text-[#1F1D1A]">
+            <p className="text-sm font-semibold text-[#1F1D1A] pt-2">
               {lastSession ? new Date(lastSession).toLocaleDateString() : '—'}
             </p>
             <p className="text-xs text-muted-foreground">Last session</p>
           </div>
           <div>
-            <p className="text-2xl font-semibold text-[#1F1D1A]">{assignments?.length ?? 0}</p>
+            <p className="font-cormorant text-3xl font-semibold text-[#1F1D1A]">{assignments?.length ?? 0}</p>
             <p className="text-xs text-muted-foreground">Resources</p>
           </div>
         </div>
       </div>
+      </Reveal>
 
       {/* Tabs */}
       <Tabs defaultValue="overview">
@@ -140,28 +143,28 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
         {/* Tab 1: Overview */}
         <TabsContent value="overview" className="space-y-6">
           <div className="grid sm:grid-cols-3 gap-4">
-            <Card className="border-[#D9CFB9]">
-              <CardHeader className="pb-2">
+            <LiftCard accent="var(--navy)">
+              <LiftCardHeader className="pb-2">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-[#6E6A60]" />
-                  <CardTitle className="text-xs text-muted-foreground uppercase tracking-wide">Start Date</CardTitle>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Start Date</p>
                 </div>
-              </CardHeader>
-              <CardContent>
+              </LiftCardHeader>
+              <LiftCardContent>
                 <p className="text-sm font-medium">
                   {client.start_date ? new Date(client.start_date).toLocaleDateString() : '—'}
                 </p>
-              </CardContent>
-            </Card>
+              </LiftCardContent>
+            </LiftCard>
 
-            <Card className="border-[#D9CFB9]">
-              <CardHeader className="pb-2">
+            <LiftCard accent="var(--sage)">
+              <LiftCardHeader className="pb-2">
                 <div className="flex items-center gap-2">
                   <BookOpen className="w-4 h-4 text-[#6E6A60]" />
-                  <CardTitle className="text-xs text-muted-foreground uppercase tracking-wide">Intake Form</CardTitle>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Intake Form</p>
                 </div>
-              </CardHeader>
-              <CardContent>
+              </LiftCardHeader>
+              <LiftCardContent>
                 {intakeForm ? (
                   <p className="text-sm font-medium">
                     Submitted {new Date(intakeForm.submitted_at).toLocaleDateString()}
@@ -172,17 +175,17 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
                     <CopyIntakeLinkButton />
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </LiftCardContent>
+            </LiftCard>
 
-            <Card className="border-[#D9CFB9]">
-              <CardHeader className="pb-2">
+            <LiftCard accent="var(--peach)">
+              <LiftCardHeader className="pb-2">
                 <div className="flex items-center gap-2">
                   <BarChart2 className="w-4 h-4 text-[#6E6A60]" />
-                  <CardTitle className="text-xs text-muted-foreground uppercase tracking-wide">Coaching Plan</CardTitle>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Coaching Plan</p>
                 </div>
-              </CardHeader>
-              <CardContent>
+              </LiftCardHeader>
+              <LiftCardContent>
                 {plan ? (
                   <Badge variant={plan.is_published ? 'green' : 'gray'}>
                     {plan.is_published ? 'Published' : 'Draft'}
@@ -190,8 +193,8 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
                 ) : (
                   <p className="text-sm text-muted-foreground">No plan yet</p>
                 )}
-              </CardContent>
-            </Card>
+              </LiftCardContent>
+            </LiftCard>
           </div>
 
           <ClientNotesEditor clientId={params.id} initialNotes={client.notes} />

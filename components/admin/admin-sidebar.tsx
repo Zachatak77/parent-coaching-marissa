@@ -10,6 +10,8 @@ interface AdminSidebarProps {
   fullName: string | null
 }
 
+const SHELL = 'linear-gradient(180deg, #2A2724 0%, #23211E 55%, #1E1C19 100%)'
+
 const navItems = [
   { href: '/admin',       label: 'Overview', icon: LayoutDashboard },
   { href: '/admin/users', label: 'Users',    icon: Users },
@@ -50,12 +52,15 @@ export function AdminSidebar({ fullName }: AdminSidebarProps) {
             href={href}
             onClick={() => setMobileOpen(false)}
             className={cn(
-              'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors',
+              'relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors overflow-hidden',
               isActive(href)
                 ? 'bg-[#5F728D] text-[#FFFFFF] font-medium'
                 : 'text-[#FFFFFF]/65 hover:text-[#FFFFFF] hover:bg-white/8'
             )}
           >
+            {isActive(href) && (
+              <span aria-hidden className="absolute left-0 top-0 bottom-0 w-[3px] rounded-r" style={{ background: '#E98773' }} />
+            )}
             <Icon className="w-4 h-4 flex-shrink-0" />
             {label}
           </Link>
@@ -79,12 +84,12 @@ export function AdminSidebar({ fullName }: AdminSidebarProps) {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex w-64 flex-shrink-0 flex-col" style={{ background: '#23211E' }}>
+      <aside className="hidden md:flex w-64 flex-shrink-0 flex-col" style={{ background: SHELL }}>
         {sidebarContent}
       </aside>
 
       {/* Mobile top bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 py-3 text-[#FFFFFF]" style={{ background: '#23211E' }}>
+      <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 py-3 text-[#FFFFFF]" style={{ background: SHELL }}>
         <div className="flex items-center gap-2.5">
           <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: '0.56rem', letterSpacing: '.22em', textTransform: 'uppercase', color: '#C8D1DF' }}>Reimagine</span>
           <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.05rem', color: '#FFFFFF' }}>Parenting</span>
@@ -102,7 +107,7 @@ export function AdminSidebar({ fullName }: AdminSidebarProps) {
       {mobileOpen && (
         <div className="md:hidden fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
-          <aside className="relative w-72 flex flex-col h-full" style={{ background: '#23211E' }}>
+          <aside className="relative w-72 flex flex-col h-full" style={{ background: SHELL }}>
             <button
               onClick={() => setMobileOpen(false)}
               className="absolute top-4 right-4 p-1.5 rounded-md hover:bg-white/10 text-[#FFFFFF]/70 hover:text-[#FFFFFF]"

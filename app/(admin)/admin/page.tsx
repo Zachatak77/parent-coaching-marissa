@@ -1,10 +1,15 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Users, UserCheck, PhoneCall, CalendarDays, Package, BookOpen, Pencil, Eye } from 'lucide-react'
+import { Reveal } from '@/components/public/reveal'
+import { PageHeader } from '@/components/dashboard/ui/page-header'
+import { StatCard } from '@/components/dashboard/ui/stat-card'
+import { LiftCard, LiftCardContent, LiftCardHeader, LiftCardTitle } from '@/components/dashboard/ui/lift-card'
+
+const ACCENTS = ['var(--navy)', 'var(--sage)', 'var(--peach)', 'var(--straw)']
 
 function formatRelative(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime()
@@ -126,122 +131,110 @@ export default async function AdminOverviewPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl font-semibold text-[#1F1D1A]">{greeting}, {firstName}</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            {now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-          </p>
-        </div>
-        <Button asChild className="bg-[#5F728D] hover:bg-[#54647C] text-white rounded-full text-sm">
-          <Link href="/dashboard/discovery">Manage Leads</Link>
-        </Button>
-      </div>
+      <Reveal>
+        <PageHeader
+          eyebrow="Admin"
+          title={`${greeting}, ${firstName}`}
+          subtitle={now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+          actions={
+            <Button asChild className="bg-[#5F728D] hover:bg-[#54647C] text-white rounded-full text-sm">
+              <Link href="/dashboard/discovery">Manage Leads</Link>
+            </Button>
+          }
+        />
+      </Reveal>
 
       {/* User counts */}
-      <div className="grid sm:grid-cols-3 gap-4 mb-6">
-        {[
-          { label: 'Total Parents', value: totalParents ?? 0, icon: Users },
-          { label: 'Total Coaches', value: totalCoaches ?? 0, icon: UserCheck },
-          { label: 'Active Clients', value: activeClients ?? 0, icon: UserCheck },
-        ].map(({ label, value, icon: Icon }) => (
-          <Card key={label} className="border-[#D9CFB9]">
-            <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <p className="text-xs text-muted-foreground">{label}</p>
-                <Icon className="w-4 h-4 text-[#6E6A60]" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-semibold text-[#1F1D1A]">{value}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <Reveal delay={80}>
+        <div className="grid sm:grid-cols-3 gap-4 mb-6">
+          {[
+            { label: 'Total Parents', value: totalParents ?? 0, icon: Users },
+            { label: 'Total Coaches', value: totalCoaches ?? 0, icon: UserCheck },
+            { label: 'Active Clients', value: activeClients ?? 0, icon: UserCheck },
+          ].map(({ label, value, icon }, i) => (
+            <StatCard key={label} label={label} value={value} icon={icon} accent={ACCENTS[i % ACCENTS.length]} />
+          ))}
+        </div>
+      </Reveal>
 
       {/* Discovery funnel */}
-      <Card className="border-[#D9CFB9] mb-6">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-sm font-medium text-[#1F1D1A] flex items-center gap-2">
-              <PhoneCall className="w-4 h-4 text-[#6E6A60]" />
-              Discovery Call Funnel
-            </CardTitle>
-            <span className="text-xs text-[#6E6A60]">{conversionRate}% conversion rate</span>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-3">
-            {[
-              { label: 'New', count: discoveryNew ?? 0, status: 'new' },
-              { label: 'Contacted', count: discoveryContacted ?? 0, status: 'contacted' },
-              { label: 'Booked', count: discoveryBooked ?? 0, status: 'booked' },
-              { label: 'Converted', count: discoveryConverted ?? 0, status: 'converted' },
-              { label: 'Closed', count: discoveryClosed ?? 0, status: 'closed' },
-            ].map(({ label, count, status }) => (
-              <div key={status} className="flex items-center gap-2 bg-[#F7F7F5] rounded-lg px-3 py-2">
-                <Badge variant={statusColors[status] ?? 'gray'}>{label}</Badge>
-                <span className="text-sm font-semibold text-[#1F1D1A]">{count}</span>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <Reveal delay={160}>
+        <LiftCard accent="var(--navy)" interactive={false} className="mb-6">
+          <LiftCardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <LiftCardTitle className="flex items-center gap-2 text-lg">
+                <PhoneCall className="w-4 h-4 text-[#6E6A60]" />
+                Discovery Call Funnel
+              </LiftCardTitle>
+              <span className="text-xs text-[#6E6A60]">{conversionRate}% conversion rate</span>
+            </div>
+          </LiftCardHeader>
+          <LiftCardContent>
+            <div className="flex flex-wrap gap-3">
+              {[
+                { label: 'New', count: discoveryNew ?? 0, status: 'new' },
+                { label: 'Contacted', count: discoveryContacted ?? 0, status: 'contacted' },
+                { label: 'Booked', count: discoveryBooked ?? 0, status: 'booked' },
+                { label: 'Converted', count: discoveryConverted ?? 0, status: 'converted' },
+                { label: 'Closed', count: discoveryClosed ?? 0, status: 'closed' },
+              ].map(({ label, count, status }) => (
+                <div key={status} className="flex items-center gap-2 bg-[#F7F7F5] rounded-lg px-3 py-2">
+                  <Badge variant={statusColors[status] ?? 'gray'}>{label}</Badge>
+                  <span className="text-sm font-semibold text-[#1F1D1A]">{count}</span>
+                </div>
+              ))}
+            </div>
+          </LiftCardContent>
+        </LiftCard>
+      </Reveal>
 
       {/* Operational stats */}
-      <div className="grid sm:grid-cols-3 gap-4 mb-6">
-        <Card className="border-[#D9CFB9]">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <p className="text-xs text-muted-foreground">Sessions This Month</p>
-              <CalendarDays className="w-4 h-4 text-[#6E6A60]" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-semibold text-[#1F1D1A]">{sessionsThisMonth ?? 0}</p>
-          </CardContent>
-        </Card>
+      <Reveal delay={160}>
+        <div className="grid sm:grid-cols-3 gap-4 mb-6">
+          <StatCard label="Sessions This Month" value={sessionsThisMonth ?? 0} icon={CalendarDays} accent="var(--sage)" />
 
-        <Card className="border-[#D9CFB9]">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <p className="text-xs text-muted-foreground">Package Distribution</p>
-              <Package className="w-4 h-4 text-[#6E6A60]" />
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-1">
-            {[
-              { key: 'confident_parent', count: pkgConfident ?? 0 },
-              { key: 'partnership', count: pkgPartnership ?? 0 },
-              { key: 'ongoing', count: pkgOngoing ?? 0 },
-            ].map(({ key, count }) => (
-              <div key={key} className="flex items-center justify-between text-xs">
-                <span className="text-[#3A372F]">{packageLabels[key]}</span>
-                <span className="font-semibold text-[#1F1D1A]">{count}</span>
+          <LiftCard accent="var(--peach)" interactive={false}>
+            <LiftCardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-muted-foreground">Package Distribution</p>
+                <Package className="w-4 h-4 text-[#6E6A60]" />
               </div>
-            ))}
-          </CardContent>
-        </Card>
+            </LiftCardHeader>
+            <LiftCardContent className="space-y-1">
+              {[
+                { key: 'confident_parent', count: pkgConfident ?? 0 },
+                { key: 'partnership', count: pkgPartnership ?? 0 },
+                { key: 'ongoing', count: pkgOngoing ?? 0 },
+              ].map(({ key, count }) => (
+                <div key={key} className="flex items-center justify-between text-xs">
+                  <span className="text-[#3A372F]">{packageLabels[key]}</span>
+                  <span className="font-semibold text-[#1F1D1A]">{count}</span>
+                </div>
+              ))}
+            </LiftCardContent>
+          </LiftCard>
 
-        <Card className="border-[#D9CFB9]">
-          <CardHeader className="pb-2">
-            <p className="text-xs text-muted-foreground">Admins</p>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-semibold text-[#1F1D1A]">{totalAdmins ?? 0}</p>
-            <p className="text-xs text-[#6E6A60] mt-1">{totalResources ?? 0} resources in library</p>
-          </CardContent>
-        </Card>
-      </div>
+          <LiftCard accent="var(--straw)" interactive={false}>
+            <LiftCardHeader className="pb-2">
+              <p className="text-xs text-muted-foreground">Admins</p>
+            </LiftCardHeader>
+            <LiftCardContent>
+              <p className="font-cormorant text-3xl font-semibold text-[#1F1D1A]">{totalAdmins ?? 0}</p>
+              <p className="text-xs text-[#6E6A60] mt-1">{totalResources ?? 0} resources in library</p>
+            </LiftCardContent>
+          </LiftCard>
+        </div>
+      </Reveal>
 
       {/* Blog admin portal */}
-      <Card className="border-[#D9CFB9] mb-6">
-        <CardHeader className="pb-4 border-b border-[#D9CFB9]">
+      <Reveal delay={160}>
+      <LiftCard accent="var(--navy)" interactive={false} className="mb-6">
+        <LiftCardHeader className="pb-4 border-b border-[#D9CFB9]">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-base font-semibold text-[#1F1D1A] flex items-center gap-2">
+            <LiftCardTitle className="flex items-center gap-2 text-lg">
               <BookOpen className="w-4 h-4 text-[#5F728D]" />
               Blog Management
-            </CardTitle>
+            </LiftCardTitle>
             <div className="flex gap-3">
               <Button asChild size="sm" variant="outline" className="rounded-full text-xs border-[#D9CFB9]">
                 <Link href="/coach/blog/new">+ New Post</Link>
@@ -251,8 +244,8 @@ export default async function AdminOverviewPage() {
               </Button>
             </div>
           </div>
-        </CardHeader>
-        <CardContent className="pt-4">
+        </LiftCardHeader>
+        <LiftCardContent className="pt-4">
           {/* Stat row */}
           <div className="grid grid-cols-3 gap-4 mb-6">
             {[
@@ -297,68 +290,73 @@ export default async function AdminOverviewPage() {
               ))}
             </ul>
           )}
-        </CardContent>
-      </Card>
+        </LiftCardContent>
+      </LiftCard>
+      </Reveal>
 
       {/* Recent activity */}
       <div className="grid sm:grid-cols-2 gap-6">
-        <Card className="border-[#D9CFB9]">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-[#1F1D1A]">Recent Discovery Calls</CardTitle>
-              <Link href="/dashboard/discovery" className="text-xs text-[#6E6A60] hover:text-[#1F1D1A]">Manage all</Link>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {!recentDiscovery?.length ? (
-              <p className="text-sm text-muted-foreground py-4 text-center">No discovery calls yet.</p>
-            ) : (
-              <ul className="space-y-3">
-                {recentDiscovery.map((call) => (
-                  <li key={call.id} className="flex items-center justify-between gap-2">
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium text-[#1F1D1A] truncate">{call.name}</p>
-                      <p className="text-xs text-muted-foreground">{call.email} · {formatRelative(call.submitted_at)}</p>
-                    </div>
-                    <Badge variant={statusColors[call.status] ?? 'gray'} className="flex-shrink-0">
-                      {call.status}
-                    </Badge>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="border-[#D9CFB9]">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-[#1F1D1A]">Recent Sessions</CardTitle>
-              <Link href="/dashboard/clients" className="text-xs text-[#6E6A60] hover:text-[#1F1D1A]">View clients</Link>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {!recentSessions?.length ? (
-              <p className="text-sm text-muted-foreground py-4 text-center">No sessions logged yet.</p>
-            ) : (
-              <ul className="space-y-3">
-                {recentSessions.map((session) => {
-                  const clientName = (session.clients as any)?.profiles?.full_name ?? 'Client'
-                  return (
-                    <li key={session.id} className="flex items-center justify-between gap-2">
+        <Reveal delay={160}>
+          <LiftCard accent="var(--sage)" interactive={false}>
+            <LiftCardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <LiftCardTitle className="text-lg">Recent Discovery Calls</LiftCardTitle>
+                <Link href="/dashboard/discovery" className="text-xs text-[#6E6A60] hover:text-[#1F1D1A]">Manage all</Link>
+              </div>
+            </LiftCardHeader>
+            <LiftCardContent>
+              {!recentDiscovery?.length ? (
+                <p className="text-sm text-muted-foreground py-4 text-center">No discovery calls yet.</p>
+              ) : (
+                <ul className="space-y-3">
+                  {recentDiscovery.map((call) => (
+                    <li key={call.id} className="flex items-center justify-between gap-2">
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-[#1F1D1A] truncate">{clientName}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {new Date(session.session_date).toLocaleDateString()}
-                        </p>
+                        <p className="text-sm font-medium text-[#1F1D1A] truncate">{call.name}</p>
+                        <p className="text-xs text-muted-foreground">{call.email} · {formatRelative(call.submitted_at)}</p>
                       </div>
+                      <Badge variant={statusColors[call.status] ?? 'gray'} className="flex-shrink-0">
+                        {call.status}
+                      </Badge>
                     </li>
-                  )
-                })}
-              </ul>
-            )}
-          </CardContent>
-        </Card>
+                  ))}
+                </ul>
+              )}
+            </LiftCardContent>
+          </LiftCard>
+        </Reveal>
+
+        <Reveal delay={240}>
+          <LiftCard accent="var(--peach)" interactive={false}>
+            <LiftCardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <LiftCardTitle className="text-lg">Recent Sessions</LiftCardTitle>
+                <Link href="/dashboard/clients" className="text-xs text-[#6E6A60] hover:text-[#1F1D1A]">View clients</Link>
+              </div>
+            </LiftCardHeader>
+            <LiftCardContent>
+              {!recentSessions?.length ? (
+                <p className="text-sm text-muted-foreground py-4 text-center">No sessions logged yet.</p>
+              ) : (
+                <ul className="space-y-3">
+                  {recentSessions.map((session) => {
+                    const clientName = (session.clients as any)?.profiles?.full_name ?? 'Client'
+                    return (
+                      <li key={session.id} className="flex items-center justify-between gap-2">
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-[#1F1D1A] truncate">{clientName}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {new Date(session.session_date).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </li>
+                    )
+                  })}
+                </ul>
+              )}
+            </LiftCardContent>
+          </LiftCard>
+        </Reveal>
       </div>
     </div>
   )

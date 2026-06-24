@@ -2,6 +2,9 @@ import { createClient } from '@/lib/supabase/server'
 import { Users } from 'lucide-react'
 import { NewClientButton } from '@/components/dashboard/new-client-button'
 import { ClientsTable } from '@/components/dashboard/clients-table'
+import { Reveal } from '@/components/public/reveal'
+import { PageHeader } from '@/components/dashboard/ui/page-header'
+import { LiftCard } from '@/components/dashboard/ui/lift-card'
 
 export default async function ClientsPage() {
   const supabase = await createClient()
@@ -31,28 +34,31 @@ export default async function ClientsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl font-semibold text-[#1F1D1A]">Clients</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            {typedClients.length} client{typedClients.length !== 1 ? 's' : ''} total
-          </p>
-        </div>
-        <NewClientButton coachId={user!.id} />
-      </div>
+      <Reveal>
+        <PageHeader
+          eyebrow="Roster"
+          title="Clients"
+          subtitle={`${typedClients.length} client${typedClients.length !== 1 ? 's' : ''} total`}
+          actions={<NewClientButton coachId={user!.id} />}
+        />
+      </Reveal>
 
-      {typedClients.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center border border-dashed border-[#D9CFB9] rounded-lg bg-white">
-          <Users className="w-10 h-10 text-[#1F1D1A]/30 mb-4" />
-          <p className="text-base font-medium text-[#6E6A60] mb-1">No clients yet</p>
-          <p className="text-sm text-muted-foreground mb-6 max-w-xs">
-            Add your first client to get started.
-          </p>
-          <NewClientButton coachId={user!.id} />
-        </div>
-      ) : (
-        <ClientsTable clients={typedClients} />
-      )}
+      <Reveal delay={80}>
+        {typedClients.length === 0 ? (
+          <LiftCard interactive={false} className="border-dashed">
+            <div className="flex flex-col items-center justify-center py-24 text-center">
+              <Users className="w-10 h-10 text-[#1F1D1A]/30 mb-4" />
+              <p className="font-cormorant text-2xl font-semibold text-[#1F1D1A] mb-1">No clients yet</p>
+              <p className="text-sm text-muted-foreground mb-6 max-w-xs">
+                Add your first client to get started.
+              </p>
+              <NewClientButton coachId={user!.id} />
+            </div>
+          </LiftCard>
+        ) : (
+          <ClientsTable clients={typedClients} />
+        )}
+      </Reveal>
     </div>
   )
 }
