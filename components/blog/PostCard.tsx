@@ -20,8 +20,8 @@ interface PostCardProps {
 
 export function PostCard({ post }: PostCardProps) {
   return (
-    <Link href={`/blog/${post.slug}`} className="block no-underline">
-      <div className="overflow-hidden rounded-[20px] border border-[#D9CFB9] bg-white transition-shadow hover:shadow-md">
+    <Link href={`/blog/${post.slug}`} className="block h-full no-underline">
+      <div className="h-full overflow-hidden rounded-2xl border border-black/[0.07] bg-white transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
         {post.coverImage && (
           <div className="relative aspect-video w-full">
             <Image
@@ -39,7 +39,7 @@ export function PostCard({ post }: PostCardProps) {
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="inline-flex items-center rounded-full bg-[#F2EBDA] px-2 py-0.5 font-[Inter] text-xs font-semibold uppercase tracking-wide text-[#6E6A60]"
+                  className="inline-flex items-center rounded-full bg-[#5F728D]/10 px-2.5 py-0.5 font-[Inter] text-xs font-semibold uppercase tracking-wide text-[#5F728D]"
                 >
                   {tag}
                 </span>
@@ -63,7 +63,7 @@ export function PostCard({ post }: PostCardProps) {
             </p>
           )}
 
-          <div className="mt-4 flex items-center justify-between border-t border-[#D9CFB9] pt-4">
+          <div className="mt-4 flex items-center justify-between border-t border-black/[0.07] pt-4">
             <span className="font-[Inter] text-xs text-[#6E6A60]">
               {post.author.fullName || 'Marissa'}
             </span>

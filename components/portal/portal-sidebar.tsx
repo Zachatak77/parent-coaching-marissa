@@ -37,7 +37,7 @@ export function PortalDesktopHeader({ initials }: { initials: string }) {
   const pageTitle = pageTitles[pathname] ?? 'Portal'
 
   return (
-    <header className="hidden lg:flex items-center justify-between px-8 py-4 bg-[#FFFFFF] border-b border-[#D9CFB9]">
+    <header className="hidden lg:flex items-center justify-between px-8 py-4 bg-[#FFFFFF] border-b border-black/[0.08]">
       <span className="text-sm font-semibold text-[#1F1D1A]">{pageTitle}</span>
       <div className="w-9 h-9 rounded-full bg-[#5F728D] flex items-center justify-center text-xs font-bold text-white">
         {initials}
@@ -85,7 +85,7 @@ export function PortalSidebar({ firstName, initials, intakeSubmitted }: PortalSi
             className={cn(
               'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors',
               isActive(href)
-                ? 'bg-[#5F728D]/50 text-[#FFFFFF] font-medium'
+                ? 'bg-[#5F728D] text-[#FFFFFF] font-medium'
                 : 'text-[#FFFFFF]/65 hover:text-[#FFFFFF] hover:bg-white/8'
             )}
           >
@@ -120,12 +120,12 @@ export function PortalSidebar({ firstName, initials, intakeSubmitted }: PortalSi
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex w-64 flex-shrink-0 flex-col h-screen sticky top-0" style={{ background: '#2C2A28' }}>
+      <aside className="hidden lg:flex w-64 flex-shrink-0 flex-col h-screen sticky top-0" style={{ background: '#23211E' }}>
         {sidebarContent}
       </aside>
 
       {/* Mobile top bar — single bar showing page title */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 text-[#FFFFFF] flex items-center justify-between px-4 h-14" style={{ background: '#2C2A28' }}>
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 text-[#FFFFFF] flex items-center justify-between px-4 h-14" style={{ background: '#23211E' }}>
         <span className="text-sm font-semibold">{pageTitle}</span>
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-[#5F728D] flex items-center justify-center text-xs font-bold text-[#FFFFFF]">
@@ -141,7 +141,7 @@ export function PortalSidebar({ firstName, initials, intakeSubmitted }: PortalSi
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-black/40" onClick={() => setMobileOpen(false)} />
-          <div className="relative w-72 h-full flex flex-col shadow-xl" style={{ background: '#2C2A28' }}>
+          <div className="relative w-72 h-full flex flex-col shadow-xl" style={{ background: '#23211E' }}>
             <div className="flex items-center justify-between px-4 h-14 border-b border-white/10">
               <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase', color: '#C8D1DF' }}>Menu</span>
               <button onClick={() => setMobileOpen(false)} className="p-1 text-[#FFFFFF]/60 hover:text-[#FFFFFF]">
@@ -179,7 +179,7 @@ export function PortalMobileTabs({ intakeSubmitted }: { intakeSubmitted: boolean
     href === '/portal' ? pathname === '/portal' : pathname.startsWith(href)
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FFFFFF] border-t border-[#D9CFB9] flex">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FFFFFF] border-t border-black/[0.08] flex">
       {tabs.map(({ href, label, icon: Icon }) => (
         <Link
           key={href}

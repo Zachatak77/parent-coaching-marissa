@@ -16,7 +16,7 @@ const links = [
 const NAVY = '#5F728D'
 const CREAM = '#F7F7F5'
 const TEXT2 = '#3A372F'
-const HAIRLINE = '#D9CFB9'
+const HAIRLINE = 'rgba(0,0,0,0.08)'
 
 export function PublicNav() {
   const [open, setOpen] = React.useState(false)
@@ -33,7 +33,7 @@ export function PublicNav() {
 
   return (
     <header
-      style={{ borderBottom: `1px solid ${HAIRLINE}`, backgroundColor: CREAM }}
+      style={{ borderBottom: `1px solid ${HAIRLINE}`, backgroundColor: 'rgba(247,247,245,0.82)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
       className={cn('sticky top-0 z-50 w-full transition-shadow duration-200', scrolled && 'shadow-sm')}
     >
       <nav className="max-w-6xl mx-auto flex h-16 items-center justify-between px-6 sm:px-10 lg:px-16">
