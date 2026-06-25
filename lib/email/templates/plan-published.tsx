@@ -42,7 +42,7 @@ export function PlanPublished({ clientName, planTitle, portalUrl }: Props) {
 
 PlanPublished.PreviewProps = {
   clientName: 'Sarah Johnson',
-  planTitle: 'Calm Mornings & Bedtime Wins — 4-Week Plan',
+  planTitle: 'Calm Mornings & Smoother Transitions — 4-Week Plan',
   portalUrl: 'https://parentcoaching.vercel.app/portal/plan',
 } satisfies Props
 
