@@ -222,7 +222,7 @@ export function ClientResourcesTab({
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="res-tags">Tags (comma-separated)</Label>
-              <Input id="res-tags" name="tags" placeholder="e.g. sleep, behavior, communication" />
+              <Input id="res-tags" name="tags" placeholder="e.g. behavior, communication, transitions" />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="res-file">File</Label>

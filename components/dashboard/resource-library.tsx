@@ -243,7 +243,7 @@ export function ResourceLibrary({
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="up-tags">Tags (comma-separated)</Label>
-              <Input id="up-tags" name="tags" placeholder="e.g. sleep, behavior" />
+              <Input id="up-tags" name="tags" placeholder="e.g. behavior, transitions" />
             </div>
             <div className="flex items-center gap-3">
               <Switch id="up-public" name="is_public" value="true" />

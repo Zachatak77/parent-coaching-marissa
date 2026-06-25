@@ -52,7 +52,7 @@ DiscoveryCallAlert.PreviewProps = {
   email: 'sarah@example.com',
   phone: '555-1234',
   childAges: '5 and 8',
-  mainConcern: 'Struggling with bedtime battles and morning chaos.',
+  mainConcern: 'Struggling with transitions and morning chaos.',
   howTheyHeard: 'Instagram',
 } satisfies Props
 

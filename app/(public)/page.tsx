@@ -25,7 +25,7 @@ const B = 'var(--font-body)'
 const U = 'var(--font-ui)'
 
 const marqueeItems = [
-  'Meltdowns', 'School-morning chaos', 'Bedtime battles', 'Transitions',
+  'Meltdowns', 'School-morning chaos', 'Power struggles', 'Transitions',
   'Big feelings', 'Sibling conflict', 'Picky eating', 'Homework standoffs',
 ]
 
@@ -88,7 +88,7 @@ const testimonials = [
     byline: 'Parent of a 7-year-old · Montclair, NJ',
   },
   {
-    quote: 'For the first time, bedtime isn’t a battle. The plan was so specific to our daughter — it finally felt like someone actually got her.',
+    quote: 'For the first time, transitions don’t end in a meltdown. The plan was so specific to our daughter — it finally felt like someone actually got her.',
     byline: 'Parent of a 5-year-old',
   },
 ]
@@ -156,9 +156,9 @@ export default function HomePage() {
                 <div className="rounded-2xl border bg-white/80 p-6 shadow-xl backdrop-blur-md transition-transform duration-500 hover:-translate-y-1.5"
                   style={{ borderColor: 'rgba(95,114,141,0.18)' }}>
                   <p style={{ fontFamily: U, fontWeight: 600, fontSize: '0.68rem', letterSpacing: '.16em', textTransform: 'uppercase', color: DIM, margin: '0 0 14px' }}>
-                    Tonight’s wind-down plan
+                    After-school reset plan
                   </p>
-                  {['Visual timer at 7:15', 'Two-choice script for pajamas', 'Deep-pressure check-in after books'].map((t) => (
+                  {['Visual timer before screen-off', 'Two-choice script for homework', 'Deep-pressure check-in after snack'].map((t) => (
                     <div key={t} className="mb-2.5 flex items-start gap-2.5 last:mb-0">
                       <span className="mt-[3px] flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full" style={{ background: SAGE }}>
                         <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
@@ -176,7 +176,7 @@ export default function HomePage() {
                     Text from a client
                   </p>
                   <p style={{ fontFamily: B, fontStyle: 'italic', fontSize: '1.02rem', color: '#fff', lineHeight: 1.5, margin: 0 }}>
-                    “Bedtime took 20 minutes tonight. TWENTY. 🥹”
+                    “Homework took 20 minutes tonight. TWENTY. 🥹”
                   </p>
                 </div>
               </Reveal>
